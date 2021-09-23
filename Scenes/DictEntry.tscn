@@ -1,4 +1,6 @@
-[gd_scene format=2]
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scenes/DictEntry.gd" type="Script" id=1]
 
 [node name="Control" type="Control"]
 anchor_right = 0.312
@@ -6,23 +8,33 @@ anchor_bottom = 0.04
 margin_right = 0.511993
 margin_bottom = -1.90735e-06
 rect_min_size = Vector2( 320, 24 )
+script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="WordEntry" type="RichTextLabel" parent="."]
-anchor_right = 0.475
+anchor_right = 0.6
 anchor_bottom = 1.0
+margin_left = 32.0
 text = "test"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="WordTranslation" type="RichTextLabel" parent="."]
-anchor_left = 0.5
-anchor_right = 1.0
+anchor_left = 0.65
+anchor_right = 1.125
 anchor_bottom = 1.0
+margin_left = -1.52588e-05
 text = "test"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="DeleteButton" type="Button" parent="."]
+margin_right = 24.0
+margin_bottom = 24.0
+text = "X"
+
+[connection signal="pressed" from="DeleteButton" to="." method="_on_DeleteButton_pressed"]

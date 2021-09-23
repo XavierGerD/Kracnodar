@@ -15,5 +15,16 @@ func _on_Button_pressed():
 
 
 func _on_AddAllButton_pressed():
-	for child in $VBoxContainer.get_children():
-		Dict.dict[child.wordText] = child.translationText
+	if ($VBoxContainer.get_child_count() > 0):
+
+		var isAnyEntryEmpty = false
+		var children = $VBoxContainer.get_children()
+		for child in children:
+			if child.get_node("WordButton").get_text() == "" || child.get_node("TranslationText").get_text() == "":
+				$WarningDialog.popup()
+				return
+		for child in children:
+			Dict.dict[child.wordText] = child.translationText
+			$VBoxContainer.remove_child(child)
+			child.queue_free()
+		$AcceptDialog.popup()

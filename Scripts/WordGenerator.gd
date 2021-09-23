@@ -100,3 +100,8 @@ func _on_NumberOfWordsInput_text_changed(newText):
 	
 func onWordPicked(text):
 	emit_signal("wordPicked", text)
+
+func _on_Button_pressed():
+	for child in $TextEdit.get_children():
+		$TextEdit.remove_child(child)
+		child.queue_free()
