@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scripts/WordButton.gd" type="Script" id=1]
+
+[node name="WordButton" type="Button"]
+anchor_right = 0.094
+anchor_bottom = 0.04
+margin_right = -0.256004
+margin_bottom = -1.90735e-06
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="." to="." method="_on_WordButton_pressed"]

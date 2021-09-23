@@ -1,0 +1,42 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scripts/WordLinker.gd" type="Script" id=1]
+
+[node name="WordLinker" type="Control"]
+anchor_right = 0.312
+anchor_bottom = 0.067
+margin_right = 0.511993
+margin_bottom = -0.200001
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WordButton" type="LineEdit" parent="."]
+anchor_left = 0.025
+anchor_top = 0.2
+anchor_right = 0.45
+anchor_bottom = 0.8
+
+[node name="TranslationText" type="LineEdit" parent="."]
+anchor_left = 0.525
+anchor_top = 0.2
+anchor_right = 0.975
+anchor_bottom = 0.8
+margin_left = -1.52588e-05
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DeleteButton" type="Button" parent="."]
+anchor_left = -0.1
+anchor_top = 0.2
+anchor_right = -0.037
+anchor_bottom = 0.7
+margin_right = -0.16
+margin_bottom = -1.90735e-06
+text = "X"
+
+[connection signal="text_changed" from="WordButton" to="." method="_on_WordButton_text_changed"]
+[connection signal="text_changed" from="TranslationText" to="." method="_on_TranslationText_text_changed"]
+[connection signal="pressed" from="DeleteButton" to="." method="_on_DeleteButton_pressed"]

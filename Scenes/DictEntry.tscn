@@ -1,0 +1,28 @@
+[gd_scene format=2]
+
+[node name="Control" type="Control"]
+anchor_right = 0.312
+anchor_bottom = 0.04
+margin_right = 0.511993
+margin_bottom = -1.90735e-06
+rect_min_size = Vector2( 320, 24 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WordEntry" type="RichTextLabel" parent="."]
+anchor_right = 0.475
+anchor_bottom = 1.0
+text = "test"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WordTranslation" type="RichTextLabel" parent="."]
+anchor_left = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "test"
+__meta__ = {
+"_edit_use_anchors_": false
+}

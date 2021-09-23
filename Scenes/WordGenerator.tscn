@@ -1,0 +1,122 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scripts/WordGenerator.gd" type="Script" id=1]
+
+[node name="WordGenerator" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextEdit" type="GridContainer" parent="."]
+anchor_left = 0.062
+anchor_top = 0.173
+anchor_right = 0.43
+anchor_bottom = 0.853
+margin_left = 0.511997
+margin_top = 0.199997
+margin_right = -0.320007
+margin_bottom = 0.199982
+columns = 4
+
+[node name="GeneratorButton" type="Button" parent="."]
+anchor_left = 0.062
+anchor_top = 0.08
+anchor_right = 0.164
+anchor_bottom = 0.147
+margin_left = 0.511997
+margin_top = -3.8147e-06
+margin_right = 0.0639954
+margin_bottom = -0.199997
+text = "Générer!"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NumberOfSyllablesLabel" type="RichTextLabel" parent="."]
+anchor_left = 0.187
+anchor_top = 0.08
+anchor_right = 0.242
+anchor_bottom = 0.107
+margin_left = 0.511993
+margin_top = -3.8147e-06
+margin_right = 0.191986
+margin_bottom = -0.200005
+text = "Syllabes"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NumberOfSyllablesInput" type="LineEdit" parent="."]
+anchor_left = 0.187
+anchor_top = 0.107
+anchor_right = 0.242
+anchor_bottom = 0.147
+margin_left = 0.511993
+margin_top = -0.200005
+margin_right = 2.19199
+margin_bottom = -0.199997
+text = "1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NumberOfWordsLabel" type="RichTextLabel" parent="."]
+anchor_left = 0.187
+anchor_top = 0.08
+anchor_right = 0.242
+anchor_bottom = 0.107
+margin_left = 72.512
+margin_top = -3.8147e-06
+margin_right = 72.192
+margin_bottom = -0.200005
+text = "Mots"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NumberOfWordsInput" type="LineEdit" parent="."]
+anchor_left = 0.187
+anchor_top = 0.107
+anchor_right = 0.242
+anchor_bottom = 0.147
+margin_left = 72.512
+margin_top = -0.200005
+margin_right = 74.192
+margin_bottom = -0.199997
+text = "1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WordStartLabel" type="RichTextLabel" parent="."]
+anchor_left = 0.328
+anchor_top = 0.08
+anchor_right = 0.43
+anchor_bottom = 0.107
+margin_left = 0.127991
+margin_top = -3.8147e-06
+margin_right = -0.320007
+margin_bottom = -0.200005
+text = "Début du mot"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WordStartDropdown" type="OptionButton" parent="."]
+anchor_left = 0.328
+anchor_top = 0.107
+anchor_right = 0.43
+anchor_bottom = 0.147
+margin_left = 0.127991
+margin_top = -0.200005
+margin_right = -0.320007
+margin_bottom = -0.199997
+
+[connection signal="pressed" from="GeneratorButton" to="." method="_on_GeneratorButton_pressed"]
+[connection signal="text_changed" from="NumberOfSyllablesInput" to="." method="_on_NumberOfSyllablesInput_text_changed"]
+[connection signal="text_changed" from="NumberOfWordsInput" to="." method="_on_NumberOfWordsInput_text_changed"]
+[connection signal="item_selected" from="WordStartDropdown" to="." method="_on_WordStartDropdown_item_selected"]
