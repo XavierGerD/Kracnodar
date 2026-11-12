@@ -10,6 +10,8 @@ const TextFold = preload("res://Scripts/TextFold.gd")
 var sort_column = Column.KRAC
 var sort_ascending = true
 var shown_count = 0
+var _groups = []  # the letter index: [{"letter", "count", "first": French key of its first row}]
+var _row_groups = []  # for each row, its letter's index in _groups (-1 for none)
 
 
 func _ready():
@@ -17,6 +19,8 @@ func _ready():
 		_header(column).pressed.connect(sort_by.bind(column))
 	%SearchInput.text_changed.connect(func(_text): refresh())
 	%SearchInput.gui_input.connect(_on_SearchInput_gui_input)
+	%Rail.letter_selected.connect(_on_letter_selected)
+	%Scroll.get_v_scroll_bar().value_changed.connect(func(_value): _update_active_letter())
 	refresh()
 
 
@@ -55,9 +59,10 @@ func _sort_text(french: String) -> String:
 			return english.substr(3) if english.to_lower().begins_with("to ") else english
 
 
+# Compared without accents, so "étincelle" files under e, with its letter.
 func _comes_before(a: String, b: String) -> bool:
-	var left = _sort_text(a)
-	var right = _sort_text(b)
+	var left = _fold(_sort_text(a))
+	var right = _fold(_sort_text(b))
 	if (left == "") != (right == ""):
 		return right == ""  # entries missing this word go last, in either direction
 	var order = left.naturalnocasecmp_to(right)
@@ -105,7 +110,53 @@ func refresh(reveal := "") -> void:
 		row.edit_failed.connect(_error)
 		if keys[i] == reveal:
 			_reveal(row)
+	_build_letter_index(keys)
 	_update_count()
+
+
+# The letter an entry files under in the current column: A–Z, or # for anything
+# else; "" when it has no word there (an entry without English).
+func _initial(french: String) -> String:
+	var text = _fold(_sort_text(french)).strip_edges()
+	if text == "":
+		return ""
+	var letter = text[0].to_upper()
+	return letter if letter >= "A" and letter <= "Z" else "#"
+
+
+func _build_letter_index(keys: Array) -> void:
+	_groups = []
+	_row_groups = []
+	for key in keys:
+		var letter = _initial(key)
+		if letter == "":
+			_row_groups.append(-1)
+			continue
+		if _groups.is_empty() or _groups[-1]["letter"] != letter:
+			_groups.append({"letter": letter, "count": 0, "first": key})
+		_groups[-1]["count"] += 1
+		_row_groups.append(_groups.size() - 1)
+	%Rail.set_groups(_groups)
+	_update_active_letter.call_deferred()
+
+
+func _on_letter_selected(index: int) -> void:
+	for row in %Rows.get_children():
+		if not row.is_queued_for_deletion() and row.key == _groups[index]["first"]:
+			%Scroll.scroll_vertical = int(row.position.y)
+			row.flash()
+			return
+
+
+# Lights the letter of the row at the top of the list.
+func _update_active_letter() -> void:
+	var top = %Scroll.scroll_vertical
+	var rows = %Rows.get_children()
+	for i in mini(rows.size(), _row_groups.size()):
+		if rows[i].position.y + rows[i].size.y > top + 1:
+			%Rail.set_active(_row_groups[i])
+			return
+	%Rail.set_active(-1)
 
 
 func _on_row_edit_started(editing_row) -> void:
@@ -124,6 +175,7 @@ func _reveal(row) -> void:
 func _on_row_deleted() -> void:
 	shown_count -= 1
 	_update_count()
+	refresh.call_deferred()  # the letter index and row stripes follow
 
 
 func _update_count() -> void:

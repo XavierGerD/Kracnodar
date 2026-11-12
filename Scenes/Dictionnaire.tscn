@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://cemskfmjud7ov"]
 
 [ext_resource type="Script" uid="uid://dnrowojdckqe1" path="res://Scripts/Dictionnaire.gd" id="1"]
+[ext_resource type="Script" path="res://Scripts/AlphabetRail.gd" id="2"]
 
 [node name="Dictionnaire" type="PanelContainer"]
 anchors_preset = 15
@@ -51,7 +52,7 @@ clear_button_enabled = true
 [node name="Columns" type="MarginContainer" parent="Layout"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
-theme_override_constants/margin_right = 18
+theme_override_constants/margin_right = 54
 
 [node name="Row" type="HBoxContainer" parent="Layout/Columns"]
 layout_mode = 2
@@ -105,18 +106,29 @@ text = "Le dictionnaire est vide."
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="Scroll" type="ScrollContainer" parent="Layout"]
-unique_name_in_owner = true
+[node name="ListArea" type="HBoxContainer" parent="Layout"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="Scroll" type="ScrollContainer" parent="Layout/ListArea"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 4
 
-[node name="Rows" type="VBoxContainer" parent="Layout/Scroll"]
+[node name="Rows" type="VBoxContainer" parent="Layout/ListArea/Scroll"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 2
+
+[node name="Rail" type="Control" parent="Layout/ListArea"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(28, 0)
+layout_mode = 2
+script = ExtResource("2")
 
 [node name="ErrorDialog" type="AcceptDialog" parent="."]
 unique_name_in_owner = true
