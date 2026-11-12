@@ -1,53 +1,47 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene format=3 uid="uid://cnvt1s4xs745m"]
 
-[ext_resource path="res://Scenes/WordGenerator.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Scenes/Main.gd" type="Script" id=2]
-[ext_resource path="res://Scenes/WordSelector.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Scenes/Dictionnaire.tscn" type="PackedScene" id=4]
+[ext_resource type="PackedScene" uid="uid://bmyw8ijr112g2" path="res://Scenes/WordGenerator.tscn" id="1"]
+[ext_resource type="Script" uid="uid://cq7a4wm6t5xmf" path="res://Scenes/Main.gd" id="2"]
+[ext_resource type="PackedScene" uid="uid://dguoxqs5yddih" path="res://Scenes/WordSelector.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://Scenes/Dictionnaire.tscn" id="4"]
 
-[node name="Main" type="Control"]
+[node name="Main" type="Control" unique_id=1815991688]
+layout_mode = 3
 anchor_right = 1.008
 anchor_bottom = 1.0
 offset_right = -0.192017
 mouse_filter = 2
-script = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+script = ExtResource("2")
 
-[node name="TabContainer" type="TabContainer" parent="."]
+[node name="TabContainer" type="TabContainer" parent="." unique_id=941068701]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+current_tab = 0
 
-[node name="Generateur" type="Control" parent="TabContainer"]
+[node name="Generateur" type="Control" parent="TabContainer" unique_id=526763632]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/Generateur" unique_id=1867017137]
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 4.0
-offset_top = 32.0
-offset_right = -4.0
-offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="WordGenerator" parent="TabContainer/Generateur" instance=ExtResource( 1 )]
-offset_left = -4.0
-offset_top = -32.0
-offset_right = -4.0
-offset_bottom = -32.0
+[node name="WordGenerator" parent="TabContainer/Generateur/HBoxContainer" unique_id=1151286362 instance=ExtResource("1")]
+layout_mode = 2
+size_flags_horizontal = 3
 
-[node name="WordSelector" parent="TabContainer/Generateur" instance=ExtResource( 3 )]
-anchor_right = 0.7
-offset_left = 404.0
-offset_top = -8.0
-offset_right = 400.0
-offset_bottom = 88.0
+[node name="WordSelector" parent="TabContainer/Generateur/HBoxContainer" unique_id=2115261832 instance=ExtResource("3")]
+layout_mode = 2
+size_flags_horizontal = 3
 
-[node name="Dictionnaire" parent="TabContainer" instance=ExtResource( 4 )]
+[node name="Dictionnaire" parent="TabContainer" unique_id=1755871941 instance=ExtResource("4")]
 visible = false
-offset_left = 4.0
-offset_top = 32.0
-offset_right = -4.0
-offset_bottom = -4.0
+layout_mode = 2
+metadata/_tab_index = 1
 
 [connection signal="tab_changed" from="TabContainer" to="." method="_on_TabContainer_tab_changed"]

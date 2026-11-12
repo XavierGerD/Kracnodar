@@ -1,135 +1,70 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene format=3 uid="uid://bmyw8ijr112g2"]
 
-[ext_resource path="res://Scripts/WordGenerator.gd" type="Script" id=1]
+[ext_resource type="Script" uid="uid://o0xumcrh5y3h" path="res://Scripts/WordGenerator.gd" id="1"]
 
-[node name="WordGenerator" type="Control"]
+[node name="WordGenerator" type="Control" unique_id=609752268]
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+script = ExtResource("1")
 
-[node name="TextEdit" type="GridContainer" parent="."]
-anchor_left = 0.062
-anchor_top = 0.173
-anchor_right = 0.43
-anchor_bottom = 0.853
-offset_left = 0.511997
-offset_top = 0.199997
-offset_right = -0.320007
-offset_bottom = 0.199982
-columns = 4
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=818459939]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
 
-[node name="GeneratorButton" type="Button" parent="."]
-anchor_left = 0.062
-anchor_top = 0.08
-anchor_right = 0.164
-anchor_bottom = 0.147
-offset_left = 0.511997
-offset_top = -3.8147e-06
-offset_right = 0.0639954
-offset_bottom = -0.199997
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=578926622]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1079171086]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="GeneratorButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=394477246]
+layout_mode = 2
 text = "Générer!"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="NumberOfSyllablesLabel" type="RichTextLabel" parent="."]
-anchor_left = 0.187
-anchor_top = 0.08
-anchor_right = 0.242
-anchor_bottom = 0.107
-offset_left = 0.511993
-offset_top = -3.8147e-06
-offset_right = 0.191986
-offset_bottom = -0.200005
+[node name="NumberOfSyllablesLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=120721279]
+layout_mode = 2
 text = "Syllabes"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="NumberOfSyllablesInput" type="LineEdit" parent="."]
-anchor_left = 0.187
-anchor_top = 0.107
-anchor_right = 0.242
-anchor_bottom = 0.147
-offset_left = 0.511993
-offset_top = -0.200005
-offset_right = 2.19199
-offset_bottom = -0.199997
+[node name="NumberOfSyllablesInput" type="LineEdit" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1641786770]
+layout_mode = 2
 text = "1"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="NumberOfWordsLabel" type="RichTextLabel" parent="."]
-anchor_left = 0.187
-anchor_top = 0.08
-anchor_right = 0.242
-anchor_bottom = 0.107
-offset_left = 72.512
-offset_top = -3.8147e-06
-offset_right = 72.192
-offset_bottom = -0.200005
+[node name="NumberOfWordsLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=527950895]
+layout_mode = 2
 text = "Mots"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="NumberOfWordsInput" type="LineEdit" parent="."]
-anchor_left = 0.187
-anchor_top = 0.107
-anchor_right = 0.242
-anchor_bottom = 0.147
-offset_left = 72.512
-offset_top = -0.200005
-offset_right = 74.192
-offset_bottom = -0.199997
+[node name="NumberOfWordsInput" type="LineEdit" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=611503092]
+layout_mode = 2
 text = "1"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="WordStartLabel" type="RichTextLabel" parent="."]
-anchor_left = 0.328
-anchor_top = 0.08
-anchor_right = 0.43
-anchor_bottom = 0.107
-offset_left = 0.127991
-offset_top = -3.8147e-06
-offset_right = -0.320007
-offset_bottom = -0.200005
+[node name="WordStartLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=761221344]
+layout_mode = 2
 text = "Début du mot"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="WordStartDropdown" type="OptionButton" parent="."]
-anchor_left = 0.328
-anchor_top = 0.107
-anchor_right = 0.43
-anchor_bottom = 0.147
-offset_left = 0.127991
-offset_top = -0.200005
-offset_right = -0.320007
-offset_bottom = -0.199997
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="WordStartDropdown" type="OptionButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=827233818]
+layout_mode = 2
 
-[node name="Button" type="Button" parent="."]
-anchor_left = 0.062
-anchor_top = 0.893
-anchor_right = 0.172
-anchor_bottom = 0.96
-offset_left = 0.511997
-offset_top = 0.199951
-offset_right = -0.128006
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1838476219]
+layout_mode = 2
 text = "Effacer"
 
-[connection signal="pressed" from="GeneratorButton" to="." method="_on_GeneratorButton_pressed"]
-[connection signal="text_changed" from="NumberOfSyllablesInput" to="." method="_on_NumberOfSyllablesInput_text_changed"]
-[connection signal="text_changed" from="NumberOfWordsInput" to="." method="_on_NumberOfWordsInput_text_changed"]
-[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
+[node name="TextEdit" type="GridContainer" parent="MarginContainer/VBoxContainer" unique_id=354337355]
+layout_mode = 2
+columns = 4
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/GeneratorButton" to="." method="_on_GeneratorButton_pressed"]
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/HBoxContainer/NumberOfSyllablesInput" to="." method="_on_NumberOfSyllablesInput_text_changed"]
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/HBoxContainer/NumberOfWordsInput" to="." method="_on_NumberOfWordsInput_text_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/Button" to="." method="_on_Button_pressed"]

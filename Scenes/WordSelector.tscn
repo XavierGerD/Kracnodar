@@ -1,19 +1,19 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene format=3 uid="uid://dguoxqs5yddih"]
 
-[ext_resource path="res://Scripts/WordSelector.gd" type="Script" id=1]
-[ext_resource path="res://Scripts/VBoxContainer.gd" type="Script" id=2]
+[ext_resource type="Script" uid="uid://djmpdt2xln0ix" path="res://Scripts/WordSelector.gd" id="1"]
+[ext_resource type="Script" uid="uid://da2jjc15e0hjm" path="res://Scripts/VBoxContainer.gd" id="2"]
 
-[node name="WordSelector" type="Control"]
+[node name="WordSelector" type="Control" unique_id=646004221]
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 504.0
 mouse_filter = 2
-script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+script = ExtResource("1")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=2121088693]
+layout_mode = 0
 anchor_left = 0.138
 anchor_top = 0.107
 anchor_right = 0.75
@@ -22,9 +22,10 @@ offset_left = 0.23999
 offset_top = -0.200005
 offset_right = -3.05176e-05
 theme_override_constants/separation = 30
-script = ExtResource( 2 )
+script = ExtResource("2")
 
-[node name="AddButton" type="Button" parent="."]
+[node name="AddButton" type="Button" parent="." unique_id=1250745158]
+layout_mode = 0
 anchor_left = 0.169
 anchor_top = 0.027
 anchor_right = 0.231
@@ -32,10 +33,10 @@ anchor_bottom = 0.08
 offset_left = 0.119995
 offset_top = -0.200001
 offset_right = -0.120003
-offset_bottom = -3.8147e-06
 text = "+"
 
-[node name="AddAllButton" type="Button" parent="."]
+[node name="AddAllButton" type="Button" parent="." unique_id=1807287816]
+layout_mode = 0
 anchor_left = 0.4
 anchor_top = 0.747
 anchor_right = 0.662
@@ -45,28 +46,14 @@ offset_right = -0.240021
 offset_bottom = -0.200043
 text = "Ajouter!"
 
-[node name="AcceptDialog" type="AcceptDialog" parent="."]
-visible = true
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -87.0
-offset_top = -44.5
-offset_right = 87.0
-offset_bottom = 44.5
+[node name="AcceptDialog" type="AcceptDialog" parent="." unique_id=376465229]
+oversampling_override = 1.0
+size = Vector2i(140, 100)
 dialog_text = "Termes ajoutés!"
 
-[node name="WarningDialog" type="AcceptDialog" parent="."]
-visible = true
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -87.0
-offset_top = -44.5
-offset_right = 87.0
-offset_bottom = 44.5
+[node name="WarningDialog" type="AcceptDialog" parent="." unique_id=1513410119]
+oversampling_override = 1.0
+size = Vector2i(512, 100)
 dialog_text = "Certains termes sont vides ou ne contiennent pas de traduction."
 dialog_autowrap = true
 

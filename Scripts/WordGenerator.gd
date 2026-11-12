@@ -42,11 +42,11 @@ var oldWordsText = ""
 func _ready():
 	regex.compile("^[0-9]*$")
 	for item in wordStartDropdownItems:
-		$WordStartDropdown.add_item(item)
-	$WordStartDropdown.select(0)
+		$MarginContainer/VBoxContainer/HBoxContainer/WordStartDropdown.add_item(item)
+	$MarginContainer/VBoxContainer/HBoxContainer/WordStartDropdown.select(0)
 
 func getFirstSyllable():
-	var dropDownIndex = $WordStartDropdown.get_selected_id()
+	var dropDownIndex = $MarginContainer/VBoxContainer/HBoxContainer/WordStartDropdown.get_selected_id()
 	rng.randomize()
 	var syllableConsonantIndex = rng.randi() % consonants.size()
 	rng.randomize()
@@ -62,7 +62,7 @@ func getFirstSyllable():
 
 func getWord():
 	var newWord = ""
-	for syllableIndex in int($NumberOfSyllablesInput.get_text()):
+	for syllableIndex in int($MarginContainer/VBoxContainer/HBoxContainer/NumberOfSyllablesInput.get_text()):
 		if (syllableIndex == 0):
 			newWord += getFirstSyllable()
 		else:
@@ -74,34 +74,34 @@ func getWord():
 	return newWord
 	
 func _on_GeneratorButton_pressed():
-	for wordIndex in int($NumberOfWordsInput.get_text()):
+	for wordIndex in int($MarginContainer/VBoxContainer/HBoxContainer/NumberOfWordsInput.get_text()):
 		var newWord = getWord()
 		var newButton = wordButtonScene.instantiate()
 		newButton.set_text(newWord)
 		newButton.word = newWord
 		newButton.connect("wordSelected", Callable(self, "onWordPicked"))
-		$TextEdit.add_child(newButton)
+		$MarginContainer/VBoxContainer/TextEdit.add_child(newButton)
 		
 func _on_NumberOfSyllablesInput_text_changed(newText):
 	if regex.search(newText):
-		$NumberOfSyllablesInput.set_text(newText)
+		$MarginContainer/VBoxContainer/HBoxContainer/NumberOfSyllablesInput.set_text(newText)
 		oldSyllabelText = newText
-		$NumberOfSyllablesInput.set_caret_column(oldSyllabelText.length())
+		$MarginContainer/VBoxContainer/HBoxContainer/NumberOfSyllablesInput.set_caret_column(oldSyllabelText.length())
 		return
-	$NumberOfSyllablesInput.set_text(oldSyllabelText)
+	$MarginContainer/VBoxContainer/HBoxContainer/NumberOfSyllablesInput.set_text(oldSyllabelText)
 	
 func _on_NumberOfWordsInput_text_changed(newText):
 	if regex.search(newText):
-		$NumberOfWordsInput.set_text(newText)
+		$MarginContainer/VBoxContainer/HBoxContainer/NumberOfWordsInput.set_text(newText)
 		oldWordsText = newText
-		$NumberOfWordsInput.set_caret_column(oldWordsText.length())
+		$MarginContainer/VBoxContainer/HBoxContainer/NumberOfWordsInput.set_caret_column(oldWordsText.length())
 		return
-	$NumberOfWordsInput.set_text(oldWordsText)
+	$MarginContainer/VBoxContainer/HBoxContainer/NumberOfWordsInput.set_text(oldWordsText)
 	
 func onWordPicked(text):
 	emit_signal("wordPicked", text)
 
 func _on_Button_pressed():
-	for child in $TextEdit.get_children():
-		$TextEdit.remove_child(child)
+	for child in $MarginContainer/VBoxContainer/TextEdit.get_children():
+		$MarginContainer/VBoxContainer/TextEdit.remove_child(child)
 		child.queue_free()

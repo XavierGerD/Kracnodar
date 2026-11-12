@@ -1,16 +1,16 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene format=3 uid="uid://cemskfmjud7ov"]
 
-[ext_resource path="res://Scripts/Dictionnaire.gd" type="Script" id=1]
+[ext_resource type="Script" uid="uid://dnrowojdckqe1" path="res://Scripts/Dictionnaire.gd" id="1"]
 
-[node name="Dictionnaire" type="Control"]
+[node name="Dictionnaire" type="Control" unique_id=1656760942]
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+script = ExtResource("1")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="."]
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=1035838296]
+layout_mode = 0
 anchor_left = 0.062
 anchor_top = 0.107
 anchor_right = 0.937
@@ -19,14 +19,13 @@ offset_left = 0.511997
 offset_top = -0.199997
 offset_right = 0.512024
 offset_bottom = -3.05176e-05
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer" unique_id=1122304050]
+layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="SaveButton" type="Button" parent="."]
+[node name="SaveButton" type="Button" parent="." unique_id=912348934]
+layout_mode = 0
 anchor_left = 0.5
 anchor_top = 0.9
 anchor_right = 0.5
@@ -36,11 +35,9 @@ offset_top = -20.0
 offset_right = -16.0
 offset_bottom = 20.0
 text = "Sauvegarder!"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="ImportButton" type="Button" parent="."]
+[node name="ImportButton" type="Button" parent="." unique_id=1779388087]
+layout_mode = 0
 anchor_left = 0.5
 anchor_top = 0.9
 anchor_right = 0.5
@@ -50,61 +47,21 @@ offset_top = -20.0
 offset_right = 208.0
 offset_bottom = 20.0
 text = "Importer!"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="SaveDialog" type="FileDialog" parent="."]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -288.0
-offset_top = -192.0
-offset_right = 288.0
-offset_bottom = 192.0
+[node name="SaveDialog" type="FileDialog" parent="." unique_id=150751900]
 access = 2
-current_dir = "/Users/xavie/Documents/Godot/Kracnodar"
-current_path = "/Users/xavie/Documents/Godot/Kracnodar/"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="ImportDialog" type="FileDialog" parent="."]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -288.0
-offset_top = -192.0
-offset_right = 288.0
-offset_bottom = 192.0
-window_title = "Open a File"
-mode = 0
+[node name="ImportDialog" type="FileDialog" parent="." unique_id=1624158827]
+title = "Open a File"
+file_mode = 0
 access = 2
-current_dir = "/Users"
-current_file = "Users"
-current_path = "/Users/Users"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="AcceptDialog" type="ConfirmationDialog" parent="."]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -140.0
-offset_top = -56.5
-offset_right = 140.0
-offset_bottom = 56.5
+[node name="AcceptDialog" type="ConfirmationDialog" parent="." unique_id=504486959]
 dialog_text = "Attention! Les termes du dictionnaire importé primeront sur les termes déjà ajoutés."
 dialog_autowrap = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="KracAscButton" type="Button" parent="."]
+[node name="KracAscButton" type="Button" parent="." unique_id=1506445691]
+layout_mode = 0
 anchor_left = 0.062
 anchor_top = 0.027
 anchor_right = 0.133
@@ -115,7 +72,8 @@ offset_right = -2.192
 offset_bottom = 0.199997
 text = "Krac Asc."
 
-[node name="KracDesButton" type="Button" parent="."]
+[node name="KracDesButton" type="Button" parent="." unique_id=1999211403]
+layout_mode = 0
 anchor_left = 0.148
 anchor_top = 0.027
 anchor_right = 0.219
@@ -126,7 +84,8 @@ offset_right = -0.256012
 offset_bottom = 0.199997
 text = "Krac Des."
 
-[node name="FraAscButton" type="Button" parent="."]
+[node name="FraAscButton" type="Button" parent="." unique_id=925142090]
+layout_mode = 0
 anchor_left = 0.266
 anchor_top = 0.027
 anchor_right = 0.319
@@ -136,11 +95,9 @@ offset_top = -0.200001
 offset_right = 0.343994
 offset_bottom = 0.199997
 text = "Fr Asc."
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="FraDesButton" type="Button" parent="."]
+[node name="FraDesButton" type="Button" parent="." unique_id=242996049]
+layout_mode = 0
 anchor_left = 0.336
 anchor_top = 0.027
 anchor_right = 0.392
@@ -150,9 +107,6 @@ offset_top = -0.200001
 offset_right = -0.40802
 offset_bottom = 0.199997
 text = "Fr Des."
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [connection signal="pressed" from="SaveButton" to="." method="_on_SaveButton_pressed"]
 [connection signal="pressed" from="ImportButton" to="." method="_on_ImportButton_pressed"]

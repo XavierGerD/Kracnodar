@@ -1,1 +1,8 @@
 res://default_env.tres
+res://Scenes/Main.tscn
+res://Scripts/Dictionnaire.gd
+res://Scenes/WordGenerator.tscn
+res://Scripts/WordGenerator.gd
+res://Scenes/Main.gd
+res://Scenes/WordSelector.tscn
+res://Scenes/Dictionnaire.tscn
