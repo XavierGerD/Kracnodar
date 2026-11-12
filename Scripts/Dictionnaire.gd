@@ -2,17 +2,18 @@ extends Control
 
 const DictEntryScene = preload("res://Scenes/DictEntry.tscn")
 
-enum SortBy { KRAC_ASC, KRAC_DESC, FR_ASC, FR_DESC }
+enum Column { KRAC, FRENCH, ENGLISH }
 
-var sort_by = SortBy.KRAC_ASC
+const HEADER_TITLES = {Column.KRAC: "KRACNODAR", Column.FRENCH: "FRANÇAIS", Column.ENGLISH: "ENGLISH"}
+
+var sort_column = Column.KRAC
+var sort_ascending = true
 var import_path = ""
 
 
 func _ready():
-	%KracAscButton.pressed.connect(_sort.bind(SortBy.KRAC_ASC))
-	%KracDesButton.pressed.connect(_sort.bind(SortBy.KRAC_DESC))
-	%FraAscButton.pressed.connect(_sort.bind(SortBy.FR_ASC))
-	%FraDesButton.pressed.connect(_sort.bind(SortBy.FR_DESC))
+	for column in HEADER_TITLES:
+		_header(column).pressed.connect(sort_by.bind(column))
 	%SaveButton.pressed.connect(_on_SaveButton_pressed)
 	%ImportButton.pressed.connect(_on_ImportButton_pressed)
 	%SaveDialog.file_selected.connect(_on_SaveDialog_file_selected)
@@ -33,9 +34,50 @@ func _load_last_file() -> void:
 		_error.call_deferred("Le dernier dictionnaire n'a pas pu être rouvert.\n" + error)
 
 
-func _sort(order: int) -> void:
-	sort_by = order
+# Clicking a column header sorts by it; clicking the same header again reverses.
+func sort_by(column: int) -> void:
+	if column == sort_column:
+		sort_ascending = not sort_ascending
+	else:
+		sort_column = column
+		sort_ascending = true
 	refresh()
+
+
+func _header(column: int) -> Button:
+	return [%KracHeader, %FrenchHeader, %EnglishHeader][column]
+
+
+func _update_headers() -> void:
+	for column in HEADER_TITLES:
+		var active = column == sort_column
+		var header = _header(column)
+		header.text = HEADER_TITLES[column] + (("  ↑" if sort_ascending else "  ↓") if active else "")
+		header.theme_type_variation = "ColumnHeaderActive" if active else "ColumnHeader"
+
+
+# The text an entry sorts on in the current column.
+func _sort_text(french: String) -> String:
+	match sort_column:
+		Column.KRAC:
+			return Dict.krac_of(french)
+		Column.FRENCH:
+			return french
+		_:
+			# "to gnaw" files under g, as in a printed dictionary.
+			var english = Dict.english_of(french)
+			return english.substr(3) if english.to_lower().begins_with("to ") else english
+
+
+func _comes_before(a: String, b: String) -> bool:
+	var left = _sort_text(a)
+	var right = _sort_text(b)
+	if (left == "") != (right == ""):
+		return right == ""  # entries missing this word go last, in either direction
+	var order = left.naturalnocasecmp_to(right)
+	if order == 0:
+		order = a.naturalnocasecmp_to(b)  # same word: fall back to the French
+	return order < 0 if sort_ascending else order > 0
 
 
 # Rebuilds the list; `reveal` names an entry to scroll to and highlight.
@@ -44,14 +86,9 @@ func refresh(reveal := "") -> void:
 		%Rows.remove_child(child)
 		child.queue_free()
 
-	var by_krac = sort_by == SortBy.KRAC_ASC or sort_by == SortBy.KRAC_DESC
 	var keys = Dict.dict.keys()
-	keys.sort_custom(func(a, b):
-		var left = Dict.krac_of(a) if by_krac else a
-		var right = Dict.krac_of(b) if by_krac else b
-		return left.naturalnocasecmp_to(right) < 0)
-	if sort_by == SortBy.KRAC_DESC or sort_by == SortBy.FR_DESC:
-		keys.reverse()
+	keys.sort_custom(_comes_before)
+	_update_headers()
 
 	for i in keys.size():
 		var row = DictEntryScene.instantiate()

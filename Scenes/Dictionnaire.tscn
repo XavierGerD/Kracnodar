@@ -2,8 +2,6 @@
 
 [ext_resource type="Script" uid="uid://dnrowojdckqe1" path="res://Scripts/Dictionnaire.gd" id="1"]
 
-[sub_resource type="ButtonGroup" id="ButtonGroup_sort"]
-
 [node name="Dictionnaire" type="PanelContainer"]
 anchors_preset = 15
 anchor_right = 1.0
@@ -39,44 +37,6 @@ mouse_filter = 1
 theme_type_variation = &"HintLabel"
 text_overrun_behavior = 3
 
-[node name="SortLabel" type="Label" parent="Layout/Toolbar"]
-layout_mode = 2
-theme_type_variation = &"HintLabel"
-text = "Trier :"
-
-[node name="KracAscButton" type="Button" parent="Layout/Toolbar"]
-unique_name_in_owner = true
-layout_mode = 2
-focus_mode = 0
-toggle_mode = true
-button_pressed = true
-button_group = SubResource("ButtonGroup_sort")
-text = "Krac A→Z"
-
-[node name="KracDesButton" type="Button" parent="Layout/Toolbar"]
-unique_name_in_owner = true
-layout_mode = 2
-focus_mode = 0
-toggle_mode = true
-button_group = SubResource("ButtonGroup_sort")
-text = "Krac Z→A"
-
-[node name="FraAscButton" type="Button" parent="Layout/Toolbar"]
-unique_name_in_owner = true
-layout_mode = 2
-focus_mode = 0
-toggle_mode = true
-button_group = SubResource("ButtonGroup_sort")
-text = "Fr A→Z"
-
-[node name="FraDesButton" type="Button" parent="Layout/Toolbar"]
-unique_name_in_owner = true
-layout_mode = 2
-focus_mode = 0
-toggle_mode = true
-button_group = SubResource("ButtonGroup_sort")
-text = "Fr Z→A"
-
 [node name="Columns" type="MarginContainer" parent="Layout"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
@@ -86,23 +46,38 @@ theme_override_constants/margin_right = 18
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="Krac" type="Label" parent="Layout/Columns/Row"]
+[node name="KracHeader" type="Button" parent="Layout/Columns/Row"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-theme_type_variation = &"ColumnLabel"
+tooltip_text = "Trier par mot kracnodar (cliquez encore pour inverser)"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"ColumnHeader"
 text = "KRACNODAR"
+alignment = 0
 
-[node name="French" type="Label" parent="Layout/Columns/Row"]
+[node name="FrenchHeader" type="Button" parent="Layout/Columns/Row"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-theme_type_variation = &"ColumnLabel"
+tooltip_text = "Trier par mot français (cliquez encore pour inverser)"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"ColumnHeader"
 text = "FRANÇAIS"
+alignment = 0
 
-[node name="English" type="Label" parent="Layout/Columns/Row"]
+[node name="EnglishHeader" type="Button" parent="Layout/Columns/Row"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-theme_type_variation = &"ColumnLabel"
+tooltip_text = "Trier par traduction anglaise (cliquez encore pour inverser)"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"ColumnHeader"
 text = "ENGLISH"
+alignment = 0
 
 [node name="Spacer" type="Control" parent="Layout/Columns/Row"]
 custom_minimum_size = Vector2(68, 0)
