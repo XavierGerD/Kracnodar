@@ -13,12 +13,24 @@ func _ready():
 	%KracDesButton.pressed.connect(_sort.bind(SortBy.KRAC_DESC))
 	%FraAscButton.pressed.connect(_sort.bind(SortBy.FR_ASC))
 	%FraDesButton.pressed.connect(_sort.bind(SortBy.FR_DESC))
-	%SaveButton.pressed.connect(%SaveDialog.popup_centered_ratio.bind(0.6))
-	%ImportButton.pressed.connect(%ImportDialog.popup_centered_ratio.bind(0.6))
+	%SaveButton.pressed.connect(_on_SaveButton_pressed)
+	%ImportButton.pressed.connect(_on_ImportButton_pressed)
 	%SaveDialog.file_selected.connect(_on_SaveDialog_file_selected)
 	%ImportDialog.file_selected.connect(_on_ImportDialog_file_selected)
 	%ImportConfirmDialog.confirmed.connect(_on_ImportConfirmDialog_confirmed)
+	_load_last_file()
 	refresh()
+
+
+# Reopens the dictionary from last time. A file that can no longer be read is
+# forgotten, so the warning shows once rather than at every start.
+func _load_last_file() -> void:
+	if Dict.file_path == "":
+		return
+	var error = Dict.load_file(Dict.file_path)
+	if error != "":
+		Dict.remember_file("")
+		_error.call_deferred("Le dernier dictionnaire n'a pas pu être rouvert.\n" + error)
 
 
 func _sort(order: int) -> void:
@@ -73,14 +85,31 @@ func _update_count() -> void:
 	%CountLabel.text = "%d terme%s" % [count, "s" if count > 1 else ""]
 	%EmptyLabel.visible = count == 0
 	%SaveButton.disabled = count == 0
+	# Blank rather than hidden: the label also pushes the sort buttons right.
+	%FileLabel.text = "· " + Dict.file_path.get_file() if Dict.file_path != "" else ""
+	%FileLabel.tooltip_text = Dict.file_path
+
+
+# Both dialogs open on the current file, so saving back to it is one click.
+func _on_SaveButton_pressed():
+	if Dict.file_path != "":
+		%SaveDialog.current_path = Dict.file_path
+	%SaveDialog.popup_centered_ratio(0.6)
+
+
+func _on_ImportButton_pressed():
+	if Dict.file_path != "":
+		%ImportDialog.current_dir = Dict.file_path.get_base_dir()
+	%ImportDialog.popup_centered_ratio(0.6)
 
 
 func _on_SaveDialog_file_selected(path):
-	var file = FileAccess.open(path, FileAccess.WRITE)
-	if file == null:
-		_error("Impossible d'écrire « %s » (%s)." % [path, error_string(FileAccess.get_open_error())])
+	var error = Dict.save_file(path)
+	if error != "":
+		_error(error)
 		return
-	file.store_string(Dict.to_json())
+	Dict.remember_file(path)
+	_update_count()
 
 
 func _on_ImportDialog_file_selected(path):
@@ -95,17 +124,11 @@ func _on_ImportConfirmDialog_confirmed():
 
 
 func import_file(path: String) -> void:
-	var file = FileAccess.open(path, FileAccess.READ)
-	if file == null:
-		_error("Impossible de lire « %s » (%s)." % [path, error_string(FileAccess.get_open_error())])
+	var error = Dict.load_file(path)
+	if error != "":
+		_error(error)
 		return
-	var json = JSON.new()
-	if json.parse(file.get_as_text()) != OK:
-		_error("Ce fichier n'est pas du JSON valide (ligne %d : %s)." % [json.get_error_line() + 1, json.get_error_message()])
-		return
-	if Dict.merge(json.data) < 0:
-		_error("Ce fichier ne contient pas de dictionnaire.")
-		return
+	Dict.remember_file(path)
 	refresh()
 
 

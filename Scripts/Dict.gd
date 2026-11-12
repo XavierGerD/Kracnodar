@@ -1,8 +1,52 @@
 extends Node
 
+const SETTINGS_PATH = "user://settings.cfg"
+
 # The dictionary, in the same shape as dict.json:
 #   French word -> {"en": English translation, "kr": Kracnodar word}
 var dict = {}
+
+# The file last imported or saved, reopened when the app starts ("" if none).
+var file_path = ""
+
+
+func _ready():
+	var settings = ConfigFile.new()
+	if settings.load(SETTINGS_PATH) == OK:
+		file_path = str(settings.get_value("dictionary", "last_file", ""))
+
+
+func remember_file(path: String) -> void:
+	file_path = path
+	var settings = ConfigFile.new()
+	settings.load(SETTINGS_PATH)  # keeps any other settings; a missing file is fine
+	settings.set_value("dictionary", "last_file", path)
+	settings.save(SETTINGS_PATH)
+
+
+# Reads a dictionary file and merges it in. Returns "" or what went wrong.
+func load_file(path: String) -> String:
+	var file = FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		if FileAccess.get_open_error() == ERR_FILE_NOT_FOUND:
+			return "« %s » est introuvable." % path
+		return "Impossible de lire « %s » (%s)." % [path, error_string(FileAccess.get_open_error())]
+	var json = JSON.new()
+	if json.parse(file.get_as_text()) != OK:
+		return "« %s » n'est pas du JSON valide (ligne %d : %s)." % [
+			path.get_file(), json.get_error_line() + 1, json.get_error_message()]
+	if merge(json.data) < 0:
+		return "« %s » ne contient pas de dictionnaire." % path.get_file()
+	return ""
+
+
+# Writes the dictionary to a file. Returns "" or what went wrong.
+func save_file(path: String) -> String:
+	var file = FileAccess.open(path, FileAccess.WRITE)
+	if file == null:
+		return "Impossible d'écrire « %s » (%s)." % [path, error_string(FileAccess.get_open_error())]
+	file.store_string(to_json())
+	return ""
 
 
 func krac_of(french: String) -> String:
