@@ -19,10 +19,16 @@ config/icon="res://icon.png"
 
 Dict="*res://Scripts/Dict.gd"
 
-[physics]
+[display]
 
-common/enable_pause_aware_picking=true
+window/size/viewport_width=1280
+window/size/viewport_height=760
+
+[gui]
+
+theme/custom="res://Theme/kracnodar_theme.tres"
 
 [rendering]
 
+environment/defaults/default_clear_color=Color(0.07058824, 0.06666667, 0.0627451, 1)
 environment/defaults/default_environment="res://default_env.tres"

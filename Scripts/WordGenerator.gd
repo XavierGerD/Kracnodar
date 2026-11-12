@@ -1,107 +1,75 @@
 extends Control
 
-signal wordPicked
+signal wordPicked(word)
 
-@onready var wordButtonScene = load('res://Scenes/WordButton.tscn')
+const WordButtonScene = preload("res://Scenes/WordButton.tscn")
+
+const CONSONANTS = ["w", "r", "t", "p", "s", "d", "f", "g", "h", "j", "k", "l", "z", "x", "c", "v", "b", "n", "m"]
+const VOWELS = ["a", "e", "i", "o", "u"]
+
+enum Start { CONSONANT, VOWEL, EITHER }
+
 var rng = RandomNumberGenerator.new()
 
-var consonants = [
-	'w',
-	'r',
-	't',
-	'p',
-	's',
-	'd',
-	'f',
-	'g',
-	'h',
-	'j',
-	'k',
-	'l',
-	'z',
-	'x',
-	'c',
-	'v',
-	'b',
-	'n',
-	'm'
-]
-
-var vowels = ['a', 'e', 'i', 'o', 'u']
-
-var wordStartDropdownItems = [
-	"Consonne",
-	"Voyelle",
-	"Any"
-]
-
-var regex = RegEx.new()
-var oldSyllabelText = ""
-var oldWordsText = ""
 
 func _ready():
-	regex.compile("^[0-9]*$")
-	for item in wordStartDropdownItems:
-		$MarginContainer/VBoxContainer/HBoxContainer/WordStartDropdown.add_item(item)
-	$MarginContainer/VBoxContainer/HBoxContainer/WordStartDropdown.select(0)
-
-func getFirstSyllable():
-	var dropDownIndex = $MarginContainer/VBoxContainer/HBoxContainer/WordStartDropdown.get_selected_id()
 	rng.randomize()
-	var syllableConsonantIndex = rng.randi() % consonants.size()
-	rng.randomize()
-	var syllableVowelIndex = rng.randi() % vowels.size()
-	var selection = dropDownIndex
-	if (dropDownIndex == 2):
-		rng.randomize()
-		selection = rng.randi() % 2
-	if (selection == 0):
-		return consonants[syllableConsonantIndex] + vowels[syllableVowelIndex]
-	if (selection == 1):
-		return vowels[syllableVowelIndex]
+	%WordStartDropdown.add_item("Consonne", Start.CONSONANT)
+	%WordStartDropdown.add_item("Voyelle", Start.VOWEL)
+	%WordStartDropdown.add_item("Peu importe", Start.EITHER)
+	%WordStartDropdown.select(0)
+	%GeneratorButton.pressed.connect(_on_GeneratorButton_pressed)
+	%ClearButton.pressed.connect(_on_ClearButton_pressed)
+	_update_empty_hint()
 
-func getWord():
-	var newWord = ""
-	for syllableIndex in int($MarginContainer/VBoxContainer/HBoxContainer/NumberOfSyllablesInput.get_text()):
-		if (syllableIndex == 0):
-			newWord += getFirstSyllable()
+
+func _pick(letters: Array) -> String:
+	return letters[rng.randi() % letters.size()]
+
+
+# Every syllable is consonant + vowel, except that a word may open on a bare vowel.
+func make_word(syllables: int, start: int) -> String:
+	if start == Start.EITHER:
+		start = Start.VOWEL if rng.randi() % 2 else Start.CONSONANT
+	var word = ""
+	for i in syllables:
+		if i == 0 and start == Start.VOWEL:
+			word += _pick(VOWELS)
 		else:
-			rng.randomize()
-			var syllableConsonantIndex = rng.randi() % consonants.size()
-			rng.randomize()
-			var syllableVowelIndex = rng.randi() % vowels.size()
-			newWord +=  consonants[syllableConsonantIndex] + vowels[syllableVowelIndex]
-	return newWord
-	
-func _on_GeneratorButton_pressed():
-	for wordIndex in int($MarginContainer/VBoxContainer/HBoxContainer/NumberOfWordsInput.get_text()):
-		var newWord = getWord()
-		var newButton = wordButtonScene.instantiate()
-		newButton.set_text(newWord)
-		newButton.word = newWord
-		newButton.connect("wordSelected", Callable(self, "onWordPicked"))
-		$MarginContainer/VBoxContainer/TextEdit.add_child(newButton)
-		
-func _on_NumberOfSyllablesInput_text_changed(newText):
-	if regex.search(newText):
-		$MarginContainer/VBoxContainer/HBoxContainer/NumberOfSyllablesInput.set_text(newText)
-		oldSyllabelText = newText
-		$MarginContainer/VBoxContainer/HBoxContainer/NumberOfSyllablesInput.set_caret_column(oldSyllabelText.length())
-		return
-	$MarginContainer/VBoxContainer/HBoxContainer/NumberOfSyllablesInput.set_text(oldSyllabelText)
-	
-func _on_NumberOfWordsInput_text_changed(newText):
-	if regex.search(newText):
-		$MarginContainer/VBoxContainer/HBoxContainer/NumberOfWordsInput.set_text(newText)
-		oldWordsText = newText
-		$MarginContainer/VBoxContainer/HBoxContainer/NumberOfWordsInput.set_caret_column(oldWordsText.length())
-		return
-	$MarginContainer/VBoxContainer/HBoxContainer/NumberOfWordsInput.set_text(oldWordsText)
-	
-func onWordPicked(text):
-	emit_signal("wordPicked", text)
+			word += _pick(CONSONANTS) + _pick(VOWELS)
+	return word
 
-func _on_Button_pressed():
-	for child in $MarginContainer/VBoxContainer/TextEdit.get_children():
-		$MarginContainer/VBoxContainer/TextEdit.remove_child(child)
+
+func _on_GeneratorButton_pressed():
+	var syllables = int(%SyllablesInput.value)
+	var start = %WordStartDropdown.get_selected_id()
+	for i in int(%WordsInput.value):
+		var word = make_word(syllables, start)
+		var button = WordButtonScene.instantiate()
+		button.text = word
+		button.word = word
+		var used_by = Dict.french_for_krac(word)
+		if used_by != "":
+			button.disabled = true
+			button.tooltip_text = "Déjà utilisé pour « %s »" % used_by
+		button.wordSelected.connect(_on_word_picked.bind(button))
+		%WordGrid.add_child(button)
+	_update_empty_hint()
+
+
+func _on_word_picked(word, button):
+	# A word goes to the list once; the chip stays, dimmed, as a reminder.
+	button.disabled = true
+	button.tooltip_text = "Déjà dans la liste"
+	wordPicked.emit(word)
+
+
+func _on_ClearButton_pressed():
+	for child in %WordGrid.get_children():
+		%WordGrid.remove_child(child)
 		child.queue_free()
+	_update_empty_hint()
+
+
+func _update_empty_hint():
+	%EmptyLabel.visible = %WordGrid.get_child_count() == 0

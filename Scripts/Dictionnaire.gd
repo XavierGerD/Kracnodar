@@ -1,89 +1,116 @@
 extends Control
-signal saveFile
 
-var filePath
-var reverseMappedDictionary
-var wordEntryNode = load("res://Scenes/DictEntry.tscn")
+const DictEntryScene = preload("res://Scenes/DictEntry.tscn")
 
-func drawSortedDict(dict, invert, fr):
-	var sortedKeys = dict.keys()
-	sortedKeys.sort()
-	if invert:
-		sortedKeys.invert()
-	var sortedDict = {}
-	for key in sortedKeys:
-		sortedDict[key] = dict[key]
-	drawDict(sortedDict, invert, fr)
+enum SortBy { KRAC_ASC, KRAC_DESC, FR_ASC, FR_DESC }
 
-func drawDict(dict, invert, fr):
-	for dictEntry in dict:
-		var newWordEntry = wordEntryNode.instantiate()
-		print("dictEntry",dictEntry, dict[dictEntry])
-		if fr:
-			newWordEntry.get_node("WordEntry").set_text(dict[dictEntry].kr)
-			newWordEntry.get_node("WordTranslation").set_text(dictEntry)
-			newWordEntry.key = dict[dictEntry]
-		else:
-			newWordEntry.get_node("WordEntry").set_text(dictEntry)
-			newWordEntry.get_node("WordTranslation").set_text(dict[dictEntry].kr)
-			newWordEntry.key = dictEntry
-		$ScrollContainer/VBoxContainer.add_child(newWordEntry)
+var sort_by = SortBy.KRAC_ASC
+var import_path = ""
 
-func redrawDict(dict, invert, fr):
-	for child in $ScrollContainer/VBoxContainer.get_children():
-		$ScrollContainer/VBoxContainer.remove_child(child)
+
+func _ready():
+	%KracAscButton.pressed.connect(_sort.bind(SortBy.KRAC_ASC))
+	%KracDesButton.pressed.connect(_sort.bind(SortBy.KRAC_DESC))
+	%FraAscButton.pressed.connect(_sort.bind(SortBy.FR_ASC))
+	%FraDesButton.pressed.connect(_sort.bind(SortBy.FR_DESC))
+	%SaveButton.pressed.connect(%SaveDialog.popup_centered_ratio.bind(0.6))
+	%ImportButton.pressed.connect(%ImportDialog.popup_centered_ratio.bind(0.6))
+	%SaveDialog.file_selected.connect(_on_SaveDialog_file_selected)
+	%ImportDialog.file_selected.connect(_on_ImportDialog_file_selected)
+	%ImportConfirmDialog.confirmed.connect(_on_ImportConfirmDialog_confirmed)
+	refresh()
+
+
+func _sort(order: int) -> void:
+	sort_by = order
+	refresh()
+
+
+# Rebuilds the list; `reveal` names an entry to scroll to and highlight.
+func refresh(reveal := "") -> void:
+	for child in %Rows.get_children():
+		%Rows.remove_child(child)
 		child.queue_free()
-	drawSortedDict(dict, invert, fr)
-	
-func generateInverseMappedDict(dict):
-	var reverseMapped = {}
-	for key in dict.keys():
-		var newKey = dict[key]
-		reverseMapped[newKey] = key
-	reverseMappedDictionary = reverseMapped
-	print(reverseMappedDictionary)
 
-func _on_SaveButton_pressed():
-	$SaveDialog.popup()
+	var by_krac = sort_by == SortBy.KRAC_ASC or sort_by == SortBy.KRAC_DESC
+	var keys = Dict.dict.keys()
+	keys.sort_custom(func(a, b):
+		var left = Dict.krac_of(a) if by_krac else a
+		var right = Dict.krac_of(b) if by_krac else b
+		return left.naturalnocasecmp_to(right) < 0)
+	if sort_by == SortBy.KRAC_DESC or sort_by == SortBy.FR_DESC:
+		keys.reverse()
 
-func _on_ImportButton_pressed():
-	$ImportDialog.popup()
+	for i in keys.size():
+		var row = DictEntryScene.instantiate()
+		%Rows.add_child(row)
+		row.set_entry(keys[i], i % 2 == 1)
+		row.deleted.connect(_update_count)
+		row.edit_started.connect(_on_row_edit_started.bind(row))
+		# Deferred: the row that saved is freed by the rebuild, mid-signal otherwise.
+		row.edited.connect(func(french): refresh.call_deferred(french))
+		row.edit_failed.connect(_error)
+		if keys[i] == reveal:
+			_reveal(row)
+	_update_count()
 
-func _on_ImportDialog_file_selected(path):
-	filePath = path
-	$AcceptDialog.popup()
+
+func _on_row_edit_started(editing_row) -> void:
+	for row in %Rows.get_children():
+		if row != editing_row:
+			row.cancel_edit()
+
+
+func _reveal(row) -> void:
+	await get_tree().process_frame
+	if is_instance_valid(row) and row.is_inside_tree():
+		%Scroll.ensure_control_visible(row)
+		row.flash()
+
+
+func _update_count() -> void:
+	var count = Dict.dict.size()
+	%CountLabel.text = "%d terme%s" % [count, "s" if count > 1 else ""]
+	%EmptyLabel.visible = count == 0
+	%SaveButton.disabled = count == 0
+
 
 func _on_SaveDialog_file_selected(path):
-	var newFile = FileAccess.open(path, FileAccess.WRITE)
-	var json = JSON.stringify(Dict.dict)
-	newFile.store_string(json)
+	var file = FileAccess.open(path, FileAccess.WRITE)
+	if file == null:
+		_error("Impossible d'écrire « %s » (%s)." % [path, error_string(FileAccess.get_open_error())])
+		return
+	file.store_string(Dict.to_json())
 
 
-func _on_AcceptDialog_confirmed():
-	if filePath:
-		var newFile = FileAccess.open(filePath, FileAccess.READ)
-		var test_json_conv = JSON.new()
-		var error = test_json_conv.parse(newFile.get_as_text())
-
-		if error == OK:
-			var data = test_json_conv.data
-		else:
-			print("JSON Parse Error: ", test_json_conv.get_error_message())
-		var json = test_json_conv.get_data()
-		for key in json.keys():
-			Dict.dict[key] = json[key]
-		redrawDict(Dict.dict, false, false)
-	filePath = ""
+func _on_ImportDialog_file_selected(path):
+	import_path = path
+	%ImportConfirmDialog.popup_centered()
 
 
-func _on_KracAscButton_pressed():
-	redrawDict(Dict.dict, false, false)
+func _on_ImportConfirmDialog_confirmed():
+	if import_path != "":
+		import_file(import_path)
+	import_path = ""
 
-func _on_KracDesButton_pressed():
-	redrawDict(Dict.dict, true, false)
 
-func _on_FraAscButton_pressed():
-	redrawDict(reverseMappedDictionary, false, true)
+func import_file(path: String) -> void:
+	var file = FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		_error("Impossible de lire « %s » (%s)." % [path, error_string(FileAccess.get_open_error())])
+		return
+	var json = JSON.new()
+	if json.parse(file.get_as_text()) != OK:
+		_error("Ce fichier n'est pas du JSON valide (ligne %d : %s)." % [json.get_error_line() + 1, json.get_error_message()])
+		return
+	if Dict.merge(json.data) < 0:
+		_error("Ce fichier ne contient pas de dictionnaire.")
+		return
+	refresh()
 
-func _on_FraDesButton_pressed():
-	redrawDict(reverseMappedDictionary, true, true)
+
+func _error(message: String) -> void:
+	%ErrorDialog.dialog_text = message
+	# Fix the width so the text wraps there; the height then grows to fit.
+	%ErrorDialog.size = Vector2i(480, 0)
+	%ErrorDialog.popup_centered()

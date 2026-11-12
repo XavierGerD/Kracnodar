@@ -1,13 +1,12 @@
 extends Control
 
-func _ready():
-	$TabContainer/Generateur/HBoxContainer/WordGenerator.connect("wordPicked", Callable(self, "onWordPicked"))
 
-func onWordPicked(text):
-	$TabContainer/Generateur/HBoxContainer/WordSelector.addWordLinker(text)
+func _ready():
+	%TabContainer.set_tab_title(0, "Générateur")
+	%WordGenerator.wordPicked.connect(%WordSelector.add_word)
+	%TabContainer.tab_changed.connect(_on_TabContainer_tab_changed)
 
 
 func _on_TabContainer_tab_changed(tab):
-	if (tab == 1):
-		$TabContainer/Dictionnaire.redrawDict(Dict.dict, false, false)
-		$TabContainer/Dictionnaire.generateInverseMappedDict(Dict.dict)
+	if %TabContainer.get_tab_control(tab) == %Dictionnaire:
+		%Dictionnaire.refresh()

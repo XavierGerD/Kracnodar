@@ -1,17 +1,19 @@
-extends Control
+extends HBoxContainer
 
-@export var wordText: String
-@export var translationText: String
-
-func _on_DeleteButton_pressed():
-	self.queue_free()
+# One row of the "new terms" list: a Kracnodar word and its translations.
 
 
-func _on_WordButton_text_changed(new_text):
-	wordText = new_text
-	pass # Replace with function body.
+func _ready():
+	$DeleteButton.pressed.connect(queue_free)
 
 
-func _on_TranslationText_text_changed(new_text):
-	translationText = new_text
-	pass # Replace with function body.
+func set_word(krac: String) -> void:
+	$KracText.text = krac
+
+
+func get_entry() -> Dictionary:
+	return {
+		"kr": $KracText.text.strip_edges(),
+		"fr": $FrenchText.text.strip_edges(),
+		"en": $EnglishText.text.strip_edges(),
+	}
