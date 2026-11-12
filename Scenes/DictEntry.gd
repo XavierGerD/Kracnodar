@@ -1,6 +1,6 @@
 extends Control
 
-export var key: String
+@export var key: String
 
 func _ready():
 	pass # Replace with function body.

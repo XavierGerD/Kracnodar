@@ -1,7 +1,7 @@
 extends Control
 
-export var wordText: String
-export var translationText: String
+@export var wordText: String
+@export var translationText: String
 
 func _on_DeleteButton_pressed():
 	self.queue_free()

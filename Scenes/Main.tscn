@@ -8,7 +8,7 @@
 [node name="Main" type="Control"]
 anchor_right = 1.008
 anchor_bottom = 1.0
-margin_right = -0.192017
+offset_right = -0.192017
 mouse_filter = 2
 script = ExtResource( 2 )
 __meta__ = {
@@ -25,29 +25,29 @@ __meta__ = {
 [node name="Generateur" type="Control" parent="TabContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 32.0
-margin_right = -4.0
-margin_bottom = -4.0
+offset_left = 4.0
+offset_top = 32.0
+offset_right = -4.0
+offset_bottom = -4.0
 
 [node name="WordGenerator" parent="TabContainer/Generateur" instance=ExtResource( 1 )]
-margin_left = -4.0
-margin_top = -32.0
-margin_right = -4.0
-margin_bottom = -32.0
+offset_left = -4.0
+offset_top = -32.0
+offset_right = -4.0
+offset_bottom = -32.0
 
 [node name="WordSelector" parent="TabContainer/Generateur" instance=ExtResource( 3 )]
 anchor_right = 0.7
-margin_left = 404.0
-margin_top = -8.0
-margin_right = 400.0
-margin_bottom = 88.0
+offset_left = 404.0
+offset_top = -8.0
+offset_right = 400.0
+offset_bottom = 88.0
 
 [node name="Dictionnaire" parent="TabContainer" instance=ExtResource( 4 )]
 visible = false
-margin_left = 4.0
-margin_top = 32.0
-margin_right = -4.0
-margin_bottom = -4.0
+offset_left = 4.0
+offset_top = 32.0
+offset_right = -4.0
+offset_bottom = -4.0
 
 [connection signal="tab_changed" from="TabContainer" to="." method="_on_TabContainer_tab_changed"]

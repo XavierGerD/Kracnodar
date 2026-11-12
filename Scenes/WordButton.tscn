@@ -5,8 +5,8 @@
 [node name="WordButton" type="Button"]
 anchor_right = 0.094
 anchor_bottom = 0.04
-margin_right = -0.256004
-margin_bottom = -1.90735e-06
+offset_right = -0.256004
+offset_bottom = -1.90735e-06
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false

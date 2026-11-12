@@ -1,7 +1,7 @@
 extends Control
 
 func _ready():
-	$TabContainer/Generateur/WordGenerator.connect("wordPicked", self, "onWordPicked")
+	$TabContainer/Generateur/WordGenerator.connect("wordPicked", Callable(self, "onWordPicked"))
 
 func onWordPicked(text):
 	$TabContainer/Generateur/WordSelector.addWordLinker(text)

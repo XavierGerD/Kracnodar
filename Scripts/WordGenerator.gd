@@ -2,7 +2,7 @@ extends Control
 
 signal wordPicked
 
-onready var wordButtonScene = load('res://Scenes/WordButton.tscn')
+@onready var wordButtonScene = load('res://Scenes/WordButton.tscn')
 var rng = RandomNumberGenerator.new()
 
 var consonants = [
@@ -76,17 +76,17 @@ func getWord():
 func _on_GeneratorButton_pressed():
 	for wordIndex in int($NumberOfWordsInput.get_text()):
 		var newWord = getWord()
-		var newButton = wordButtonScene.instance()
+		var newButton = wordButtonScene.instantiate()
 		newButton.set_text(newWord)
 		newButton.word = newWord
-		newButton.connect("wordSelected", self, "onWordPicked")
+		newButton.connect("wordSelected", Callable(self, "onWordPicked"))
 		$TextEdit.add_child(newButton)
 		
 func _on_NumberOfSyllablesInput_text_changed(newText):
 	if regex.search(newText):
 		$NumberOfSyllablesInput.set_text(newText)
 		oldSyllabelText = newText
-		$NumberOfSyllablesInput.set_cursor_position(oldSyllabelText.length())
+		$NumberOfSyllablesInput.set_caret_column(oldSyllabelText.length())
 		return
 	$NumberOfSyllablesInput.set_text(oldSyllabelText)
 	
@@ -94,7 +94,7 @@ func _on_NumberOfWordsInput_text_changed(newText):
 	if regex.search(newText):
 		$NumberOfWordsInput.set_text(newText)
 		oldWordsText = newText
-		$NumberOfWordsInput.set_cursor_position(oldWordsText.length())
+		$NumberOfWordsInput.set_caret_column(oldWordsText.length())
 		return
 	$NumberOfWordsInput.set_text(oldWordsText)
 	

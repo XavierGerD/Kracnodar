@@ -3,14 +3,14 @@ extends Control
 var wordLinkerNode = load("res://Scenes/WordLinker.tscn")
 
 func addWordLinker(text):
-	var newWordLinker = wordLinkerNode.instance()
+	var newWordLinker = wordLinkerNode.instantiate()
 	newWordLinker.get_node("WordButton").set_text(text)
 	newWordLinker.wordText = text
 	$VBoxContainer.add_child(newWordLinker)
 
 
 func _on_Button_pressed():
-	var newWordLinker = wordLinkerNode.instance()
+	var newWordLinker = wordLinkerNode.instantiate()
 	$VBoxContainer.add_child(newWordLinker)
 
 

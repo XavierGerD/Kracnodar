@@ -17,7 +17,7 @@ func drawSortedDict(dict, invert, fr):
 
 func drawDict(dict, invert, fr):
 	for dictEntry in dict:
-		var newWordEntry = wordEntryNode.instance()
+		var newWordEntry = wordEntryNode.instantiate()
 		if fr:
 			newWordEntry.get_node("WordEntry").set_text(dict[dictEntry])
 			newWordEntry.get_node("WordTranslation").set_text(dictEntry)
@@ -55,7 +55,7 @@ func _on_ImportDialog_file_selected(path):
 func _on_SaveDialog_file_selected(path):
 	var newFile = File.new()
 	newFile.open(path, newFile.WRITE)
-	var json = JSON.print(Dict.dict)
+	var json = JSON.stringify(Dict.dict)
 	newFile.store_string(json)
 
 
@@ -63,7 +63,9 @@ func _on_AcceptDialog_confirmed():
 	if filePath:
 		var newFile = File.new()
 		newFile.open(filePath, newFile.READ)
-		var json = JSON.parse(newFile.get_as_text()).result
+		var test_json_conv = JSON.new()
+		test_json_conv.parse(newFile.get_as_text()).result
+		var json = test_json_conv.get_data()
 		for key in json.keys():
 			Dict.dict[key] = json[key]
 		redrawDict(Dict.dict, false, false)
