@@ -22,12 +22,14 @@ theme_override_constants/separation = 8
 layout_mode = 2
 theme_type_variation = &"HeadingLabel"
 text = "Dictionnaire"
+vertical_alignment = 1
 
 [node name="CountLabel" type="Label" parent="Layout/Toolbar"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"HintLabel"
 text = "0 terme"
+vertical_alignment = 1
 
 [node name="FileLabel" type="Label" parent="Layout/Toolbar"]
 unique_name_in_owner = true
@@ -35,7 +37,16 @@ layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
 theme_type_variation = &"HintLabel"
+vertical_alignment = 1
 text_overrun_behavior = 3
+
+[node name="SearchInput" type="LineEdit" parent="Layout/Toolbar"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+tooltip_text = "Filtre les trois colonnes (Ctrl+F). Échap pour effacer."
+placeholder_text = "Rechercher…"
+clear_button_enabled = true
 
 [node name="Columns" type="MarginContainer" parent="Layout"]
 layout_mode = 2
@@ -90,7 +101,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"HintLabel"
-text = "Le dictionnaire est vide. Importez dict.json pour commencer."
+text = "Le dictionnaire est vide."
 horizontal_alignment = 1
 autowrap_mode = 3
 
@@ -106,47 +117,6 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 2
-
-[node name="Footer" type="HBoxContainer" parent="Layout"]
-layout_mode = 2
-theme_override_constants/separation = 8
-alignment = 2
-
-[node name="ImportButton" type="Button" parent="Layout/Footer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Importer…"
-
-[node name="SaveButton" type="Button" parent="Layout/Footer"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"AccentButton"
-text = "Sauvegarder…"
-
-[node name="SaveDialog" type="FileDialog" parent="."]
-unique_name_in_owner = true
-title = "Sauvegarder le dictionnaire"
-access = 2
-filters = PackedStringArray("*.json ; Dictionnaire JSON")
-use_native_dialog = true
-current_file = "dict.json"
-
-[node name="ImportDialog" type="FileDialog" parent="."]
-unique_name_in_owner = true
-title = "Importer un dictionnaire"
-file_mode = 0
-access = 2
-filters = PackedStringArray("*.json ; Dictionnaire JSON")
-use_native_dialog = true
-
-[node name="ImportConfirmDialog" type="ConfirmationDialog" parent="."]
-unique_name_in_owner = true
-title = "Importer"
-size = Vector2i(440, 100)
-ok_button_text = "Importer"
-dialog_text = "Les termes du fichier importé remplaceront ceux qui ont le même mot français."
-dialog_autowrap = true
-cancel_button_text = "Annuler"
 
 [node name="ErrorDialog" type="AcceptDialog" parent="."]
 unique_name_in_owner = true

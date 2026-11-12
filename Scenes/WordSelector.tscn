@@ -106,3 +106,11 @@ unique_name_in_owner = true
 title = "Attention"
 size = Vector2i(480, 100)
 dialog_autowrap = true
+
+[node name="OverlapDialog" type="ConfirmationDialog" parent="."]
+unique_name_in_owner = true
+title = "Mots qui se ressemblent"
+size = Vector2i(480, 100)
+ok_button_text = "Ajouter quand même"
+dialog_autowrap = true
+cancel_button_text = "Revoir"

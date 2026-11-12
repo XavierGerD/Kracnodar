@@ -2,11 +2,16 @@
 
 [ext_resource type="Script" uid="uid://dnga7unsfa0k2" path="res://Scripts/WordLinker.gd" id="1"]
 
-[node name="WordLinker" type="HBoxContainer"]
-theme_override_constants/separation = 8
+[node name="WordLinker" type="VBoxContainer"]
+theme_override_constants/separation = 4
 script = ExtResource("1")
 
-[node name="DeleteButton" type="Button" parent="."]
+[node name="Fields" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="DeleteButton" type="Button" parent="Fields"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 tooltip_text = "Retirer cette ligne"
@@ -14,18 +19,37 @@ focus_mode = 0
 theme_type_variation = &"DeleteButton"
 text = "×"
 
-[node name="KracText" type="LineEdit" parent="."]
+[node name="KracText" type="LineEdit" parent="Fields"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"KracLineEdit"
 placeholder_text = "kracnodar"
 
-[node name="FrenchText" type="LineEdit" parent="."]
+[node name="FrenchText" type="LineEdit" parent="Fields"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "français"
 
-[node name="EnglishText" type="LineEdit" parent="."]
+[node name="EnglishText" type="LineEdit" parent="Fields"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "english (facultatif)"
+
+[node name="OverlapRow" type="MarginContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 42
+
+[node name="OverlapNote" type="RichTextLabel" parent="OverlapRow"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 1
+theme_type_variation = &"NoteRichText"
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+autowrap_mode = 3

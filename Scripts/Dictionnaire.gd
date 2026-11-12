@@ -5,33 +5,19 @@ const DictEntryScene = preload("res://Scenes/DictEntry.tscn")
 enum Column { KRAC, FRENCH, ENGLISH }
 
 const HEADER_TITLES = {Column.KRAC: "KRACNODAR", Column.FRENCH: "FRANÇAIS", Column.ENGLISH: "ENGLISH"}
+const TextFold = preload("res://Scripts/TextFold.gd")
 
 var sort_column = Column.KRAC
 var sort_ascending = true
-var import_path = ""
+var shown_count = 0
 
 
 func _ready():
 	for column in HEADER_TITLES:
 		_header(column).pressed.connect(sort_by.bind(column))
-	%SaveButton.pressed.connect(_on_SaveButton_pressed)
-	%ImportButton.pressed.connect(_on_ImportButton_pressed)
-	%SaveDialog.file_selected.connect(_on_SaveDialog_file_selected)
-	%ImportDialog.file_selected.connect(_on_ImportDialog_file_selected)
-	%ImportConfirmDialog.confirmed.connect(_on_ImportConfirmDialog_confirmed)
-	_load_last_file()
+	%SearchInput.text_changed.connect(func(_text): refresh())
+	%SearchInput.gui_input.connect(_on_SearchInput_gui_input)
 	refresh()
-
-
-# Reopens the dictionary from last time. A file that can no longer be read is
-# forgotten, so the warning shows once rather than at every start.
-func _load_last_file() -> void:
-	if Dict.file_path == "":
-		return
-	var error = Dict.load_file(Dict.file_path)
-	if error != "":
-		Dict.remember_file("")
-		_error.call_deferred("Le dernier dictionnaire n'a pas pu être rouvert.\n" + error)
 
 
 # Clicking a column header sorts by it; clicking the same header again reverses.
@@ -80,21 +66,39 @@ func _comes_before(a: String, b: String) -> bool:
 	return order < 0 if sort_ascending else order > 0
 
 
-# Rebuilds the list; `reveal` names an entry to scroll to and highlight.
+func _fold(text: String) -> String:
+	return TextFold.fold(text)
+
+
+func _search_text() -> String:
+	return %SearchInput.text.strip_edges()
+
+
+# Whether any of the entry's three words contains the (folded) search text.
+func _matches(french: String, query: String) -> bool:
+	if query == "":
+		return true
+	return _fold("\n".join([Dict.krac_of(french), french, Dict.english_of(french)])).contains(query)
+
+
+# Rebuilds the list; `reveal` names an entry to scroll to and highlight. It is
+# shown even if it no longer matches the search, so an edit never makes it vanish.
 func refresh(reveal := "") -> void:
 	for child in %Rows.get_children():
 		%Rows.remove_child(child)
 		child.queue_free()
 
-	var keys = Dict.dict.keys()
+	var query = _fold(_search_text())
+	var keys = Dict.dict.keys().filter(func(key): return key == reveal or _matches(key, query))
 	keys.sort_custom(_comes_before)
 	_update_headers()
+	shown_count = keys.size()
 
 	for i in keys.size():
 		var row = DictEntryScene.instantiate()
 		%Rows.add_child(row)
 		row.set_entry(keys[i], i % 2 == 1)
-		row.deleted.connect(_update_count)
+		row.deleted.connect(_on_row_deleted)
 		row.edit_started.connect(_on_row_edit_started.bind(row))
 		# Deferred: the row that saved is freed by the rebuild, mid-signal otherwise.
 		row.edited.connect(func(french): refresh.call_deferred(french))
@@ -117,56 +121,46 @@ func _reveal(row) -> void:
 		row.flash()
 
 
-func _update_count() -> void:
-	var count = Dict.dict.size()
-	%CountLabel.text = "%d terme%s" % [count, "s" if count > 1 else ""]
-	%EmptyLabel.visible = count == 0
-	%SaveButton.disabled = count == 0
-	# Blank rather than hidden: the label also pushes the sort buttons right.
-	%FileLabel.text = "· " + Dict.file_path.get_file() if Dict.file_path != "" else ""
-	%FileLabel.tooltip_text = Dict.file_path
-
-
-# Both dialogs open on the current file, so saving back to it is one click.
-func _on_SaveButton_pressed():
-	if Dict.file_path != "":
-		%SaveDialog.current_path = Dict.file_path
-	%SaveDialog.popup_centered_ratio(0.6)
-
-
-func _on_ImportButton_pressed():
-	if Dict.file_path != "":
-		%ImportDialog.current_dir = Dict.file_path.get_base_dir()
-	%ImportDialog.popup_centered_ratio(0.6)
-
-
-func _on_SaveDialog_file_selected(path):
-	var error = Dict.save_file(path)
-	if error != "":
-		_error(error)
-		return
-	Dict.remember_file(path)
+func _on_row_deleted() -> void:
+	shown_count -= 1
 	_update_count()
 
 
-func _on_ImportDialog_file_selected(path):
-	import_path = path
-	%ImportConfirmDialog.popup_centered()
+func _update_count() -> void:
+	var total = Dict.dict.size()
+	var plural = "s" if total > 1 else ""
+	if _search_text() == "":
+		%CountLabel.text = "%d terme%s" % [total, plural]
+	else:
+		%CountLabel.text = "%d sur %d terme%s" % [shown_count, total, plural]
+	%EmptyLabel.visible = shown_count == 0
+	if total == 0:
+		%EmptyLabel.text = "Le dictionnaire est vide."
+	else:
+		%EmptyLabel.text = "Aucun terme ne correspond à « %s »." % _search_text()
+	# Where changes go; it also pushes the search field right.
+	var path = ProjectSettings.globalize_path(Dict.data_path(Dict.DICT_FILE))
+	if Dict.load_problem != "":
+		%FileLabel.text = "· non enregistré : dict.json est illisible"
+		%FileLabel.tooltip_text = Dict.load_problem
+	else:
+		%FileLabel.text = "· enregistré automatiquement"
+		%FileLabel.tooltip_text = path
 
 
-func _on_ImportConfirmDialog_confirmed():
-	if import_path != "":
-		import_file(import_path)
-	import_path = ""
+# Escape clears the search; Ctrl+F (Cmd+F on a Mac) jumps to it.
+func _on_SearchInput_gui_input(event) -> void:
+	if event.is_action_pressed("ui_cancel") and %SearchInput.text != "":
+		%SearchInput.clear()
+		%SearchInput.accept_event()
 
 
-func import_file(path: String) -> void:
-	var error = Dict.load_file(path)
-	if error != "":
-		_error(error)
-		return
-	Dict.remember_file(path)
-	refresh()
+func _shortcut_input(event) -> void:
+	if is_visible_in_tree() and event is InputEventKey and event.pressed and not event.echo \
+			and event.keycode == KEY_F and event.is_command_or_control_pressed():
+		%SearchInput.grab_focus()
+		%SearchInput.select_all()
+		get_viewport().set_input_as_handled()
 
 
 func _error(message: String) -> void:

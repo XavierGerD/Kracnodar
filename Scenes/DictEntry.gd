@@ -62,7 +62,8 @@ func save_edit() -> void:
 	if not problems.is_empty():
 		edit_failed.emit("Modification refusée :\n" + "\n".join(problems))
 		return
-	Dict.replace_entry(key, french, krac, english)
+	if not Dict.replace_entry(key, french, krac, english):  # saves dict.json
+		return  # not saved: stay open with the edit
 	set_entry(french, alternate)
 	edited.emit(french)
 
@@ -103,6 +104,7 @@ func _gui_input(event):
 
 
 func _on_DeleteButton_pressed():
-	Dict.dict.erase(key)
+	if not Dict.remove_entry(key):  # saves dict.json; on failure the row stays
+		return
 	deleted.emit()
 	queue_free()

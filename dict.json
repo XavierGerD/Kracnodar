@@ -111,5 +111,6 @@
   "tenailles": {"en": "tongs", "kr": "tor"},
   "dieu": {"en": "god", "kr": "lorev"},
   "ici": {"en": "here", "kr": "ven"},
-  "la (lieu)": {"en": "there", "kr": "nev"}
+  "la (lieu)": {"en": "there", "kr": "nev"},
+  "servant": {"en": "servant", "kr": "wode"}
 }
