@@ -25,8 +25,9 @@ By Xavier Gervais-Dumont · translated from “Grammaire Kracnodar.docx”
 
 ### 1.1  The alphabet
 
-- The Latin alphabet, minus letters that duplicate a sound: no *q* (*k* already covers it), no *y*.
+- The Latin alphabet, minus *q*, which duplicates a sound (*k* already covers it).
 - *c* is only the voiceless postalveolar fricative /ʃ/ (“sh”); *s* is only the voiceless alveolar fricative /s/.
+- *y* is a consonant, never a vowel.
 - Vowels: *a*, *e*, *i*, *o*, *u*. The only semivowel: *w*.
 - No accents, cedillas or other diacritics.
 
@@ -42,6 +43,7 @@ By Xavier Gervais-Dumont · translated from “Grammaire Kracnodar.docx”
 - Modules are rarely longer than two syllables.
 - A module or affix on its own has no double consonants, double vowels, diphthongs or vowels in a row.
 - This rule doesn't apply where two modules join: *atari* + *ex* → *atariex*.
+- When two lexemes join and the first ends with the vowel the second starts with, one of the two vowels can be dropped: *mihe* + *e* + *tag* → *miheetag* or *mihetag*; *ava* + *ac* → *avac*.
 
 > Coining new words is strongly encouraged.
 
@@ -55,7 +57,8 @@ By Xavier Gervais-Dumont · translated from “Grammaire Kracnodar.docx”
 
 ### 2.1.1  Affixes
 
-- One syllable each, added to the end of the module to change its form.
+- One syllable each, added before or after the module to change its form: most go after it, but some go before it, like *ken* (*Kenfelek*).
+- Affixes can be stacked: *mulen* + *op* + *bar* → *mulenopbar*, a place of great fortune.
 
 | Form (affix) | English | Kracnodar | English | Kracnodar |
 |------|------|----|------|----|
@@ -81,12 +84,12 @@ By Xavier Gervais-Dumont · translated from “Grammaire Kracnodar.docx”
 | Recipient (to whom, toward whom) | *Nak* | I give you a cat → *Ilitag nakwet zanu* |
 | Manner (thus, in this way) | *Ken* | He dances while jumping → *Avac kendexu* |
 | Cause (what makes) | *Nek* | The film makes them cry → *Kija nekacu nuto* |
-| Relation (of) | *Ti* | The presence of things → *Urivo oja* |
-| Origin (whose, of which) | *Osa* | — |
-| Relation (who, which) | *Golu* | A person who stinks → *Onupo goluau* |
-| Time (at the time of, at) | *Kosa* | — |
+| Relation (of) | *Ti* | The presence of things → *Urivo tioja* |
+| Relative, possessive (whose, of which) | *Osa* | The dwarf whose hammer rings → *Wanon osazek relinac* |
+| Relative (who, which) | *Golu* | A person who stinks → *Onupo goluawu* |
+| Time (at the time of, at) | *Kosa* | We dance at the time of the liberation → *Avatagu kosafelekam* |
 | Relation (as for) | *Vof* | As for me → *Voftag* |
-| Because | *Iduri* | — |
+| Because | *Iduri* | I cry because you go → *Nutotag iduri exowet* |
 
 > ¹ Possession can also be expressed with pronouns (see 2.2).
 
@@ -109,10 +112,10 @@ By Xavier Gervais-Dumont · translated from “Grammaire Kracnodar.docx”
 
 We eat an apple → Gewigtagu atari
 We eat our apple → Gewigtagu taguatari
-We feed the prisoners → Fedamowetu adovis
-We feed our prisoners → Fedamowetu wetuadovis
+We feed the prisoners → Fedamotagu adovis
+We feed our prisoners → Fedamotagu taguadovis
 
-### 2.4  Verbs
+### 2.3  Verbs
 
 - Verbs conjugate only for tense, which is marked by a prefix.
 
@@ -123,12 +126,13 @@ We feed our prisoners → Fedamowetu wetuadovis
 - The present marker (*sele*) is usually left out, except to stress that something is happening right now.
 - The conditional is marked by *s*: we could → *siredotagu*.
 - A reflexive verb doubles the pronoun: I isolate myself → *ojisitagtag*.
+- The imperative is the same as the infinitive, with no pronoun: eat an apple → *gewig atari*.
 
-### 2.5  Intensity markers
+### 2.4  Intensity markers
 
 - A word's intensity is adjusted with an affix: *fo* to lessen it, *op* to increase it.
 
-### 2.6  Prepositions
+### 2.5  Prepositions
 
 | English | Kracnodar |
 |---|---|
@@ -138,17 +142,20 @@ We feed our prisoners → Fedamowetu wetuadovis
 | With | *pop* |
 | For | *ipe* |
 
-### 2.7  Determiners
+- *Ipe* followed by an infinitive expresses a purpose: I'm going home to eat → *exotag kanenogo ipe gewig*.
+
+### 2.6  Determiners
 
 | English | Kracnodar |
 |---|---|
 | This / That | *k* |
 
-### 2.8  Question words
+### 2.7  Question words
 
 - A question word takes the place in the sentence that the answer would take.
 - Since subject and direct object are told apart only by their position, *hob* and *her* can't be moved without creating ambiguity.
 - *Hura*, *hen* and *reh*, whose function is clear from the word itself, can go anywhere, including at the start of the sentence.
+- Outside a question, “where” is *nev hura*: where his hammer sounds → *nev hura, zek kinac relinac*.
 
 Who eats an apple? → Hob gewigac atari ?
 What does Dim eat? → Dim gewigac her ?
@@ -162,7 +169,7 @@ Where does Dim eat? → *Dim gewigac hura ?* or *Hura Dim gewigac ?*
 | What | *Her* |
 | Who | *Hob* |
 
-### 2.9  Negation
+### 2.8  Negation
 
 - Negation is expressed with *fem*, placed right after the word it negates; its position alone sets its scope.
 - On its own, *fem* means “no”.

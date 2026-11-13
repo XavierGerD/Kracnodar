@@ -1,15 +1,17 @@
 extends VBoxContainer
 
-# One row of the "new terms" list: a Kracnodar word and its translations, with
-# a note under it naming dictionary words it overlaps (see Dict.overlaps).
+# One row of the "new terms" list: a Kracnodar word, its translations and its
+# class, with a note under it naming dictionary words it overlaps (see Dict.overlaps).
 
 signal word_changed  # the Kracnodar word
-signal edited  # any of the three fields
+signal edited  # any of the fields
 
 const SHOWN_OVERLAPS = 4
 
 
 func _ready():
+	Dict.fill_class_picker(%ClassPick)
+	%ClassPick.item_selected.connect(func(_index): edited.emit())
 	%DeleteButton.pressed.connect(queue_free)
 	%KracText.text_changed.connect(func(_text):
 		update_overlaps()
@@ -23,10 +25,11 @@ func set_word(krac: String) -> void:
 	update_overlaps()
 
 
-# Fills the row from a saved entry ({"kr", "fr", "en"}).
+# Fills the row from a saved entry ({"kr", "fr", "en", "class"}).
 func set_entry(entry: Dictionary) -> void:
 	%FrenchText.text = str(entry.get("fr", ""))
 	%EnglishText.text = str(entry.get("en", ""))
+	Dict.pick_class(%ClassPick, str(entry.get("class", "")))
 	set_word(str(entry.get("kr", "")))
 
 
@@ -35,6 +38,7 @@ func get_entry() -> Dictionary:
 		"kr": %KracText.text.strip_edges(),
 		"fr": %FrenchText.text.strip_edges(),
 		"en": %EnglishText.text.strip_edges(),
+		"class": Dict.picked_class(%ClassPick),
 	}
 
 

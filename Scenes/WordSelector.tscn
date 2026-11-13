@@ -32,7 +32,7 @@ text = "+ Ligne vide"
 [node name="Hint" type="Label" parent="Layout"]
 layout_mode = 2
 theme_type_variation = &"HintLabel"
-text = "Donnez à chaque mot sa traduction française (et anglaise si vous le voulez), puis ajoutez-les au dictionnaire."
+text = "Donnez à chaque mot sa traduction française (et, si vous le voulez, l'anglaise et sa classe), puis ajoutez-les au dictionnaire."
 autowrap_mode = 3
 
 [node name="Columns" type="MarginContainer" parent="Layout"]
@@ -65,6 +65,13 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"ColumnLabel"
 text = "ENGLISH"
+
+[node name="Class" type="Label" parent="Layout/Columns/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.6
+theme_type_variation = &"ColumnLabel"
+text = "CLASSE"
 
 [node name="EmptyLabel" type="Label" parent="Layout"]
 unique_name_in_owner = true

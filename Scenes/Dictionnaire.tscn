@@ -45,7 +45,7 @@ text_overrun_behavior = 3
 unique_name_in_owner = true
 custom_minimum_size = Vector2(280, 0)
 layout_mode = 2
-tooltip_text = "Filtre les trois colonnes (Ctrl+F). Échap pour effacer."
+tooltip_text = "Filtre les colonnes (Ctrl+F). Échap pour effacer."
 placeholder_text = "Rechercher…"
 clear_button_enabled = true
 
@@ -57,6 +57,10 @@ theme_override_constants/margin_right = 54
 [node name="Row" type="HBoxContainer" parent="Layout/Columns"]
 layout_mode = 2
 theme_override_constants/separation = 12
+
+[node name="Lead" type="Control" parent="Layout/Columns/Row"]
+custom_minimum_size = Vector2(14, 0)
+layout_mode = 2
 
 [node name="KracHeader" type="Button" parent="Layout/Columns/Row"]
 unique_name_in_owner = true
@@ -89,6 +93,18 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"ColumnHeader"
 text = "ENGLISH"
+alignment = 0
+
+[node name="ClassHeader" type="Button" parent="Layout/Columns/Row"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.6
+tooltip_text = "Trier par classe (cliquez encore pour inverser)"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"ColumnHeader"
+text = "CLASSE"
 alignment = 0
 
 [node name="Spacer" type="Control" parent="Layout/Columns/Row"]

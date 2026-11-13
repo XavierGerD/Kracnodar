@@ -2,9 +2,9 @@ extends Control
 
 const DictEntryScene = preload("res://Scenes/DictEntry.tscn")
 
-enum Column { KRAC, FRENCH, ENGLISH }
+enum Column { KRAC, FRENCH, ENGLISH, CLASS }
 
-const HEADER_TITLES = {Column.KRAC: "KRACNODAR", Column.FRENCH: "FRANÇAIS", Column.ENGLISH: "ENGLISH"}
+const HEADER_TITLES = {Column.KRAC: "KRACNODAR", Column.FRENCH: "FRANÇAIS", Column.ENGLISH: "ENGLISH", Column.CLASS: "CLASSE"}
 const TextFold = preload("res://Scripts/TextFold.gd")
 
 var sort_column = Column.KRAC
@@ -12,6 +12,7 @@ var sort_ascending = true
 var shown_count = 0
 var _groups = []  # the letter index: [{"letter", "count", "first": French key of its first row}]
 var _row_groups = []  # for each row, its letter's index in _groups (-1 for none)
+var _expanded = {}  # French keys of the rows showing their derived forms, kept across rebuilds
 
 
 func _ready():
@@ -35,7 +36,7 @@ func sort_by(column: int) -> void:
 
 
 func _header(column: int) -> Button:
-	return [%KracHeader, %FrenchHeader, %EnglishHeader][column]
+	return [%KracHeader, %FrenchHeader, %EnglishHeader, %ClassHeader][column]
 
 
 func _update_headers() -> void:
@@ -53,6 +54,8 @@ func _sort_text(french: String) -> String:
 			return Dict.krac_of(french)
 		Column.FRENCH:
 			return french
+		Column.CLASS:
+			return Dict.class_label(Dict.class_of(french))
 		_:
 			# "to gnaw" files under g, as in a printed dictionary.
 			var english = Dict.english_of(french)
@@ -66,6 +69,8 @@ func _comes_before(a: String, b: String) -> bool:
 	if (left == "") != (right == ""):
 		return right == ""  # entries missing this word go last, in either direction
 	var order = left.naturalnocasecmp_to(right)
+	if order == 0 and sort_column == Column.CLASS:
+		order = _fold(Dict.krac_of(a)).naturalnocasecmp_to(_fold(Dict.krac_of(b)))  # within a class, by Kracnodar
 	if order == 0:
 		order = a.naturalnocasecmp_to(b)  # same word: fall back to the French
 	return order < 0 if sort_ascending else order > 0
@@ -79,11 +84,12 @@ func _search_text() -> String:
 	return %SearchInput.text.strip_edges()
 
 
-# Whether any of the entry's three words contains the (folded) search text.
+# Whether the entry's three words, or its class, contain the (folded) search text.
 func _matches(french: String, query: String) -> bool:
 	if query == "":
 		return true
-	return _fold("\n".join([Dict.krac_of(french), french, Dict.english_of(french)])).contains(query)
+	var texts = [Dict.krac_of(french), french, Dict.english_of(french), Dict.class_label(Dict.class_of(french))]
+	return _fold("\n".join(texts)).contains(query)
 
 
 # Rebuilds the list; `reveal` names an entry to scroll to and highlight. It is
@@ -102,7 +108,8 @@ func refresh(reveal := "") -> void:
 	for i in keys.size():
 		var row = DictEntryScene.instantiate()
 		%Rows.add_child(row)
-		row.set_entry(keys[i], i % 2 == 1)
+		row.set_entry(keys[i], i % 2 == 1, _expanded.has(keys[i]))
+		row.expanded_changed.connect(_on_row_expanded_changed)
 		row.deleted.connect(_on_row_deleted)
 		row.edit_started.connect(_on_row_edit_started.bind(row))
 		# Deferred: the row that saved is freed by the rebuild, mid-signal otherwise.
@@ -157,6 +164,13 @@ func _update_active_letter() -> void:
 			%Rail.set_active(_row_groups[i])
 			return
 	%Rail.set_active(-1)
+
+
+func _on_row_expanded_changed(french: String, on: bool) -> void:
+	if on:
+		_expanded[french] = true
+	else:
+		_expanded.erase(french)
 
 
 func _on_row_edit_started(editing_row) -> void:

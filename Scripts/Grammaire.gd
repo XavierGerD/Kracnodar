@@ -110,7 +110,9 @@ func to_markdown() -> String:
 		parts.append(("## " if section["level"] == CHAPTER else "### ") + section["title"])
 		if section["body"] != "":
 			parts.append(section["body"])
-	return "\n\n".join(parts) + "\n"
+	# One kind of line ending throughout: on a Windows checkout this script, and
+	# so FORMAT_NOTE, has \r\n endings.
+	return ("\n\n".join(parts) + "\n").replace("\r", "")
 
 
 # Splits an article's text into blocks of one kind: rules, notes, examples, tables, text.

@@ -1,9 +1,11 @@
 extends Control
 
 # The Library: rooms, each holding documents (tablets, notes, labels, riddles)
-# written in English and Kracnodar side by side. A document shows either
-# language or both, with its masked words blanked out (or revealed, struck
-# through); in "Mask words" mode a click on a word masks or unmasks it.
+# written in English and Kracnodar side by side. Each document is read by the
+# players in English, Kracnodar or both, a setting saved with it; the language
+# they don't read is greyed out, and its masked words are struck through. In
+# "Preview" both disappear, as the players will see the document; in "Mask
+# words" mode a click on a word masks or unmasks it.
 # Everything lives in library.md (format at the top of that file), saved at
 # once after each change, next to dict.json (see Dict.data_dir).
 
@@ -13,6 +15,7 @@ The Kracnodar Library, shown (and editable) in the app's Bibliothèque tab.
   # Title             the library's title, once at the top; the text under it introduces it
   ## Room name        a room; the text under it, up to its first document, describes it
   ### Document        a document in that room: a tablet, a note, a label, a riddle…
+  ### Document [Kracnodar]   one the players read in Kracnodar only ([English]: in English only)
   English → Kracnodar a line in both languages (-> works too; either side may be empty)
   ~~word~~            a masked word: hidden from the players until revealed
   other text          a paragraph of the document; a blank line starts a new block
@@ -21,29 +24,37 @@ The Kracnodar Library, shown (and editable) in the app's Bibliothèque tab.
 const ENGLISH = "en"
 const KRAC = "kr"
 const TEXT = "tx"  # a paragraph line, not in either column
+const BOTH = "both"
+const FADED = 0.35  # the opacity of the language the players don't read
 
 var title = ""
 var intro = ""
-var rooms = []  # [{"name": String, "description": String, "docs": [{"title": String, "body": String}]}]
+# [{"name": String, "description": String,
+#   "docs": [{"title": String, "body": String, "language": ENGLISH/KRAC/BOTH}]}]
+var rooms = []
 var load_problem = ""
 
 var room_index = -1  # the room on the page; -1 for the library itself
 var doc_index = -1   # the document open in that room; -1 for the room itself
 var editing = {}     # {"kind": "library"/"room"/"doc", "room": int, "doc": int}; -1 for a new one
+var _struck_font: FontVariation  # see _strike_font()
 
 var _comment = RegEx.create_from_string("(?s)<!--.*?-->")
 var _arrow = RegEx.create_from_string("\\s*(?:→|->)\\s*")
 var _word = RegEx.create_from_string("[\\p{L}\\p{N}'’\\-]+")
 var _heading = RegEx.create_from_string("^#{1,3} ")
+var _language_tag = RegEx.create_from_string("(?i)^(.*?)\\s*\\[(english|kracnodar|krac|both)\\]$")
 
 
 func _ready():
 	var languages = ButtonGroup.new()
 	for button in [%EnglishButton, %BothButton, %KracButton]:
 		button.button_group = languages
-		button.toggled.connect(func(on): if on: _rerender())
-	%RevealButton.toggled.connect(func(_on): _rerender())
-	%MarkButton.toggled.connect(func(_on): _rerender())
+	%EnglishButton.toggled.connect(_on_language_toggled.bind(ENGLISH))
+	%BothButton.toggled.connect(_on_language_toggled.bind(BOTH))
+	%KracButton.toggled.connect(_on_language_toggled.bind(KRAC))
+	%PreviewButton.toggled.connect(_on_view_toggled.bind(%MarkButton))
+	%MarkButton.toggled.connect(_on_view_toggled.bind(%PreviewButton))
 	%OrganizeButton.toggled.connect(func(_on): render())
 	%AddRoomButton.pressed.connect(open_editor.bind("room", -1, -1))
 	%NewDocButton.pressed.connect(func(): open_editor("doc", room_index, -1))
@@ -101,7 +112,8 @@ func parse_document(text: String) -> void:
 			else:
 				if rooms.is_empty():  # a document needs a room
 					rooms.append({"name": "Room 1", "description": "", "docs": []})
-				rooms[-1]["docs"].append({"title": heading, "body": ""})
+				var parts = split_heading(heading)
+				rooms[-1]["docs"].append({"title": parts[0], "body": "", "language": parts[1]})
 				target = rooms[-1]["docs"][-1]
 				key = "body"
 		elif target == null:
@@ -125,7 +137,7 @@ func to_markdown() -> String:
 		if room["description"] != "":
 			parts.append(room["description"])
 		for doc in room["docs"]:
-			parts.append("### " + doc["title"])
+			parts.append("### " + doc["title"] + {ENGLISH: " [English]", KRAC: " [Kracnodar]"}.get(_doc_language(doc), ""))
 			if doc["body"] != "":
 				parts.append(doc["body"])
 	return "\n\n".join(parts) + "\n"
@@ -133,6 +145,19 @@ func to_markdown() -> String:
 
 func _library_title() -> String:
 	return title if title != "" else "The Kracnodar Library"
+
+
+# A document heading as [title, language]: "The note [Kracnodar]" → ["The note", KRAC].
+func split_heading(heading: String) -> Array:
+	var found = _language_tag.search(heading)
+	if found == null:
+		return [heading, BOTH]
+	var tag = found.get_string(2).to_lower()
+	return [found.get_string(1), ENGLISH if tag == "english" else (BOTH if tag == "both" else KRAC)]
+
+
+func _doc_language(doc: Dictionary) -> String:
+	return doc.get("language", BOTH)
 
 
 # Splits a document into blocks of one kind, "lines" or "text", in order:
@@ -364,8 +389,9 @@ func save_editor() -> void:
 			room_index = room
 			doc_index = -1
 		"doc":
-			var doc = {"title": name_text, "body": body}
 			var index = editing["doc"]
+			var doc = {"title": name_text, "body": body,
+				"language": _doc_language(rooms[room]["docs"][index]) if index >= 0 else BOTH}
 			var target = %RoomInput.get_selected_id()
 			if index >= 0 and target == room:
 				rooms[room]["docs"][index] = doc
@@ -445,14 +471,6 @@ func show_page(room: int, doc: int) -> void:
 
 # --- Showing it --------------------------------------------------------------
 
-func _language() -> String:
-	if %EnglishButton.button_pressed:
-		return ENGLISH
-	if %KracButton.button_pressed:
-		return KRAC
-	return "both"
-
-
 # Re-renders the page where it was scrolled (after a mask or a view change).
 func _rerender() -> void:
 	var keep = %ContentScroll.scroll_vertical
@@ -477,7 +495,12 @@ func render() -> void:
 	%BackButton.visible = _has_room()
 	%BackButton.text = "← " + (rooms[room_index]["name"] if on_doc else "Library")
 	%LangBox.visible = on_doc
-	%RevealButton.visible = on_doc
+	if on_doc:
+		var language = _doc_language(rooms[room_index]["docs"][doc_index])
+		%EnglishButton.set_pressed_no_signal(language == ENGLISH)
+		%BothButton.set_pressed_no_signal(language == BOTH)
+		%KracButton.set_pressed_no_signal(language == KRAC)
+	%PreviewButton.visible = on_doc
 	%MarkButton.visible = on_doc
 	%NewDocButton.visible = _has_room() and not on_doc
 	%EditButton.text = "Edit document" if on_doc else ("Edit room" if _has_room() else "Edit library")
@@ -516,7 +539,7 @@ func _render_room(room: Dictionary) -> void:
 
 func _render_doc(doc: Dictionary) -> void:
 	%Content.add_child(_label(doc["title"], "SectionTitle"))
-	var language = _language()
+	var language = _doc_language(doc)
 	var shown = 0
 	for block in parse_body(doc["body"]):
 		if block["kind"] == "text":
@@ -528,21 +551,25 @@ func _render_doc(doc: Dictionary) -> void:
 			shown += 1
 	if doc["body"] == "":
 		%Content.add_child(_label("Nothing written yet. Edit the document to add its lines.", "HintLabel"))
-	elif shown == 0 and language != "both" and parse_body(doc["body"]).any(func(b): return b["kind"] == "lines"):
+	elif shown == 0 and language != BOTH and %PreviewButton.button_pressed and parse_body(doc["body"]).any(func(b): return b["kind"] == "lines"):
 		%Content.add_child(_label("Nothing in %s here." % ("English" if language == ENGLISH else "Kracnodar"), "HintLabel"))
 
 
 func _paragraph(items: Array) -> Control:
 	var rich = _rich("")
+	rich.add_theme_font_override("normal_font", _strike_font())
 	var lines = items.map(func(item): return _side_bbcode(item[TEXT], item["line"], TEXT))
 	rich.text = "\n".join(lines)
 	_make_clickable(rich)
 	return rich
 
 
-# The lines of a block in one or two columns; null when the language shown has none.
+# The lines of a block in two columns, the language the players don't read
+# greyed out; in preview, only theirs. Null when nothing is left to show.
 func _lines_table(items: Array, language: String) -> Control:
-	var sides = [ENGLISH, KRAC] if language == "both" else [language]
+	var hiding = language != BOTH and %PreviewButton.button_pressed
+	var sides = [language] if hiding else [ENGLISH, KRAC]
+	var faded = "" if language == BOTH else (KRAC if language == ENGLISH else ENGLISH)
 	var rows = items.filter(func(item): return sides.any(func(side): return item[side] != ""))
 	if rows.is_empty():
 		return null
@@ -555,6 +582,8 @@ func _lines_table(items: Array, language: String) -> Control:
 	for side in sides:
 		var column = _label("ENGLISH" if side == ENGLISH else "KRACNODAR", "ColumnLabel")
 		column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		if side == faded:
+			column.modulate.a = FADED
 		header.add_child(column)
 	header_panel.add_child(header)
 	table.add_child(header_panel)
@@ -569,6 +598,10 @@ func _lines_table(items: Array, language: String) -> Control:
 				cell.add_theme_color_override("default_color", get_theme_color("font_color", "KracLabel"))
 				cell.add_theme_font_override("normal_font", get_theme_font("font", "KracLabel"))
 				cell.add_theme_font_size_override("normal_font_size", get_theme_font_size("font_size", "KracLabel"))
+			else:
+				cell.add_theme_font_override("normal_font", _strike_font())
+			if side == faded:
+				cell.modulate.a = FADED
 			cell.text = _side_bbcode(rows[r][side], rows[r]["line"], side)
 			_make_clickable(cell)
 			row.add_child(cell)
@@ -577,11 +610,34 @@ func _lines_table(items: Array, language: String) -> Control:
 	return table
 
 
-# One side of a line as BBCode. Masked words show as blanks, or struck through
-# when revealed; in mask mode every word is a link that toggles its mask.
+# The language the players read the open document in, saved with it at once.
+func _on_language_toggled(on: bool, language: String) -> void:
+	if not on or not _has_doc():
+		return
+	var doc = rooms[room_index]["docs"][doc_index]
+	var before = _doc_language(doc)
+	if before == language:
+		return
+	doc["language"] = language
+	if not save_library():
+		doc["language"] = before
+	_rerender()  # also puts the buttons back if the save failed
+
+
+# Preview and Mask words exclude each other: a preview hides the very words
+# a click would mask.
+func _on_view_toggled(on: bool, other: Button) -> void:
+	if on:
+		other.set_pressed_no_signal(false)
+	_rerender()
+
+
+# One side of a line as BBCode. Masked words show struck through, or in
+# preview vanish (fully transparent, so they keep their room); in mask mode
+# every word is a link that toggles its mask.
 func _side_bbcode(text: String, line: int, side: String) -> String:
 	var marking = %MarkButton.button_pressed
-	var reveal = %RevealButton.button_pressed or marking
+	var hiding = %PreviewButton.button_pressed and not marking
 	var dim = get_theme_color("font_color", "DimLabel").to_html(false)
 	var out = ""
 	var list = tokens(text)
@@ -589,17 +645,33 @@ func _side_bbcode(text: String, line: int, side: String) -> String:
 		var token = list[i]
 		var shown = token["text"].replace("[", "[lb]")
 		if token["masked"]:
-			if reveal:
-				shown = "[s][color=#%s]%s[/color][/s]" % [dim, shown]
-			elif token["word"]:
-				shown = "[color=#%s]%s[/color]" % [dim, "_".repeat(token["text"].length())]
+			if hiding:
+				shown = "[color=#00000000]%s[/color]" % shown
+			else:  # the line in full colour: a plain [s] draws it at half strength
+				shown = "[s color=#%s][color=#%s]%s[/color][/s]" % [dim, dim, shown]
 		if marking and token["word"]:
 			shown = "[url=%d:%s:%d]%s[/url]" % [line, side, i, shown]
 		out += shown
 	return out
 
 
+# The UI font for text that may hold struck words. Godot strikes text through
+# the middle of the line box, which for the UI font (Segoe UI and its stand-ins,
+# tall above the letters) is the top of the lowercase letters, where the line
+# melts into them. Trading 2 px of room above for 2 px below (at the theme's
+# 15 px) lowers the line to mid-letter; the lines keep their height.
+func _strike_font() -> Font:
+	if _struck_font == null:
+		_struck_font = FontVariation.new()
+		_struck_font.base_font = get_theme_font("normal_font", "RichTextLabel")
+		_struck_font.spacing_top = -2
+		_struck_font.spacing_bottom = 2
+	return _struck_font
+
+
 func _make_clickable(rich: RichTextLabel) -> void:
+	if %PreviewButton.button_pressed:
+		rich.selection_enabled = false  # a selection would draw the hidden words
 	if %MarkButton.button_pressed:
 		rich.selection_enabled = false
 		rich.meta_clicked.connect(_on_word_clicked)

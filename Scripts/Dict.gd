@@ -1,7 +1,8 @@
 extends Node
 
 # The dictionary, in the same shape as dict.json:
-#   French word -> {"en": English translation, "kr": Kracnodar word}
+#   French word -> {"en": English translation, "kr": Kracnodar word, "class": word class}
+# "class" is one of the CLASSES ids, and is left out when the entry has none.
 # It loads at startup and saves itself after every change (add_entries,
 # replace_entry, remove_entry).
 #
@@ -13,6 +14,43 @@ extends Node
 signal save_failed(message)
 
 const DICT_FILE = "dict.json"
+
+# The word classes, in the order the pickers list them: [id saved in dict.json, name shown].
+const CLASSES = [
+	["verbe", "verbe"],
+	["nom", "nom"],
+	["adjectif", "adjectif"],
+	["adverbe", "adverbe"],
+	["pronom", "pronom"],
+	["affixe", "affixe"],
+	["relation", "marqueur de relation"],
+	["temps", "marqueur de temps"],
+	["preposition", "préposition"],
+	["determinant", "déterminant"],
+	["interrogatif", "interrogatif"],
+	["negation", "négation"],
+	["conjonction", "conjonction"],
+	["autre", "autre"],
+]
+
+# The classes of modules, the words the other forms are derived from (grammar 2.1).
+const MODULE_CLASSES = ["verbe", "nom", "adjectif", "adverbe"]
+
+# The forms of a module, from the grammar's table of affixes (2.1.1). The affix
+# goes after the word ("suffix"), before it ("prefix") or after it as a separate
+# word ("word"). A module already is the form of its own class, with no affix:
+# felek, a verb, is "to free"; dol, an adjective, gives the verb doltan.
+const FORMS = [
+	{"name": "Verbe", "affix": "tan", "at": "suffix", "class": "verbe"},
+	{"name": "Nom", "affix": "ex", "at": "suffix", "class": "nom"},
+	{"name": "Action", "affix": "am", "at": "suffix"},
+	{"name": "Adverbe", "affix": "ken", "at": "prefix", "class": "adverbe"},
+	{"name": "Adjectif", "affix": "pax", "at": "word", "class": "adjectif"},
+	{"name": "Agent, instrument", "affix": "rom", "at": "suffix"},
+	{"name": "Diminutif", "affix": "fo", "at": "suffix"},
+	{"name": "Augmentatif", "affix": "op", "at": "suffix"},
+	{"name": "Lieu", "affix": "bar", "at": "suffix"},
+]
 
 var dict = {}
 
@@ -95,6 +133,79 @@ func english_of(french: String) -> String:
 	return str(entry.get("en", "")) if entry is Dictionary else ""
 
 
+# The entry's class id, or "" if it has none.
+func class_of(french: String) -> String:
+	var entry = dict.get(french)
+	return str(entry.get("class", "")) if entry is Dictionary else ""
+
+
+# The name shown for a class id ("" for none; an unknown id is shown as is).
+func class_label(id: String) -> String:
+	for pair in CLASSES:
+		if pair[0] == id:
+			return pair[1]
+	return id
+
+
+# Fills a picker with "—" (no class) and the classes; each item's metadata is its id.
+func fill_class_picker(picker: OptionButton) -> void:
+	picker.clear()
+	picker.add_item("—")
+	picker.set_item_metadata(0, "")
+	for pair in CLASSES:
+		picker.add_item(pair[1])
+		picker.set_item_metadata(picker.item_count - 1, pair[0])
+
+
+# Selects a class id in a picker filled by fill_class_picker. An id it doesn't
+# list is added, so editing an entry never loses its class.
+func pick_class(picker: OptionButton, id: String) -> void:
+	for i in picker.item_count:
+		if picker.get_item_metadata(i) == id:
+			picker.select(i)
+			return
+	picker.add_item(id)
+	picker.set_item_metadata(picker.item_count - 1, id)
+	picker.select(picker.item_count - 1)
+
+
+func picked_class(picker: OptionButton) -> String:
+	return str(picker.get_item_metadata(picker.selected)) if picker.selected >= 0 else ""
+
+
+func has_derived_forms(french: String) -> bool:
+	return class_of(french) in MODULE_CLASSES and krac_of(french).strip_edges() != ""
+
+
+# The forms derived from a module (see FORMS), [] for other classes:
+#   [{"name": the form, "word": the Kracnodar word, "affix": how it was made
+#     ("" for the module itself), "existing": the French of another entry
+#     already spelled that way, or ""}]
+func derived_forms(french: String) -> Array:
+	if not has_derived_forms(french):
+		return []
+	var word_class = class_of(french)
+	var module = krac_of(french).strip_edges()
+	var forms = []
+	for form in FORMS:
+		var word = module
+		var affix = ""
+		if form.get("class", "") != word_class:
+			match form["at"]:
+				"prefix":
+					word = form["affix"] + module
+					affix = form["affix"] + " +"
+				"word":
+					word = module + " " + form["affix"]
+					affix = "+ " + form["affix"]
+				_:
+					word = module + form["affix"]
+					affix = "+ " + form["affix"]
+		var existing = french_for_krac(word) if affix != "" else ""
+		forms.append({"name": form["name"], "word": word, "affix": affix, "existing": existing})
+	return forms
+
+
 # The French word that already uses this Kracnodar word, or "" if none does.
 func french_for_krac(krac: String) -> String:
 	for french in dict:
@@ -106,24 +217,24 @@ func french_for_krac(krac: String) -> String:
 # Each change below saves at once; if saving fails it is undone, so what the
 # app shows is always what's on disk. They return whether it worked.
 
-# Adds entries ({"fr", "kr", "en"}).
+# Adds entries ({"fr", "kr", "en", and optionally "class"}).
 func add_entries(entries: Array) -> bool:
 	var before = dict.duplicate(true)
 	for entry in entries:
-		_set_entry(entry["fr"], entry["kr"], entry["en"])
+		_set_entry(entry["fr"], entry["kr"], entry["en"], str(entry.get("class", "")))
 	return _commit(before)
 
 
 # Changes an entry, renaming its French key in place so the file order stays put.
-func replace_entry(old_french: String, french: String, krac: String, english: String) -> bool:
+func replace_entry(old_french: String, french: String, krac: String, english: String, word_class := "") -> bool:
 	var before = dict.duplicate(true)
 	if old_french == french:
-		_set_entry(french, krac, english)
+		_set_entry(french, krac, english, word_class)
 	else:
 		var rebuilt = {}
 		for key in dict:
 			if key == old_french:
-				rebuilt[french] = {"en": english, "kr": krac}
+				rebuilt[french] = _entry(krac, english, word_class)
 			else:
 				rebuilt[key] = dict[key]
 		dict = rebuilt
@@ -143,8 +254,15 @@ func _commit(before: Dictionary) -> bool:
 	return false
 
 
-func _set_entry(french: String, krac: String, english: String) -> void:
-	dict[french] = {"en": english, "kr": krac}
+func _set_entry(french: String, krac: String, english: String, word_class := "") -> void:
+	dict[french] = _entry(krac, english, word_class)
+
+
+func _entry(krac: String, english: String, word_class: String) -> Dictionary:
+	var entry = {"en": english, "kr": krac}
+	if word_class != "":
+		entry["class"] = word_class
+	return entry
 
 
 # Why this French/Kracnodar pair cannot go in the dictionary, as messages;
@@ -210,7 +328,8 @@ func merge(data) -> int:
 	for key in data:
 		var value = data[key]
 		if value is Dictionary and value.get("kr") is String:
-			dict[str(key)] = {"en": str(value.get("en", "")), "kr": value["kr"]}
+			var word_class = value.get("class") if value.get("class") is String else ""
+			dict[str(key)] = _entry(value["kr"], str(value.get("en", "")), word_class)
 			merged += 1
 		elif value is String:
 			_set_entry(value, str(key), "")
@@ -222,8 +341,10 @@ func merge(data) -> int:
 func to_json() -> String:
 	var lines = []
 	for french in dict:
-		lines.append('  %s: {"en": %s, "kr": %s}' % [
-			JSON.stringify(french), JSON.stringify(english_of(french)), JSON.stringify(krac_of(french))])
+		var fields = '"en": %s, "kr": %s' % [JSON.stringify(english_of(french)), JSON.stringify(krac_of(french))]
+		if class_of(french) != "":
+			fields += ', "class": %s' % JSON.stringify(class_of(french))
+		lines.append('  %s: {%s}' % [JSON.stringify(french), fields])
 	if lines.is_empty():
 		return "{}\n"
 	return "{\n" + ",\n".join(lines) + "\n}\n"
