@@ -7,7 +7,11 @@ extends Control
 # "Preview" both disappear, as the players will see the document; in "Mask
 # words" mode a click on a word masks or unmasks it.
 # Everything lives in library.md (format at the top of that file), saved at
-# once after each change, next to dict.json (see Dict.data_dir).
+# once after each change, next to dict.json (see Dict.data_dir). Its markup is
+# the Grammaire's (see Markup.gd), in documents and descriptions alike.
+
+const MarkdownToolbar = preload("res://Scripts/MarkdownToolbar.gd")
+const Markup = preload("res://Scripts/Markup.gd")
 
 const LIBRARY_FILE = "library.md"
 const FORMAT_NOTE = """<!--
@@ -18,12 +22,19 @@ The Kracnodar Library, shown (and editable) in the app's Bibliothèque tab.
   ### Document [Kracnodar]   one the players read in Kracnodar only ([English]: in English only)
   English → Kracnodar a line in both languages (-> works too; either side may be empty)
   ~~word~~            a masked word: hidden from the players until revealed
-  other text          a paragraph of the document; a blank line starts a new block
+  - text              a rule, one per line
+  > text              a note
+  | a | b |           a table: the first row is the header; an optional dashed row
+  |---|------|        under it sets the relative column widths
+  *word*              a Kracnodar word, shown in the Kracnodar style
+  ```                 a quote block: the lines between two ``` lines, shown as written
+  other text          a paragraph; a blank line starts a new block
+The Grammaire uses the same markup.
 -->"""
 
 const ENGLISH = "en"
 const KRAC = "kr"
-const TEXT = "tx"  # a paragraph line, not in either column
+const TEXT = "text"  # a line that is not in the two columns (see Markup.blocks)
 const BOTH = "both"
 const FADED = 0.35  # the opacity of the language the players don't read
 
@@ -38,9 +49,9 @@ var room_index = -1  # the room on the page; -1 for the library itself
 var doc_index = -1   # the document open in that room; -1 for the room itself
 var editing = {}     # {"kind": "library"/"room"/"doc", "room": int, "doc": int}; -1 for a new one
 var _struck_font: FontVariation  # see _strike_font()
+var _doc_modes = false  # whether Preview and Mask words apply: on a document's page
 
 var _comment = RegEx.create_from_string("(?s)<!--.*?-->")
-var _arrow = RegEx.create_from_string("\\s*(?:→|->)\\s*")
 var _word = RegEx.create_from_string("[\\p{L}\\p{N}'’\\-]+")
 var _heading = RegEx.create_from_string("^#{1,3} ")
 var _language_tag = RegEx.create_from_string("(?i)^(.*?)\\s*\\[(english|kracnodar|krac|both)\\]$")
@@ -64,6 +75,11 @@ func _ready():
 	%CancelButton.pressed.connect(close_editor)
 	%DeleteButton.pressed.connect(_on_DeleteButton_pressed)
 	%DeleteConfirm.confirmed.connect(delete_edited)
+	var toolbar = MarkdownToolbar.new()
+	toolbar.name = "MarkdownToolbar"
+	toolbar.setup(%BodyInput)
+	%Editor.add_child(toolbar)
+	%Editor.move_child(toolbar, %BodyInput.get_index())
 	load_library()
 	render()
 
@@ -99,8 +115,11 @@ func parse_document(text: String) -> void:
 	var body_lines = []
 	var target = null  # the room or document the lines under the last heading belong to
 	var key = ""
+	var quoting = false  # inside a ``` block, where a # line is quoted text, not a heading
 	for line in text.split("\n"):
-		if line.begins_with("## ") or line.begins_with("### "):
+		if target != null and line.strip_edges().begins_with(Markup.FENCE):
+			quoting = not quoting
+		if not quoting and (line.begins_with("## ") or line.begins_with("### ")):
 			if target != null:
 				target[key] = "\n".join(body_lines).strip_edges()
 			body_lines = []
@@ -160,39 +179,20 @@ func _doc_language(doc: Dictionary) -> String:
 	return doc.get("language", BOTH)
 
 
-# Splits a document into blocks of one kind, "lines" or "text", in order:
-#   [{"kind": "lines", "items": [{"line": n, "en": String, "kr": String}]},
-#    {"kind": "text", "items": [{"line": n, "text": String}]}]
-# where n is the line's number in the body, so a click on a word finds it again.
+# Splits a document (or a description) into blocks of one kind, in order; see
+# Markup.blocks. Each item keeps its line's number in the body, so a click on
+# a word finds it again.
 func parse_body(body: String) -> Array:
-	var blocks = []
-	var current = null
-	var raw_lines = body.split("\n")
-	for n in raw_lines.size():
-		var line = raw_lines[n].strip_edges()
-		if line == "":
-			current = null
-			continue
-		var item = split_line(line)
-		item["line"] = n
-		var kind = "lines" if item.has(ENGLISH) else "text"
-		if current == null or current["kind"] != kind:
-			current = {"kind": kind, "items": []}
-			blocks.append(current)
-		current["items"].append(item)
-	return blocks
+	return Markup.blocks(body)
 
 
 # A body line as {"en", "kr"} when it holds an arrow, otherwise {"text"}.
 func split_line(line: String) -> Dictionary:
-	var arrow = _arrow.search(line)
-	if arrow == null:
-		return {TEXT: line}
-	return {ENGLISH: line.substr(0, arrow.get_start()).strip_edges(), KRAC: line.substr(arrow.get_end()).strip_edges()}
+	return Markup.split_line(line)
 
 
 func join_line(item: Dictionary) -> String:
-	if item.has(TEXT):
+	if not item.has(ENGLISH):
 		return item[TEXT]
 	return ("%s → %s" % [item[ENGLISH], item[KRAC]]).strip_edges()
 
@@ -251,6 +251,29 @@ func plain(text: String) -> String:
 	return text.replace("~~", "")
 
 
+# The index in tokens(text) of the word that starts `offset` characters into
+# plain(text) (an offset masking never moves); -1 when no word starts there.
+func token_at(text: String, offset: int) -> int:
+	var at = 0
+	var list = tokens(text)
+	for i in list.size():
+		if at == offset and list[i]["word"]:
+			return i
+		at += list[i]["text"].length()
+	return -1
+
+
+# The item of line n of a body (see Markup.blocks), or {} for a blank or fence line.
+func item_at(body: String, n: int) -> Dictionary:
+	for block in parse_body(body):
+		for item in block["items"]:
+			if item["line"] == n:
+				return item
+	return {}
+
+
+# A click in "Mask words" mode: meta is "line:side:offset", the word's line in
+# the body, the side it is on (en, kr or text) and where it starts in plain().
 func _on_word_clicked(meta) -> void:
 	var parts = str(meta).split(":")
 	if parts.size() != 3 or not _has_doc():
@@ -258,15 +281,13 @@ func _on_word_clicked(meta) -> void:
 	var doc = rooms[room_index]["docs"][doc_index]
 	var raw_lines = doc["body"].split("\n")
 	var n = int(parts[0])
-	if n < 0 or n >= raw_lines.size():
-		return
-	var item = split_line(raw_lines[n].strip_edges())
 	var side = parts[1]
-	if not item.has(side):
+	var item = item_at(doc["body"], n)
+	if n < 0 or n >= raw_lines.size() or not item.has(side):
 		return
-	item[side] = toggle_mask(item[side], int(parts[2]))
+	item[side] = toggle_mask(item[side], token_at(item[side], int(parts[2])))
 	var before = doc["body"]
-	raw_lines[n] = join_line(item)
+	raw_lines[n] = item[TEXT] if side == TEXT else join_line(item)
 	doc["body"] = "\n".join(raw_lines)
 	if not save_library():
 		doc["body"] = before
@@ -326,7 +347,6 @@ func open_editor(kind: String, room: int, doc: int) -> void:
 	editing = {"kind": kind, "room": room, "doc": doc}
 	%RoomInput.visible = kind == "doc"
 	%DeleteButton.visible = (kind == "room" and room >= 0) or (kind == "doc" and doc >= 0)
-	%FormatHint.visible = kind == "doc"
 	match kind:
 		"library":
 			%EditorHeading.text = "Edit the library"
@@ -367,8 +387,11 @@ func save_editor() -> void:
 	if editing["kind"] != "library" and name_text == "":
 		_error("Give it a name." if editing["kind"] == "room" else "Give the document a title.")
 		return
+	var quoting = false  # a # line inside a ``` block is quoted, not a heading
 	for line in body.split("\n"):
-		if _heading.search(line) != null:
+		if line.strip_edges().begins_with(Markup.FENCE):
+			quoting = not quoting
+		elif not quoting and _heading.search(line) != null:
 			_error("A line can't start with # (it would read as a heading): “%s”" % line)
 			return
 	var before = [title, intro, rooms.duplicate(true), room_index, doc_index]
@@ -492,6 +515,7 @@ func render() -> void:
 		%Content.add_child(_label(load_problem, "HintLabel"))
 
 	var on_doc = _has_doc()
+	_doc_modes = on_doc
 	%BackButton.visible = _has_room()
 	%BackButton.text = "← " + (rooms[room_index]["name"] if on_doc else "Library")
 	%LangBox.visible = on_doc
@@ -516,8 +540,7 @@ func render() -> void:
 
 func _render_library() -> void:
 	%Content.add_child(_label(_library_title(), "SectionTitle"))
-	if intro != "":
-		%Content.add_child(_rich(intro))
+	_render_blocks(intro, BOTH)
 	if rooms.is_empty():
 		%Content.add_child(_label("No rooms yet. Add one with + New room.", "HintLabel"))
 	for i in rooms.size():
@@ -528,8 +551,7 @@ func _render_library() -> void:
 
 func _render_room(room: Dictionary) -> void:
 	%Content.add_child(_label(room["name"], "SectionTitle"))
-	if room["description"] != "":
-		%Content.add_child(_rich(room["description"]))
+	_render_blocks(room["description"], BOTH)
 	%Content.add_child(_label("Documents", "HeadingLabel"))
 	if room["docs"].is_empty():
 		%Content.add_child(_label("No documents yet. Add one with + New document.", "HintLabel"))
@@ -540,28 +562,101 @@ func _render_room(room: Dictionary) -> void:
 func _render_doc(doc: Dictionary) -> void:
 	%Content.add_child(_label(doc["title"], "SectionTitle"))
 	var language = _doc_language(doc)
-	var shown = 0
-	for block in parse_body(doc["body"]):
-		if block["kind"] == "text":
-			%Content.add_child(_paragraph(block["items"]))
-			continue
-		var table = _lines_table(block["items"], language)
-		if table != null:
-			%Content.add_child(table)
-			shown += 1
+	var shown = _render_blocks(doc["body"], language)
 	if doc["body"] == "":
 		%Content.add_child(_label("Nothing written yet. Edit the document to add its lines.", "HintLabel"))
 	elif shown == 0 and language != BOTH and %PreviewButton.button_pressed and parse_body(doc["body"]).any(func(b): return b["kind"] == "lines"):
 		%Content.add_child(_label("Nothing in %s here." % ("English" if language == ENGLISH else "Kracnodar"), "HintLabel"))
 
 
-func _paragraph(items: Array) -> Control:
+# Adds a body's blocks to the page; the lines in two columns are shown as
+# `language` asks (see _lines_table). Returns how many of those tables show.
+func _render_blocks(body: String, language: String) -> int:
+	var shown = 0
+	for block in parse_body(body):
+		var items = block["items"]
+		match block["kind"]:
+			"lines":
+				var table = _lines_table(items, language)
+				if table != null:
+					%Content.add_child(table)
+					shown += 1
+			"rules":
+				%Content.add_child(_rules(items))
+			"note":
+				var note = _text_rich(" ".join(items.map(_item_bbcode)))
+				note.add_theme_color_override("default_color", get_theme_color("font_color", "HintLabel"))
+				%Content.add_child(note)
+			"table":
+				%Content.add_child(_table(items))
+			"quote":
+				var panel = Markup.quote_panel(self)
+				panel.add_child(_text_rich("\n".join(Markup.trimmed_quote(items).map(_item_bbcode))))
+				%Content.add_child(panel)
+			_:
+				%Content.add_child(_text_rich("\n".join(items.map(_item_bbcode))))
+	return shown
+
+
+# A line that is not in the two columns, without its mark ("- ", "> "), as BBCode.
+func _item_bbcode(item: Dictionary) -> String:
+	return _side_bbcode(item[TEXT], item["line"], TEXT, item["skip"])
+
+
+# A wrapping text for BBCode from _side_bbcode, its masked words clickable.
+func _text_rich(bbcode: String) -> RichTextLabel:
 	var rich = _rich("")
 	rich.add_theme_font_override("normal_font", _strike_font())
-	var lines = items.map(func(item): return _side_bbcode(item[TEXT], item["line"], TEXT))
-	rich.text = "\n".join(lines)
+	rich.text = bbcode
 	_make_clickable(rich)
 	return rich
+
+
+func _rules(items: Array) -> Control:
+	var list = VBoxContainer.new()
+	list.add_theme_constant_override("separation", 6)
+	for item in items:
+		var row = HBoxContainer.new()
+		row.add_theme_constant_override("separation", 10)
+		var bullet = _label("•", "BulletLabel")
+		bullet.autowrap_mode = TextServer.AUTOWRAP_OFF
+		bullet.size_flags_vertical = Control.SIZE_SHRINK_BEGIN  # on the first line of a long rule
+		row.add_child(bullet)
+		row.add_child(_text_rich(_item_bbcode(item)))
+		list.add_child(row)
+	return list
+
+
+# A table (see Markup.cells): the first row the header, an optional dashed row
+# under it setting the relative column widths. Masks work in every cell.
+func _table(items: Array) -> Control:
+	var rows = items.duplicate()
+	var widths = []
+	if rows.size() > 1 and Markup.is_separator(plain(rows[1][TEXT])):
+		widths = Markup.cells(plain(rows[1][TEXT])).map(func(cell): return float(max(1, cell.count("-"))))
+		rows.remove_at(1)
+	var table = VBoxContainer.new()
+	table.add_theme_constant_override("separation", 2)
+	for r in rows.size():
+		var text = rows[r][TEXT]
+		var panel = PanelContainer.new()
+		panel.theme_type_variation = "DictRow" if r == 0 or r % 2 == 0 else "DictRowAlt"
+		var row = HBoxContainer.new()
+		row.add_theme_constant_override("separation", 12)
+		var ranges = Markup.cell_ranges(plain(text))
+		for c in ranges.size():
+			var cell: Control
+			if r == 0:
+				var heading = plain(text).substr(ranges[c][0], ranges[c][1] - ranges[c][0])
+				cell = _label(heading.replace("*", "").to_upper(), "ColumnLabel")
+			else:
+				cell = _text_rich(_side_bbcode(text, rows[r]["line"], TEXT, ranges[c][0], ranges[c][1]))
+			cell.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			cell.size_flags_stretch_ratio = widths[c] if c < widths.size() else 1.0
+			row.add_child(cell)
+		panel.add_child(row)
+		table.add_child(panel)
+	return table
 
 
 # The lines of a block in two columns, the language the players don't read
@@ -632,27 +727,62 @@ func _on_view_toggled(on: bool, other: Button) -> void:
 	_rerender()
 
 
-# One side of a line as BBCode. Masked words show struck through, or in
-# preview vanish (fully transparent, so they keep their room); in mask mode
-# every word is a link that toggles its mask.
-func _side_bbcode(text: String, line: int, side: String) -> String:
-	var marking = %MarkButton.button_pressed
-	var hiding = %PreviewButton.button_pressed and not marking
+# One side of a line as BBCode, or the part of it from `from` to `to`
+# (characters of plain(text); -1 for its end). Masked words show struck
+# through, or in preview vanish (fully transparent, so they keep their room);
+# in mask mode every word is a link that toggles its mask (see _on_word_clicked).
+# *Kracnodar words* show in the Kracnodar style, as in the Grammaire.
+func _side_bbcode(text: String, line: int, side: String, from := 0, to := -1) -> String:
+	var marking = _doc_modes and %MarkButton.button_pressed
+	var hiding = _doc_modes and %PreviewButton.button_pressed and not marking
 	var dim = get_theme_color("font_color", "DimLabel").to_html(false)
+	var krac = get_theme_color("font_color", "KracLabel").to_html(false)
+	if to < 0:
+		to = plain(text).length()
+	# A * opens or closes a Kracnodar word; a last one with no partner is just a *.
+	var stars = plain(text).substr(from, to - from).count("*")
+	var in_krac = false
 	var out = ""
-	var list = tokens(text)
-	for i in list.size():
-		var token = list[i]
-		var shown = token["text"].replace("[", "[lb]")
-		if token["masked"]:
-			if hiding:
-				shown = "[color=#00000000]%s[/color]" % shown
-			else:  # the line in full colour: a plain [s] draws it at half strength
-				shown = "[s color=#%s][color=#%s]%s[/color][/s]" % [dim, dim, shown]
-		if marking and token["word"]:
-			shown = "[url=%d:%s:%d]%s[/url]" % [line, side, i, shown]
-		out += shown
+	var at = 0  # where the token starts in plain(text)
+	for token in tokens(text):
+		var start = at
+		at += token["text"].length()
+		var lo = max(start, from)
+		var hi = min(at, to)
+		if hi <= lo:
+			continue
+		var piece = token["text"].substr(lo - start, hi - lo)
+		if token["word"]:
+			var meta = "%d:%s:%d" % [line, side, start] if marking else ""
+			out += _token_bbcode(piece, token["masked"], hiding, dim, meta)
+			continue
+		# The Kracnodar style opens and closes outside a token's own tags, so they nest.
+		var bits = piece.split("*")
+		for b in bits.size():
+			if b > 0:
+				if in_krac or stars >= 2:
+					out += "[/color][/b]" if in_krac else "[b][color=#%s]" % krac
+					in_krac = not in_krac
+				else:
+					out += _token_bbcode("*", token["masked"], hiding, dim, "")
+				stars -= 1
+			if bits[b] != "":
+				out += _token_bbcode(bits[b], token["masked"], hiding, dim, "")
+	if in_krac:
+		out += "[/color][/b]"
 	return out
+
+
+func _token_bbcode(text: String, masked: bool, hiding: bool, dim: String, meta: String) -> String:
+	var shown = text.replace("[", "[lb]")
+	if masked:
+		if hiding:
+			shown = "[color=#00000000]%s[/color]" % shown
+		else:  # the line in full colour: a plain [s] draws it at half strength
+			shown = "[s color=#%s][color=#%s]%s[/color][/s]" % [dim, dim, shown]
+	if meta != "":
+		shown = "[url=%s]%s[/url]" % [meta, shown]
+	return shown
 
 
 # The UI font for text that may hold struck words. Godot strikes text through
@@ -670,6 +800,8 @@ func _strike_font() -> Font:
 
 
 func _make_clickable(rich: RichTextLabel) -> void:
+	if not _doc_modes:
+		return
 	if %PreviewButton.button_pressed:
 		rich.selection_enabled = false  # a selection would draw the hidden words
 	if %MarkButton.button_pressed:

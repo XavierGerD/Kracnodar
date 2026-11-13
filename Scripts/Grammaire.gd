@@ -7,6 +7,8 @@ extends Control
 # (see Dict.data_dir: the repo when run from Godot).
 
 const TextFold = preload("res://Scripts/TextFold.gd")
+const MarkdownToolbar = preload("res://Scripts/MarkdownToolbar.gd")
+const Markup = preload("res://Scripts/Markup.gd")
 
 const GRAMMAR_FILE = "grammar.md"
 const CHAPTER = 1
@@ -21,6 +23,10 @@ The Kracnodar grammar, shown (and editable) in the app's Grammaire tab.
   | a | b |           a table: the first row is the header; an optional dashed row
   |---|------|        under it sets the relative column widths
   *word*              a Kracnodar word, shown in the Kracnodar style
+  ~~word~~            a masked word, struck through
+  ```                 a quote block: the lines between two ``` lines, shown as written
+  other text          a paragraph; a blank line starts a new block
+The Library uses the same markup.
 -->"""
 
 # Search highlights are marked with these before the text becomes BBCode.
@@ -35,8 +41,8 @@ var editing_index = -1  # the article in the editor; -1 for a new one
 
 var _headings = {}  # section index -> its heading on the page
 var _krac_word = RegEx.create_from_string("\\*([^*]+)\\*")
+var _masked = RegEx.create_from_string("~~(.+?)~~")
 var _comment = RegEx.create_from_string("(?s)<!--.*?-->")
-var _separator_cell = RegEx.create_from_string("^:?-+:?$")
 
 
 func _ready():
@@ -50,6 +56,11 @@ func _ready():
 	%CancelButton.pressed.connect(close_editor)
 	%DeleteArticleButton.pressed.connect(_on_DeleteArticleButton_pressed)
 	%DeleteConfirm.confirmed.connect(delete_article)
+	var toolbar = MarkdownToolbar.new()
+	toolbar.name = "MarkdownToolbar"
+	toolbar.setup(%BodyInput)
+	%Editor.add_child(toolbar)
+	%Editor.move_child(toolbar, %BodyInput.get_index())
 	load_grammar()
 	render()
 
@@ -83,8 +94,11 @@ func parse_document(text: String) -> void:
 	sections = []
 	var subtitle_lines = []
 	var body_lines = []
+	var quoting = false  # inside a ``` block, where a # line is quoted text, not a heading
 	for line in text.split("\n"):
-		if line.begins_with("### ") or line.begins_with("## "):
+		if not sections.is_empty() and line.strip_edges().begins_with(Markup.FENCE):
+			quoting = not quoting
+		if not quoting and (line.begins_with("### ") or line.begins_with("## ")):
 			if not sections.is_empty():
 				sections[-1]["body"] = "\n".join(body_lines).strip_edges()
 			var level = ARTICLE if line.begins_with("### ") else CHAPTER
@@ -115,31 +129,13 @@ func to_markdown() -> String:
 	return ("\n\n".join(parts) + "\n").replace("\r", "")
 
 
-# Splits an article's text into blocks of one kind: rules, notes, examples, tables, text.
+# Splits an article's text into blocks of one kind (see Markup.blocks): rules,
+# notes, examples, tables, text and quotes, each item a line without its mark.
 func parse_body(body: String) -> Array:
 	var blocks = []
-	var current = null
-	for raw in body.split("\n"):
-		var line = raw.strip_edges()
-		if line == "":
-			current = null
-			continue
-		var kind = "text"
-		var item = line
-		if line.begins_with("- "):
-			kind = "rules"
-			item = line.substr(2)
-		elif line.begins_with(">"):
-			kind = "note"
-			item = line.substr(1).strip_edges()
-		elif line.begins_with("|"):
-			kind = "table"
-		elif line.contains(" → ") or line.contains(" -> "):
-			kind = "examples"
-		if current == null or current["kind"] != kind:
-			current = {"kind": kind, "items": []}
-			blocks.append(current)
-		current["items"].append(item)
+	for block in Markup.blocks(body):
+		blocks.append({"kind": "examples" if block["kind"] == "lines" else block["kind"],
+			"items": block["items"].map(func(item): return item["text"].substr(item["skip"]))})
 	return blocks
 
 
@@ -253,9 +249,9 @@ func _search_text() -> String:
 	return %SearchInput.text.strip_edges()
 
 
-# The text a reader sees (no * marks), folded for search.
+# The text a reader sees (no * or ~~ marks), folded for search.
 func _searchable(text: String) -> String:
-	return TextFold.fold(text.replace("*", ""))
+	return TextFold.fold(text.replace("*", "").replace("~", ""))
 
 
 func _hit(text: String, query: String) -> bool:
@@ -321,6 +317,8 @@ func render() -> void:
 					if items.size() > 1 and _is_separator(items[1]):
 						top.append(items[1])
 					items = top + matching.filter(func(item): return not item in top)
+				elif block["kind"] == "quote":
+					items = items if not matching.is_empty() else []  # a quote shows whole
 				else:
 					items = matching
 			if not items.is_empty():
@@ -393,6 +391,8 @@ func _block(kind: String, items: Array, query: String) -> Control:
 			return _examples(items, query)
 		"table":
 			return _table(items, query)
+		"quote":
+			return _quote(items, query)
 		"note":
 			var note = _rich(" ".join(items), query)
 			note.add_theme_color_override("default_color", get_theme_color("font_color", "HintLabel"))
@@ -418,35 +418,34 @@ func _examples(items: Array, query: String) -> Control:
 	var list = VBoxContainer.new()
 	list.add_theme_constant_override("separation", 2)
 	for i in items.size():
-		var arrow = " → " if items[i].contains(" → ") else " -> "
-		var at = items[i].find(arrow)
+		var sides = Markup.split_line(items[i])
 		var panel = PanelContainer.new()
 		panel.theme_type_variation = "DictRowAlt" if i % 2 == 0 else "DictRow"
 		var row = HBoxContainer.new()
 		row.add_theme_constant_override("separation", 12)
-		row.add_child(_rich(items[i].substr(0, at).strip_edges(), query))
+		row.add_child(_rich(sides.get("en", ""), query))
 		row.add_child(_label("→", "DimLabel", false))
-		row.add_child(_rich(_as_krac(items[i].substr(at + arrow.length()).strip_edges()), query))
+		row.add_child(_rich(_as_krac(sides.get("kr", "")), query))
 		panel.add_child(row)
 		list.add_child(panel)
 	return list
 
 
-func _cells(line: String) -> Array:
-	var inner = line.strip_edges()
-	if inner.begins_with("|"):
-		inner = inner.substr(1)
-	if inner.ends_with("|"):
-		inner = inner.substr(0, inner.length() - 1)
-	return Array(inner.split("|")).map(func(cell): return cell.strip_edges())
+# The lines of a quote as written (see Markup.quote_panel); blank lines at
+# either end are dropped.
+func _quote(items: Array, query: String) -> Control:
+	var lines = Markup.trimmed_quote(items.map(func(item): return {"text": item}))
+	var panel = Markup.quote_panel(self)
+	panel.add_child(_rich("\n".join(lines.map(func(line): return line["text"])), query))
+	return panel
 
 
 func _is_separator(line: String) -> bool:
-	return _cells(line).all(func(cell): return _separator_cell.search(cell) != null)
+	return Markup.is_separator(line)
 
 
 func _table(lines: Array, query: String) -> Control:
-	var rows = lines.map(_cells)
+	var rows = lines.map(Markup.cells)
 	var widths = []
 	if lines.size() > 1 and _is_separator(lines[1]):
 		widths = rows[1].map(func(cell): return float(max(1, cell.count("-"))))
@@ -461,7 +460,7 @@ func _table(lines: Array, query: String) -> Control:
 		for c in rows[r].size():
 			var cell: Control
 			if r == 0:
-				cell = _label(rows[r][c].replace("*", "").to_upper(), "ColumnLabel")
+				cell = _label(rows[r][c].replace("*", "").replace("~~", "").to_upper(), "ColumnLabel")
 			else:
 				cell = _rich(rows[r][c], query)
 			cell.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -480,12 +479,12 @@ func _as_krac(text: String) -> String:
 
 
 # Wraps each match of `query` (already folded) in highlight marks. Matching
-# ignores the * marks, and highlights stop at them so the BBCode nests.
+# ignores the * and ~~ marks, and highlights stop at them so the BBCode nests.
 func _highlight(text: String, query: String) -> String:
 	var folded = ""
 	var origin = []  # folded character -> index in text
 	for i in text.length():
-		if text[i] == "*":
+		if text[i] == "*" or text[i] == "~":
 			continue
 		var piece = TextFold.fold(text[i])
 		for k in piece.length():
@@ -505,7 +504,7 @@ func _highlight(text: String, query: String) -> String:
 	var out = ""
 	var open = false
 	for i in text.length():
-		var want = marked[i] and text[i] != "*"
+		var want = marked[i] and text[i] != "*" and text[i] != "~"
 		if want and not open:
 			out += MARK_OPEN
 		elif open and not want:
@@ -550,7 +549,10 @@ func _rich(text: String, query := "") -> RichTextLabel:
 	var krac_color = get_theme_color("font_color", "KracLabel").to_html(false)
 	var highlight = get_theme_color("selection_color", "LineEdit").to_html(true)
 	var marked = _highlight(text, query) if query != "" else text
+	var dim = get_theme_color("font_color", "DimLabel").to_html(false)
 	var bbcode = _krac_word.sub(marked.replace("[", "[lb]"), "[b][color=#%s]$1[/color][/b]" % krac_color, true)
+	# A plain [s] draws its line at half strength; in the text's colour it shows.
+	bbcode = _masked.sub(bbcode, "[s color=#%s][color=#%s]$1[/color][/s]" % [dim, dim], true)
 	rich.text = bbcode.replace(MARK_OPEN, "[bgcolor=#%s]" % highlight).replace(MARK_CLOSE, "[/bgcolor]")
 	return rich
 

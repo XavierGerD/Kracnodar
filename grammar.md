@@ -8,6 +8,10 @@ The Kracnodar grammar, shown (and editable) in the app's Grammaire tab.
   | a | b |           a table: the first row is the header; an optional dashed row
   |---|------|        under it sets the relative column widths
   *word*              a Kracnodar word, shown in the Kracnodar style
+  ~~word~~            a masked word, struck through
+  ```                 a quote block: the lines between two ``` lines, shown as written
+  other text          a paragraph; a blank line starts a new block
+The Library uses the same markup.
 -->
 
 # A normative grammar
@@ -18,7 +22,7 @@ By Xavier Gervais-Dumont · translated from “Grammaire Kracnodar.docx”
 
 - Kracnodar (/ˈkraʃnodar/) is a synthetic, sung language, invented for the Québécois band of the same name.
 - Words are built by agglutinating lexemes of two kinds: modules, which carry the meaning (like word roots), and affixes (prefixes or suffixes), which refine the form.
-- An affix never changes the spelling of the module: from one module you can make a noun, a verb, an adjective, an adverb, and so on.
+- An affix never changes the spelling of the module, except where the two share a vowel at the join (see 1.3): from one module you can make a noun, a verb, an adjective, an adverb, and so on.
 - Some modules can temporarily act as affixes.
 
 ## 1.  Building words
@@ -44,6 +48,7 @@ By Xavier Gervais-Dumont · translated from “Grammaire Kracnodar.docx”
 - A module or affix on its own has no double consonants, double vowels, diphthongs or vowels in a row.
 - This rule doesn't apply where two modules join: *atari* + *ex* → *atariex*.
 - When two lexemes join and the first ends with the vowel the second starts with, one of the two vowels can be dropped: *mihe* + *e* + *tag* → *miheetag* or *mihetag*; *ava* + *ac* → *avac*.
+- Where dropping it would spell another word or affix, both vowels stay, joined by a linking consonant: *n* for *e*, *a* and *i*, *v* for *o* and *u*. *e* + *ex* → *enex*, not *ex*.
 
 > Coining new words is strongly encouraged.
 

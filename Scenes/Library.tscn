@@ -182,13 +182,6 @@ custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
 tooltip_text = "The room the document is in"
 
-[node name="FormatHint" type="Label" parent="Page/Editor"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"HintLabel"
-text = "English → Kracnodar  a line in both languages     ~~word~~  a masked word     other text  a paragraph     a blank line starts a new block"
-autowrap_mode = 3
-
 [node name="BodyInput" type="TextEdit" parent="Page/Editor"]
 unique_name_in_owner = true
 layout_mode = 2

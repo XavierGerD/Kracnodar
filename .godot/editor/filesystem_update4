@@ -1,2 +1,5 @@
 res://default_env.tres
 res://Scripts/Library.gd
+res://Scripts/Dict.gd
+res://Scripts/Grammaire.gd
+res://Scripts/MarkdownToolbar.gd

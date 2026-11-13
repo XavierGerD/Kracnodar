@@ -52,6 +52,10 @@ const FORMS = [
 	{"name": "Lieu", "affix": "bar", "at": "suffix"},
 ]
 
+# The consonant that links two lexemes sharing a vowel where they join, when
+# dropping one of the two vowels would spell another word or affix (grammar 1.3).
+const LINKING_CONSONANTS = {"e": "n", "a": "n", "i": "n", "o": "v", "u": "v"}
+
 var dict = {}
 
 # Set when dict.json exists but can't be read. Saving is then off, so a bad
@@ -193,17 +197,46 @@ func derived_forms(french: String) -> Array:
 		if form.get("class", "") != word_class:
 			match form["at"]:
 				"prefix":
-					word = form["affix"] + module
-					affix = form["affix"] + " +"
+					var link = linking_consonant(form["affix"], module)
+					word = form["affix"] + link + module
+					affix = form["affix"] + (" + %s (liaison)" % link if link != "" else "") + " +"
 				"word":
 					word = module + " " + form["affix"]
 					affix = "+ " + form["affix"]
 				_:
-					word = module + form["affix"]
-					affix = "+ " + form["affix"]
+					var link = linking_consonant(module, form["affix"])
+					word = module + link + form["affix"]
+					affix = ("+ %s (liaison) " % link if link != "" else "") + "+ " + form["affix"]
 		var existing = french_for_krac(word) if affix != "" else ""
 		forms.append({"name": form["name"], "word": word, "affix": affix, "existing": existing})
 	return forms
+
+
+# The consonant that goes between two lexemes joined into one word, or "" when
+# they join as they are (grammar 1.3): only where the first ends with the vowel
+# the second starts with, and dropping one of the two would spell another word
+# or affix. e + ex gives enex, since dropping a vowel would leave ex. `second`
+# is the whole rest of the word: mihe + etag needs no link, as mihetag is new.
+func linking_consonant(first: String, second: String) -> String:
+	var vowel = first.right(1).to_lower()
+	if not LINKING_CONSONANTS.has(vowel) or second.left(1).to_lower() != vowel:
+		return ""
+	return LINKING_CONSONANTS[vowel] if is_spelled(first + second.substr(1)) else ""
+
+
+# Whether a word is already spelled this way: an entry of the dictionary, or
+# a module with one of its affixes joined on (FORMS).
+func is_spelled(word: String) -> bool:
+	var target = word.to_lower()
+	for french in dict:
+		var krac = krac_of(french).strip_edges().to_lower()
+		if krac == target:
+			return true
+		if class_of(french) in MODULE_CLASSES and krac != "":
+			for form in FORMS:
+				if (form["at"] == "suffix" and krac + form["affix"] == target) or (form["at"] == "prefix" and form["affix"] + krac == target):
+					return true
+	return false
 
 
 # The French word that already uses this Kracnodar word, or "" if none does.
