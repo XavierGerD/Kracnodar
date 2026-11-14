@@ -26,13 +26,13 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"HeadingLabel"
-text = "Rooms"
+text = "Chapters"
 vertical_alignment = 1
 
 [node name="OrganizeButton" type="Button" parent="Toc/Layout/Header"]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Reorder and edit rooms and documents"
+tooltip_text = "Reorder and edit chapters and documents"
 focus_mode = 0
 toggle_mode = true
 text = "Edit"
@@ -48,11 +48,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 1
 
-[node name="AddRoomButton" type="Button" parent="Toc/Layout"]
+[node name="AddChapterButton" type="Button" parent="Toc/Layout"]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Add a room at the end; move it with the arrows in Edit mode"
-text = "+ New room"
+tooltip_text = "Add a chapter at the end; move it with the arrows in Edit mode"
+text = "+ New chapter"
 
 [node name="Page" type="PanelContainer" parent="."]
 layout_mode = 2
@@ -126,7 +126,7 @@ text = "Mask words"
 [node name="NewDocButton" type="Button" parent="Page/Reader/Toolbar"]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Add a document to this room"
+tooltip_text = "Add a document to this chapter"
 focus_mode = 0
 text = "+ New document"
 
@@ -176,11 +176,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Title"
 
-[node name="RoomInput" type="OptionButton" parent="Page/Editor/TitleRow"]
+[node name="ChapterInput" type="OptionButton" parent="Page/Editor/TitleRow"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
-tooltip_text = "The room the document is in"
+tooltip_text = "The chapter the document is in"
 
 [node name="BodyInput" type="TextEdit" parent="Page/Editor"]
 unique_name_in_owner = true

@@ -1,6 +1,6 @@
 extends Control
 
-# The Library: rooms, each holding documents (tablets, notes, labels, riddles)
+# The Library: chapters, each holding documents (tablets, notes, labels, riddles)
 # written in English and Kracnodar side by side. Each document is read by the
 # players in English, Kracnodar or both, a setting saved with it; the language
 # they don't read is greyed out, and its masked words are struck through. In
@@ -17,8 +17,8 @@ const LIBRARY_FILE = "library.md"
 const FORMAT_NOTE = """<!--
 The Kracnodar Library, shown (and editable) in the app's Bibliothèque tab.
   # Title             the library's title, once at the top; the text under it introduces it
-  ## Room name        a room; the text under it, up to its first document, describes it
-  ### Document        a document in that room: a tablet, a note, a label, a riddle…
+  ## Chapter name     a chapter; the text under it, up to its first document, describes it
+  ### Document        a document in that chapter: a tablet, a note, a label, a riddle…
   ### Document [Kracnodar]   one the players read in Kracnodar only ([English]: in English only)
   English → Kracnodar a line in both languages (-> works too; either side may be empty)
   ~~word~~            a masked word: hidden from the players until revealed
@@ -42,12 +42,12 @@ var title = ""
 var intro = ""
 # [{"name": String, "description": String,
 #   "docs": [{"title": String, "body": String, "language": ENGLISH/KRAC/BOTH}]}]
-var rooms = []
+var chapters = []
 var load_problem = ""
 
-var room_index = -1  # the room on the page; -1 for the library itself
-var doc_index = -1   # the document open in that room; -1 for the room itself
-var editing = {}     # {"kind": "library"/"room"/"doc", "room": int, "doc": int}; -1 for a new one
+var chapter_index = -1  # the chapter on the page; -1 for the library itself
+var doc_index = -1   # the document open in that chapter; -1 for the chapter itself
+var editing = {}     # {"kind": "library"/"chapter"/"doc", "chapter": int, "doc": int}; -1 for a new one
 var _struck_font: FontVariation  # see _strike_font()
 var _doc_modes = false  # whether Preview and Mask words apply: on a document's page
 
@@ -67,8 +67,8 @@ func _ready():
 	%PreviewButton.toggled.connect(_on_view_toggled.bind(%MarkButton))
 	%MarkButton.toggled.connect(_on_view_toggled.bind(%PreviewButton))
 	%OrganizeButton.toggled.connect(func(_on): render())
-	%AddRoomButton.pressed.connect(open_editor.bind("room", -1, -1))
-	%NewDocButton.pressed.connect(func(): open_editor("doc", room_index, -1))
+	%AddChapterButton.pressed.connect(open_editor.bind("chapter", -1, -1))
+	%NewDocButton.pressed.connect(func(): open_editor("doc", chapter_index, -1))
 	%EditButton.pressed.connect(_on_EditButton_pressed)
 	%BackButton.pressed.connect(_on_BackButton_pressed)
 	%SaveButton.pressed.connect(save_editor)
@@ -90,7 +90,7 @@ func load_library() -> void:
 	var path = Dict.read_path(LIBRARY_FILE)
 	load_problem = ""
 	if not FileAccess.file_exists(path):
-		load_problem = "%s is missing. A new room will create it." % LIBRARY_FILE
+		load_problem = "%s is missing. A new chapter will create it." % LIBRARY_FILE
 		parse_document("")
 		return
 	parse_document(FileAccess.get_file_as_string(path))
@@ -110,10 +110,10 @@ func save_library() -> bool:
 func parse_document(text: String) -> void:
 	text = _comment.sub(text.replace("\r\n", "\n"), "", true)
 	title = ""
-	rooms = []
+	chapters = []
 	var intro_lines = []
 	var body_lines = []
-	var target = null  # the room or document the lines under the last heading belong to
+	var target = null  # the chapter or document the lines under the last heading belong to
 	var key = ""
 	var quoting = false  # inside a ``` block, where a # line is quoted text, not a heading
 	for line in text.split("\n"):
@@ -125,15 +125,15 @@ func parse_document(text: String) -> void:
 			body_lines = []
 			var heading = line.substr(line.find(" ") + 1).strip_edges()
 			if line.begins_with("## "):
-				rooms.append({"name": heading, "description": "", "docs": []})
-				target = rooms[-1]
+				chapters.append({"name": heading, "description": "", "docs": []})
+				target = chapters[-1]
 				key = "description"
 			else:
-				if rooms.is_empty():  # a document needs a room
-					rooms.append({"name": "Room 1", "description": "", "docs": []})
+				if chapters.is_empty():  # a document needs a chapter
+					chapters.append({"name": "Chapter 1", "description": "", "docs": []})
 				var parts = split_heading(heading)
-				rooms[-1]["docs"].append({"title": parts[0], "body": "", "language": parts[1]})
-				target = rooms[-1]["docs"][-1]
+				chapters[-1]["docs"].append({"title": parts[0], "body": "", "language": parts[1]})
+				target = chapters[-1]["docs"][-1]
 				key = "body"
 		elif target == null:
 			if line.begins_with("# ") and title == "":
@@ -151,11 +151,11 @@ func to_markdown() -> String:
 	var parts = [FORMAT_NOTE, "# " + _library_title()]
 	if intro != "":
 		parts.append(intro)
-	for room in rooms:
-		parts.append("## " + room["name"])
-		if room["description"] != "":
-			parts.append(room["description"])
-		for doc in room["docs"]:
+	for chapter in chapters:
+		parts.append("## " + chapter["name"])
+		if chapter["description"] != "":
+			parts.append(chapter["description"])
+		for doc in chapter["docs"]:
 			parts.append("### " + doc["title"] + {ENGLISH: " [English]", KRAC: " [Kracnodar]"}.get(_doc_language(doc), ""))
 			if doc["body"] != "":
 				parts.append(doc["body"])
@@ -278,7 +278,7 @@ func _on_word_clicked(meta) -> void:
 	var parts = str(meta).split(":")
 	if parts.size() != 3 or not _has_doc():
 		return
-	var doc = rooms[room_index]["docs"][doc_index]
+	var doc = chapters[chapter_index]["docs"][doc_index]
 	var raw_lines = doc["body"].split("\n")
 	var n = int(parts[0])
 	var side = parts[1]
@@ -297,45 +297,45 @@ func _on_word_clicked(meta) -> void:
 
 # --- Reordering and editing ------------------------------------------------
 
-func _has_room() -> bool:
-	return room_index >= 0 and room_index < rooms.size()
+func _has_chapter() -> bool:
+	return chapter_index >= 0 and chapter_index < chapters.size()
 
 
 func _has_doc() -> bool:
-	return _has_room() and doc_index >= 0 and doc_index < rooms[room_index]["docs"].size()
+	return _has_chapter() and doc_index >= 0 and doc_index < chapters[chapter_index]["docs"].size()
 
 
-func move_room(index: int, direction: int) -> void:
+func move_chapter(index: int, direction: int) -> void:
 	var target = index + direction
-	if target < 0 or target >= rooms.size():
+	if target < 0 or target >= chapters.size():
 		return
-	var before = rooms.duplicate(true)
-	var room = rooms[index]
-	rooms.remove_at(index)
-	rooms.insert(target, room)
+	var before = chapters.duplicate(true)
+	var chapter = chapters[index]
+	chapters.remove_at(index)
+	chapters.insert(target, chapter)
 	if not save_library():
-		rooms = before
+		chapters = before
 		return
-	if room_index == index:
-		room_index = target
-	elif room_index == target:
-		room_index = index
+	if chapter_index == index:
+		chapter_index = target
+	elif chapter_index == target:
+		chapter_index = index
 	render()
 
 
-func move_doc(room: int, index: int, direction: int) -> void:
-	var docs = rooms[room]["docs"]
+func move_doc(chapter: int, index: int, direction: int) -> void:
+	var docs = chapters[chapter]["docs"]
 	var target = index + direction
 	if target < 0 or target >= docs.size():
 		return
-	var before = rooms.duplicate(true)
+	var before = chapters.duplicate(true)
 	var doc = docs[index]
 	docs.remove_at(index)
 	docs.insert(target, doc)
 	if not save_library():
-		rooms = before
+		chapters = before
 		return
-	if room_index == room:
+	if chapter_index == chapter:
 		if doc_index == index:
 			doc_index = target
 		elif doc_index == target:
@@ -343,10 +343,10 @@ func move_doc(room: int, index: int, direction: int) -> void:
 	render()
 
 
-func open_editor(kind: String, room: int, doc: int) -> void:
-	editing = {"kind": kind, "room": room, "doc": doc}
-	%RoomInput.visible = kind == "doc"
-	%DeleteButton.visible = (kind == "room" and room >= 0) or (kind == "doc" and doc >= 0)
+func open_editor(kind: String, chapter: int, doc: int) -> void:
+	editing = {"kind": kind, "chapter": chapter, "doc": doc}
+	%ChapterInput.visible = kind == "doc"
+	%DeleteButton.visible = (kind == "chapter" and chapter >= 0) or (kind == "doc" and doc >= 0)
 	match kind:
 		"library":
 			%EditorHeading.text = "Edit the library"
@@ -354,23 +354,23 @@ func open_editor(kind: String, room: int, doc: int) -> void:
 			%NameInput.text = _library_title()
 			%BodyInput.placeholder_text = "What the library is, how the players go through it…"
 			%BodyInput.text = intro
-		"room":
-			%EditorHeading.text = "Edit room" if room >= 0 else "New room"
-			%NameInput.placeholder_text = "Room name, e.g. Room 4"
-			%NameInput.text = rooms[room]["name"] if room >= 0 else "Room %d" % (rooms.size() + 1)
+		"chapter":
+			%EditorHeading.text = "Edit chapter" if chapter >= 0 else "New chapter"
+			%NameInput.placeholder_text = "Chapter name, e.g. Chapter 4"
+			%NameInput.text = chapters[chapter]["name"] if chapter >= 0 else "Chapter %d" % (chapters.size() + 1)
 			%BodyInput.placeholder_text = "What the players see when they enter…"
-			%BodyInput.text = rooms[room]["description"] if room >= 0 else ""
+			%BodyInput.text = chapters[chapter]["description"] if chapter >= 0 else ""
 		"doc":
-			var current = rooms[room]["docs"][doc] if doc >= 0 else {"title": "", "body": ""}
+			var current = chapters[chapter]["docs"][doc] if doc >= 0 else {"title": "", "body": ""}
 			%EditorHeading.text = "Edit document" if doc >= 0 else "New document"
 			%NameInput.placeholder_text = "Title, e.g. The stone tablet"
 			%NameInput.text = current["title"]
 			%BodyInput.placeholder_text = "Written on a stone tablet:\n\nIn my house of stone → Ga enogo ~~tinod~~ kintag"
 			%BodyInput.text = current["body"]
-			%RoomInput.clear()
-			for i in rooms.size():
-				%RoomInput.add_item(rooms[i]["name"], i)
-			%RoomInput.select(room)
+			%ChapterInput.clear()
+			for i in chapters.size():
+				%ChapterInput.add_item(chapters[i]["name"], i)
+			%ChapterInput.select(chapter)
 	%Reader.visible = false
 	%Editor.visible = true
 	%NameInput.grab_focus()
@@ -385,7 +385,7 @@ func save_editor() -> void:
 	var name_text = %NameInput.text.strip_edges()
 	var body = %BodyInput.text.strip_edges()
 	if editing["kind"] != "library" and name_text == "":
-		_error("Give it a name." if editing["kind"] == "room" else "Give the document a title.")
+		_error("Give it a name." if editing["kind"] == "chapter" else "Give the document a title.")
 		return
 	var quoting = false  # a # line inside a ``` block is quoted, not a heading
 	for line in body.split("\n"):
@@ -394,42 +394,42 @@ func save_editor() -> void:
 		elif not quoting and _heading.search(line) != null:
 			_error("A line can't start with # (it would read as a heading): “%s”" % line)
 			return
-	var before = [title, intro, rooms.duplicate(true), room_index, doc_index]
-	var room = editing["room"]
+	var before = [title, intro, chapters.duplicate(true), chapter_index, doc_index]
+	var chapter = editing["chapter"]
 	match editing["kind"]:
 		"library":
 			title = name_text
 			intro = body
-			room_index = -1
+			chapter_index = -1
 			doc_index = -1
-		"room":
-			if room >= 0:
-				rooms[room]["name"] = name_text
-				rooms[room]["description"] = body
+		"chapter":
+			if chapter >= 0:
+				chapters[chapter]["name"] = name_text
+				chapters[chapter]["description"] = body
 			else:
-				rooms.append({"name": name_text, "description": body, "docs": []})
-				room = rooms.size() - 1
-			room_index = room
+				chapters.append({"name": name_text, "description": body, "docs": []})
+				chapter = chapters.size() - 1
+			chapter_index = chapter
 			doc_index = -1
 		"doc":
 			var index = editing["doc"]
 			var doc = {"title": name_text, "body": body,
-				"language": _doc_language(rooms[room]["docs"][index]) if index >= 0 else BOTH}
-			var target = %RoomInput.get_selected_id()
-			if index >= 0 and target == room:
-				rooms[room]["docs"][index] = doc
+				"language": _doc_language(chapters[chapter]["docs"][index]) if index >= 0 else BOTH}
+			var target = %ChapterInput.get_selected_id()
+			if index >= 0 and target == chapter:
+				chapters[chapter]["docs"][index] = doc
 			else:
 				if index >= 0:
-					rooms[room]["docs"].remove_at(index)
-				rooms[target]["docs"].append(doc)
-				index = rooms[target]["docs"].size() - 1
-			room_index = target
+					chapters[chapter]["docs"].remove_at(index)
+				chapters[target]["docs"].append(doc)
+				index = chapters[target]["docs"].size() - 1
+			chapter_index = target
 			doc_index = index
 	if not save_library():
 		title = before[0]
 		intro = before[1]
-		rooms = before[2]
-		room_index = before[3]
+		chapters = before[2]
+		chapter_index = before[3]
 		doc_index = before[4]
 		return
 	close_editor()
@@ -437,31 +437,31 @@ func save_editor() -> void:
 
 
 func _on_DeleteButton_pressed() -> void:
-	if editing["kind"] == "room":
-		var room = rooms[editing["room"]]
-		var count = room["docs"].size()
-		%DeleteConfirm.dialog_text = "Delete “%s”%s?" % [room["name"],
+	if editing["kind"] == "chapter":
+		var chapter = chapters[editing["chapter"]]
+		var count = chapter["docs"].size()
+		%DeleteConfirm.dialog_text = "Delete “%s”%s?" % [chapter["name"],
 			"" if count == 0 else " and its %d document%s" % [count, "" if count == 1 else "s"]]
 	else:
-		%DeleteConfirm.dialog_text = "Delete “%s”?" % rooms[editing["room"]]["docs"][editing["doc"]]["title"]
+		%DeleteConfirm.dialog_text = "Delete “%s”?" % chapters[editing["chapter"]]["docs"][editing["doc"]]["title"]
 	%DeleteConfirm.popup_centered()
 
 
 func delete_edited() -> void:
-	var before = [rooms.duplicate(true), room_index, doc_index]
-	if editing["kind"] == "room":
-		rooms.remove_at(editing["room"])
-		room_index = -1
+	var before = [chapters.duplicate(true), chapter_index, doc_index]
+	if editing["kind"] == "chapter":
+		chapters.remove_at(editing["chapter"])
+		chapter_index = -1
 		doc_index = -1
 	elif editing["kind"] == "doc":
-		rooms[editing["room"]]["docs"].remove_at(editing["doc"])
-		room_index = editing["room"]
+		chapters[editing["chapter"]]["docs"].remove_at(editing["doc"])
+		chapter_index = editing["chapter"]
 		doc_index = -1
 	else:
 		return
 	if not save_library():
-		rooms = before[0]
-		room_index = before[1]
+		chapters = before[0]
+		chapter_index = before[1]
 		doc_index = before[2]
 		return
 	close_editor()
@@ -470,22 +470,22 @@ func delete_edited() -> void:
 
 func _on_EditButton_pressed() -> void:
 	if _has_doc():
-		open_editor("doc", room_index, doc_index)
-	elif _has_room():
-		open_editor("room", room_index, -1)
+		open_editor("doc", chapter_index, doc_index)
+	elif _has_chapter():
+		open_editor("chapter", chapter_index, -1)
 	else:
 		open_editor("library", -1, -1)
 
 
 func _on_BackButton_pressed() -> void:
 	if _has_doc():
-		show_page(room_index, -1)
+		show_page(chapter_index, -1)
 	else:
 		show_page(-1, -1)
 
 
-func show_page(room: int, doc: int) -> void:
-	room_index = room
+func show_page(chapter: int, doc: int) -> void:
+	chapter_index = chapter
 	doc_index = doc
 	close_editor()
 	render()
@@ -504,8 +504,8 @@ func _rerender() -> void:
 
 
 func render() -> void:
-	if not _has_room():
-		room_index = -1
+	if not _has_chapter():
+		chapter_index = -1
 	if not _has_doc():
 		doc_index = -1
 	for child in %Content.get_children():
@@ -516,23 +516,23 @@ func render() -> void:
 
 	var on_doc = _has_doc()
 	_doc_modes = on_doc
-	%BackButton.visible = _has_room()
-	%BackButton.text = "← " + (rooms[room_index]["name"] if on_doc else "Library")
+	%BackButton.visible = _has_chapter()
+	%BackButton.text = "← " + (chapters[chapter_index]["name"] if on_doc else "Library")
 	%LangBox.visible = on_doc
 	if on_doc:
-		var language = _doc_language(rooms[room_index]["docs"][doc_index])
+		var language = _doc_language(chapters[chapter_index]["docs"][doc_index])
 		%EnglishButton.set_pressed_no_signal(language == ENGLISH)
 		%BothButton.set_pressed_no_signal(language == BOTH)
 		%KracButton.set_pressed_no_signal(language == KRAC)
 	%PreviewButton.visible = on_doc
 	%MarkButton.visible = on_doc
-	%NewDocButton.visible = _has_room() and not on_doc
-	%EditButton.text = "Edit document" if on_doc else ("Edit room" if _has_room() else "Edit library")
+	%NewDocButton.visible = _has_chapter() and not on_doc
+	%EditButton.text = "Edit document" if on_doc else ("Edit chapter" if _has_chapter() else "Edit library")
 
 	if on_doc:
-		_render_doc(rooms[room_index]["docs"][doc_index])
-	elif _has_room():
-		_render_room(rooms[room_index])
+		_render_doc(chapters[chapter_index]["docs"][doc_index])
+	elif _has_chapter():
+		_render_chapter(chapters[chapter_index])
 	else:
 		_render_library()
 	_render_toc()
@@ -541,22 +541,22 @@ func render() -> void:
 func _render_library() -> void:
 	%Content.add_child(_label(_library_title(), "SectionTitle"))
 	_render_blocks(intro, BOTH)
-	if rooms.is_empty():
-		%Content.add_child(_label("No rooms yet. Add one with + New room.", "HintLabel"))
-	for i in rooms.size():
-		var count = rooms[i]["docs"].size()
-		%Content.add_child(_link("%s   ·   %d document%s" % [rooms[i]["name"], count, "" if count == 1 else "s"],
+	if chapters.is_empty():
+		%Content.add_child(_label("No chapters yet. Add one with + New chapter.", "HintLabel"))
+	for i in chapters.size():
+		var count = chapters[i]["docs"].size()
+		%Content.add_child(_link("%s   ·   %d document%s" % [chapters[i]["name"], count, "" if count == 1 else "s"],
 			"TocButton", show_page.bind(i, -1)))
 
 
-func _render_room(room: Dictionary) -> void:
-	%Content.add_child(_label(room["name"], "SectionTitle"))
-	_render_blocks(room["description"], BOTH)
+func _render_chapter(chapter: Dictionary) -> void:
+	%Content.add_child(_label(chapter["name"], "SectionTitle"))
+	_render_blocks(chapter["description"], BOTH)
 	%Content.add_child(_label("Documents", "HeadingLabel"))
-	if room["docs"].is_empty():
+	if chapter["docs"].is_empty():
 		%Content.add_child(_label("No documents yet. Add one with + New document.", "HintLabel"))
-	for j in room["docs"].size():
-		%Content.add_child(_link(room["docs"][j]["title"], "TocButton", show_page.bind(room_index, j)))
+	for j in chapter["docs"].size():
+		%Content.add_child(_link(chapter["docs"][j]["title"], "TocButton", show_page.bind(chapter_index, j)))
 
 
 func _render_doc(doc: Dictionary) -> void:
@@ -709,7 +709,7 @@ func _lines_table(items: Array, language: String) -> Control:
 func _on_language_toggled(on: bool, language: String) -> void:
 	if not on or not _has_doc():
 		return
-	var doc = rooms[room_index]["docs"][doc_index]
+	var doc = chapters[chapter_index]["docs"][doc_index]
 	var before = _doc_language(doc)
 	if before == language:
 		return
@@ -814,7 +814,7 @@ func _render_toc() -> void:
 		%TocList.remove_child(child)
 		child.queue_free()
 	var organizing = %OrganizeButton.button_pressed
-	var top = _toc_button(_library_title(), "TocButton", room_index < 0, show_page.bind(-1, -1))
+	var top = _toc_button(_library_title(), "TocButton", chapter_index < 0, show_page.bind(-1, -1))
 	var top_row = HBoxContainer.new()
 	top_row.add_child(top)
 	if organizing:
@@ -822,19 +822,19 @@ func _render_toc() -> void:
 		edit.pressed.connect(open_editor.bind("library", -1, -1))
 		top_row.add_child(edit)
 	%TocList.add_child(top_row)
-	for i in rooms.size():
+	for i in chapters.size():
 		var row = HBoxContainer.new()
 		row.add_theme_constant_override("separation", 2)
-		row.add_child(_toc_button(rooms[i]["name"], "TocButton", room_index == i and doc_index < 0, show_page.bind(i, -1)))
+		row.add_child(_toc_button(chapters[i]["name"], "TocButton", chapter_index == i and doc_index < 0, show_page.bind(i, -1)))
 		if organizing:
-			_add_row_tools(row, i > 0, i < rooms.size() - 1, move_room.bind(i, -1), move_room.bind(i, 1),
-				open_editor.bind("room", i, -1))
+			_add_row_tools(row, i > 0, i < chapters.size() - 1, move_chapter.bind(i, -1), move_chapter.bind(i, 1),
+				open_editor.bind("chapter", i, -1))
 		%TocList.add_child(row)
-		var docs = rooms[i]["docs"]
+		var docs = chapters[i]["docs"]
 		for j in docs.size():
 			var doc_row = HBoxContainer.new()
 			doc_row.add_theme_constant_override("separation", 2)
-			doc_row.add_child(_toc_button(docs[j]["title"], "TocSubButton", room_index == i and doc_index == j, show_page.bind(i, j)))
+			doc_row.add_child(_toc_button(docs[j]["title"], "TocSubButton", chapter_index == i and doc_index == j, show_page.bind(i, j)))
 			if organizing:
 				_add_row_tools(doc_row, j > 0, j < docs.size() - 1, move_doc.bind(i, j, -1), move_doc.bind(i, j, 1),
 					open_editor.bind("doc", i, j))
@@ -895,7 +895,7 @@ func _row_button(text: String, tooltip: String) -> Button:
 
 
 # A wrapping, selectable text. Without BBCode given, the text is escaped and
-# its masks dropped (room descriptions and the introduction have none).
+# its masks dropped (chapter descriptions and the introduction have none).
 func _rich(text: String) -> RichTextLabel:
 	var rich = RichTextLabel.new()
 	rich.bbcode_enabled = true

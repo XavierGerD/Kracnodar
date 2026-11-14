@@ -1,8 +1,8 @@
 <!--
 The Kracnodar Library, shown (and editable) in the app's Bibliothèque tab.
   # Title             the library's title, once at the top; the text under it introduces it
-  ## Room name        a room; the text under it, up to its first document, describes it
-  ### Document        a document in that room: a tablet, a note, a label, a riddle…
+  ## Chapter name     a chapter; the text under it, up to its first document, describes it
+  ### Document        a document in that chapter: a tablet, a note, a label, a riddle…
   ### Document [Kracnodar]   one the players read in Kracnodar only ([English]: in English only)
   English → Kracnodar a line in both languages (-> works too; either side may be empty)
   ~~word~~            a masked word: hidden from the players until revealed
@@ -33,11 +33,13 @@ About half a decade ago, before the War, our efforts in archaeology led Lord Cha
 
 Its people settled in every crevice, nook and cave, yet time has all but wiped them out. Only a few artefacts remain. Among them is a book, whose strangeness is surpassed only by the immense reverence it commands. Beautifully preserved, it emanates a sort of feeling that can only be described as pure strength, resilience, and, dare I say, evil. 
 
-Nevertheless, we have tried to read it, but to no avail; its leathery pages seem bound by some kind of supernatural force. Only its cover will open, revealing on the first leaf a singular and most incredible poem, written in a language that is almost totally unknown to us. Indeed, this language bears absolutely no resemblance to any Kartvelian language, nor to Proto-Indo-European, nor to the Semitic tongues, nor to any other we could find. The poem's origin, and indeed its meaning, remain completely opaque even to our best experts. Most bewilderingly, the characters in which the poem is written change depending on who is reading them. An English speaker like myself would read Latin characters, a speaker of Russian would read Cyrillic, and so forth. This is something I still struggle to come to terms with, but it was confirmed by my local guide, a man I trust to this day, who swore on his life that he saw Mkhedruli characters on the page. In any case, it would be absurd for so secluded a civilization to know Latin letters, let alone write in them.
+Nevertheless, we have tried to read it, but to no avail; its leathery pages seem bound by some kind of supernatural force. Only its cover will open, revealing on the first leaf a singular and most incredible poem, written in a language that is almost totally unknown to us. Indeed, this language bears absolutely no resemblance to any Kartvelian language, nor to Proto-Indo-European, nor to the Semitic tongues, nor to any other we could find. The poem's origin, and indeed its meaning, remain completely opaque even to our best experts. Most bewilderingly, the characters in which the poem is written change depending on who is reading them. An English speaker like myself would read Latin characters, a speaker of Russian would read Cyrillic, and so forth. This is something I still struggle to come to terms with, but it was confirmed by Irakli, my local guide, a man I trust to this day, who swore on his life that he saw Mkhedruli characters on the page. In any case, it would be absurd for so secluded a civilization to know Latin letters, let alone write in them.
 
 I can draw but one conclusion: the book wants to be read. It yearns for its pages to be turned.
 
 Thankfully, the book is not all they left behind. Among the ruins, we found tablets of their own making, just as strange and fascinating as the book itself. Each bears two columns: one in their own tongue, again in the reader's script, and one in the reader's own language. Where I read English, my guide reads Georgian. It is as though their ancient tongue refuses to be translated directly. I suspect it wants to be learned. These tablets even give the tongue its name: Kracnodar, which, as near as we can make out, means “the song of stone.” They also speak of the book itself: that it holds the power to move mountains, split the seas, and unleash the forces of the Earth at will. They write that its power answers to the commands of those who speak its tongue. But, to turn its pages, one must solve the riddles it presents. The poem on the first page, I believe, is the first of these riddles.
+
+Moreover, among the ruins, we also found some notes written in a strange pidgin of Russian and Georgian, suggesting an attempt at a revival of this ancient religion. These have been conveniently translated by Irakli.
 
 For five years I have kept this book in my office, unable to break its secrets. But the threat of impending doom from the continent changes everything. If the tablets speak the truth, it could be the key to holding back the enemy, and indeed to restoring peace to the Continent. I do not pretend the book is benign; I have felt what it gives off. But I would sooner wield an evil thing than watch Britain fall, and the whole of Europe with her.
 
@@ -48,15 +50,33 @@ With this letter you will find the book itself, and a bundle. This bundle contai
 Godspeed, old friend,
 
 Aldermoor
+
+P.S. Keep this to yourself for now. Let us not bother His Majesty until we have achieved certainty.
 ```
 
-## Room 1
+## Prologue - The Blacksmith
 
-You enter a large circular room. Its walls, made of dark grey stone, echo your every footsteps like hammer strikes. In the middle of the room, a statue of a man holding a hammer up high. His motion is to strike a piece of metal on an anvil. At his feet, a broken stone tablet on a pedestal. Surrounding the statue are four bowls with various coins, unlit candles and fruits. Spread evenly along the walls of the room are smaller statues of tools.
+With the letter from Aldermoore, you receive a bundle of artefacts. Each of these artefacts is carefully labelled with the location where it was found and what state it was in.
 
-### The stone tablet
+### Archaeological findings
 
-Split into two sections, it features your tongue on the left, and another, unknown language on the right:
+```
+The following book and artefacts were found in a circular chamber.
+In the middle of this chamber, a status of a blacksmith at work.
+At regular intervals along the walls, four bowls, each containing a note.
+```
+
+### The clay tablet
+
+Split into two sections, it features your tongue on the left, and another, unknown language on the right. Included with its classification document is a strange photograph of the tablet. You recognize its shape and the damage to the tablet itself matches exactly what you have in your hands, but there are no words written on it.
+
+Document:
+```
+Clay tablet, about 2 inches tall, 3 inches across.
+Inscriptions appear to in the beholder's language. 
+Photographs show the tablet as empty. See attached.
+Found in the blacksmith's chamber, laid on top of the book.
+```
 
 ~~In my~~ house of stone → ~~Ga enogo~~ tinod kintag
 I work with fire and steel → ~~Dabtag pop~~ vul gi melid
@@ -68,14 +88,18 @@ Fire, burn forever → Vul, ~~vultan ral~~
 
 ### Bowl note: Voni [English]
 
-In one of the bowls, a note (only in Krac):
+```
+Note number one. Similar to all other notes. Written in a strange pidgin of Russian and Georgian, and translated by Irakli, Aldermoore's guide.
+```
 
 I, Voni, wish for work → Tag, Voni, lunirtag dabex
 Please, Etevo, bring great fortune → Nel, Etevo, pirolwet mulenop
 
 ### Bowl note: Kinlorev [Kracnodar]
 
-In one of the bowls, a note (only in Krac):
+```
+Note number one. Similar to all other notes. Written in Kracnodar.
+```
 
 I, Kinlorev, wish for work → Tag, Kinlorev, lunirtag dabex
 In the temple of Etevo → Ga lorevbar kin-Etevo
@@ -83,7 +107,7 @@ Where his hammer sounds → Nev hura, zek kinac relinac
 
 ### Bowl note: Felekrom [Kracnodar]
 
-In one of the bowls, a note (only in English):
+Note number one. Similar to all other notes. Written in Kracnodar.
 
 I, Felekrom, wish for work → Tag, Felekrom, lunirtag dabex
 In the temple of Etevo → Ga lorevbar kin-Etevo
@@ -118,9 +142,9 @@ Answer: Blacksmith (lokrom)
 Grammar: the subject pronoun tag after the verb, ga, kin, ipe, -ex, -rom, hob.
 Vocabulary: lok, dab, vul, melid, zir, murok, raka, e.
 
-## Room 2
+## Chapter 1
 
-## Room 3
+## Chapter 2
 
 ### Untitled
 
