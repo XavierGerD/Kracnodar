@@ -13,11 +13,74 @@ extends RefCounted
 #   *word*                a Kracnodar word, in the Kracnodar style
 #   ~~word~~              a masked word: struck through, and hidden from the
 #                         Library's players until revealed
+#   ==word==              a required word or module (the Library's Required list)
+#   {word}                an appearance the Required list doesn't count
 
 const FENCE = "```"
 
+# What a character of a text is, past its marks (see parse_marks); one bit each.
+const MASKED = 1
+const REQUIRED = 2
+const IGNORED = 4
+
 static var _arrow := RegEx.create_from_string("\\s*(?:→|->)\\s*")
 static var _separator_cell := RegEx.create_from_string("^:?-+:?$")
+
+
+# A text without its ~~, == and {} marks, and what each of its characters is:
+#   {"plain": String, "flags": [MASKED | REQUIRED | IGNORED for each character]}
+# ~~ and == each open or close their kind; a last one with no partner runs to
+# the end of the text. A { with no } after it, or a } with no {, is just itself.
+static func parse_marks(text: String) -> Dictionary:
+	var plain = ""
+	var flags = []
+	var state = 0
+	var i = 0
+	while i < text.length():
+		var pair = text.substr(i, 2)
+		if pair == "~~":
+			state ^= MASKED
+			i += 2
+			continue
+		if pair == "==":
+			state ^= REQUIRED
+			i += 2
+			continue
+		var c = text[i]
+		if c == "{" and state & IGNORED == 0 and text.find("}", i + 1) != -1:
+			state |= IGNORED
+		elif c == "}" and state & IGNORED != 0:
+			state &= ~IGNORED
+		else:
+			plain += c
+			flags.append(state)
+		i += 1
+	return {"plain": plain, "flags": flags}
+
+
+# The text parse_marks() read, its marks put back where the flags change.
+static func join_marks(plain: String, flags: Array) -> String:
+	var out = ""
+	var before = 0
+	for i in plain.length() + 1:
+		var now = flags[i] if i < plain.length() else 0
+		if now != before:
+			if before & IGNORED and not now & IGNORED:
+				out += "}"
+			if before & REQUIRED and not now & REQUIRED:
+				out += "=="
+			if before & MASKED and not now & MASKED:
+				out += "~~"
+			if now & MASKED and not before & MASKED:
+				out += "~~"
+			if now & REQUIRED and not before & REQUIRED:
+				out += "=="
+			if now & IGNORED and not before & IGNORED:
+				out += "{"
+		if i < plain.length():
+			out += plain[i]
+		before = now
+	return out
 
 
 # Splits a text into blocks of one kind, in order:

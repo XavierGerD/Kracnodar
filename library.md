@@ -6,6 +6,8 @@ The Kracnodar Library, shown (and editable) in the app's Bibliothèque tab.
   ### Document [Kracnodar]   one the players read in Kracnodar only ([English]: in English only)
   English → Kracnodar a line in both languages (-> works too; either side may be empty)
   ~~word~~            a masked word: hidden from the players until revealed
+  ==word==            a required word or module (==lok==tag for a module): green, and listed under Required
+  {word}              an appearance that Required doesn't count
   - text              a rule, one per line
   > text              a note
   | a | b |           a table: the first row is the header; an optional dashed row
@@ -23,7 +25,7 @@ On the morning of February 11th, 1916, you receive this letter, addressed person
 ```
 Dear Lord Sitwell,
 
-It is with a troubled mind that I write to you in this time of unrest. By the time this letter reaches you, I shall have returned to the Caucasus to further my research.
+It is with a troubled mind that I write to you in this time of unrest.
 
 As you know, the Great War is raging on the Continent, and with every passing day, the threat of annihilation spreads, slowly but steadily, towards our beautiful nation. Soon, the twisted tentacles of Prussian forces will enter the Channel waters and emerge on our coasts. When that happens, it shall be too late. We will be powerless.
 
@@ -45,7 +47,7 @@ For five years I have kept this book in my office, unable to break its secrets. 
 
 Your part in this affair is no simple matter, but it is something that only a linguist of your calibre can achieve. What I require from you, old friend, is nothing short of a miracle. Please, you MUST decipher this language, answer the book's riddles, and open it, before it is too late for us all. The survival of our great Empire depends on it.
 
-With this letter you will find the book itself, and a bundle. This bundle contains fragments of text found in the cave where the book lay, along with a precise description of the room and where each fragment was found. Use it to learn the language and solve the first riddle. I will send more bundles as my dig progresses. Should you need me, do not hesitate to telegraph. I have stationed a man at the Tiflis telegraph office, and he will carry any word from you up to me without delay. Be guarded in your telegrams; the enemy may be listening.
+By the time this letter reaches you, I shall have returned to the Caucasus to further my research. With it you will find the book itself, and a bundle. This bundle contains fragments of text found in the cave where the book lay, along with a precise description of the room and where each fragment was found. Use it to learn the language and solve the first riddle. I will send more bundles as my dig progresses. Should you need me, do not hesitate to telegraph. I have stationed a man at the Tiflis telegraph office, and he will carry any word from you up to me without delay. Be guarded in your telegrams. The enemy may be listening.
 
 Godspeed, old friend,
 
@@ -73,7 +75,9 @@ Split into two sections, it features your tongue on the left, and another, unkno
 Document:
 ```
 Clay tablet, about 2 inches tall, 3 inches across.
-Inscriptions appear to in the beholder's language. 
+Damage rendered some letters illegible.
+Inscriptions appear to in the beholder's language on the left,
+in the be beholder's script on the right.
 Photographs show the tablet as empty. See attached.
 Found in the blacksmith's chamber, laid on top of the book.
 ```
@@ -89,7 +93,13 @@ Fire, burn forever → Vul, ~~vultan ral~~
 ### Bowl note: Voni [English]
 
 ```
-Note number one. Similar to all other notes. Written in a strange pidgin of Russian and Georgian, and translated by Irakli, Aldermoore's guide.
+Note number one. Found in the first bowl at the left of the entrance. Similar to all other notes. Written in a strange pidgin of Russian and Georgian, and translated by Irakli, Aldermoore's guide.
+```
+
+Original text:
+```
+Я, Вони, минда работа. 
+Гтхов, Этево, принеси диди удача.
 ```
 
 I, Voni, wish for work → Tag, Voni, lunirtag dabex
@@ -98,7 +108,7 @@ Please, Etevo, bring great fortune → Nel, Etevo, pirolwet mulenop
 ### Bowl note: Kinlorev [Kracnodar]
 
 ```
-Note number one. Similar to all other notes. Written in Kracnodar.
+Note number two. Found in the second bowl, starting at the left of the entrance. Written in Kracnodar.
 ```
 
 I, Kinlorev, wish for work → Tag, Kinlorev, lunirtag dabex
@@ -107,7 +117,9 @@ Where his hammer sounds → Nev hura, zek kinac relinac
 
 ### Bowl note: Felekrom [Kracnodar]
 
-Note number one. Similar to all other notes. Written in Kracnodar.
+```
+Note number three. Found in the third bowl, starting at the left of the entrance. Written in Kracnodar.
+```
 
 I, Felekrom, wish for work → Tag, Felekrom, lunirtag dabex
 In the temple of Etevo → Ga lorevbar kin-Etevo
@@ -115,7 +127,9 @@ Where great fortune lies → Nev hura, mulenopbar
 
 ### Bowl note: Vulrom [Kracnodar]
 
-In one of the bowls, a note (only in Krac):
+```
+Note number four. Found in the third bowl, starting at the left of the entrance. Written in Kracnodar.
+```
 
 I, Vulrom, wish for work → Tag, Felekrom, lunirtag dabex
 Sadness is in me →
@@ -131,7 +145,7 @@ Tongs → Tor
 
 ### Riddle [Kracnodar]
 
-I forge in fire → Loktag ga vul
+I forge in fire → ==Lok==tag ga vul
 I work with steel → Dabtag pop melid
 I make the sharpness to kill → Rakatag zirex ipe murok
 I am a servant of Etevo → Etag wode kin-Etovo

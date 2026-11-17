@@ -24,10 +24,18 @@ The Kracnodar grammar, shown (and editable) in the app's Grammaire tab.
   |---|------|        under it sets the relative column widths
   *word*              a Kracnodar word, shown in the Kracnodar style
   ~~word~~            a masked word, struck through
+  ![name](path)       an image from the project, as tall as the text is: ![Dul](Runes/Dul.png)
   ```                 a quote block: the lines between two ``` lines, shown as written
   other text          a paragraph; a blank line starts a new block
-The Library uses the same markup.
+The Library uses the same markup, images apart.
 -->"""
+
+# An image stands in the text as one of these characters (the first image of
+# a text as the first one, and so on) until the text becomes BBCode, so search
+# highlighting and the other marks pass over it whole.
+const IMAGE_CHAR = 0xE000
+# An image's height, against the text's font size.
+const IMAGE_SCALE = 1.6
 
 # Search highlights are marked with these before the text becomes BBCode.
 const MARK_OPEN = "\u0001"
@@ -42,6 +50,7 @@ var editing_index = -1  # the article in the editor; -1 for a new one
 var _headings = {}  # section index -> its heading on the page
 var _krac_word = RegEx.create_from_string("\\*([^*]+)\\*")
 var _masked = RegEx.create_from_string("~~(.+?)~~")
+var _image = RegEx.create_from_string("!\\[([^\\]]*)\\]\\(([^)\\s]+)\\)")
 var _comment = RegEx.create_from_string("(?s)<!--.*?-->")
 
 
@@ -249,9 +258,9 @@ func _search_text() -> String:
 	return %SearchInput.text.strip_edges()
 
 
-# The text a reader sees (no * or ~~ marks), folded for search.
+# The text a reader sees (no * or ~~ marks, no images), folded for search.
 func _searchable(text: String) -> String:
-	return TextFold.fold(text.replace("*", "").replace("~", ""))
+	return TextFold.fold(_image.sub(text, "", true).replace("*", "").replace("~", ""))
 
 
 func _hit(text: String, query: String) -> bool:
@@ -548,13 +557,35 @@ func _rich(text: String, query := "") -> RichTextLabel:
 	rich.mouse_filter = Control.MOUSE_FILTER_PASS
 	var krac_color = get_theme_color("font_color", "KracLabel").to_html(false)
 	var highlight = get_theme_color("selection_color", "LineEdit").to_html(true)
-	var marked = _highlight(text, query) if query != "" else text
+	var images = []  # the BBCode of each image, in order (see IMAGE_CHAR)
+	var plain = ""
+	var from = 0
+	for found in _image.search_all(text):
+		plain += text.substr(from, found.get_start() - from) + char(IMAGE_CHAR + images.size())
+		images.append(_image_bbcode(found.get_string(1), found.get_string(2), rich, krac_color))
+		from = found.get_end()
+	plain += text.substr(from)
+	var marked = _highlight(plain, query) if query != "" else plain
 	var dim = get_theme_color("font_color", "DimLabel").to_html(false)
 	var bbcode = _krac_word.sub(marked.replace("[", "[lb]"), "[b][color=#%s]$1[/color][/b]" % krac_color, true)
 	# A plain [s] draws its line at half strength; in the text's colour it shows.
 	bbcode = _masked.sub(bbcode, "[s color=#%s][color=#%s]$1[/color][/s]" % [dim, dim], true)
+	for i in images.size():
+		bbcode = bbcode.replace(char(IMAGE_CHAR + i), images[i])
 	rich.text = bbcode.replace(MARK_OPEN, "[bgcolor=#%s]" % highlight).replace(MARK_CLOSE, "[/bgcolor]")
 	return rich
+
+
+# An image of the project (`path` from its folder) as BBCode, as tall as the
+# text and in the Kracnodar colour, its name shown on hover. One that isn't
+# there shows as its name in brackets.
+func _image_bbcode(label: String, path: String, rich: RichTextLabel, color: String) -> String:
+	var res_path = path if path.begins_with("res://") else "res://" + path.trim_prefix("/")
+	var safe_name = label.replace("[", "").replace("]", "").replace("\"", "")
+	if not ResourceLoader.exists(res_path):
+		return "[lb]%s[rb]" % safe_name
+	var height = int(round(rich.get_theme_font_size("normal_font_size") * IMAGE_SCALE))
+	return "[img height=%d color=#%s tooltip=\"%s\"]%s[/img]" % [height, color, safe_name, res_path]
 
 
 func _error(message: String) -> void:

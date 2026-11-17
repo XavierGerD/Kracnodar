@@ -7,7 +7,7 @@ extends HBoxContainer
 # the text (the buttons never take focus).
 #
 #   var bar = MarkdownToolbar.new()
-#   bar.setup(%BodyInput)
+#   bar.setup(%BodyInput)           # or setup(%BodyInput, ["required"]) for the Library's own tools
 #   then add it to the editor, above the TextEdit
 
 const Markup = preload("res://Scripts/Markup.gd")
@@ -27,18 +27,26 @@ const TOOLS = {
 	"quote": ["``` Quote", "A quote block: puts ``` lines above and below the selected lines (again to take them off)"],
 }
 
+# Buttons an editor can ask for on top of TOOLS (see setup).
+const EXTRA_TOOLS = {
+	"required": ["==Required==", "A required word or module, shown green and listed under Required: puts == around the selection, or the word at the caret (again to take them off).\nSelect part of a word for a module: ==lok==tag"],
+}
+
 var editor: TextEdit
 var _word = RegEx.create_from_string("[\\p{L}\\p{N}'’\\-]+")
 
 
-func setup(target: TextEdit) -> void:
+func setup(target: TextEdit, extras := []) -> void:
 	editor = target
 	add_theme_constant_override("separation", 4)
-	for tool in TOOLS:
+	var tools = TOOLS.duplicate()
+	for extra in extras:
+		tools[extra] = EXTRA_TOOLS[extra]
+	for tool in tools:
 		var button = Button.new()
 		button.name = tool.capitalize() + "Tool"
-		button.text = TOOLS[tool][0]
-		button.tooltip_text = TOOLS[tool][1]
+		button.text = tools[tool][0]
+		button.tooltip_text = tools[tool][1]
 		button.focus_mode = Control.FOCUS_NONE
 		button.theme_type_variation = "RowButton"
 		button.pressed.connect(run.bind(tool))
@@ -68,6 +76,8 @@ func run(tool: String) -> void:
 			toggle_wrap("*")
 		"mask":
 			toggle_wrap("~~")
+		"required":
+			toggle_wrap("==")
 		"quote":
 			toggle_fence()
 	editor.end_complex_operation()
