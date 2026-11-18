@@ -23,7 +23,93 @@
 			{"type":"dot","at":[0.375,0.625],"size":1.0},
 			{"type":"dot","at":[0.625,0.625],"size":1.0}
 		]},
-		{"name": "Fe", "sound": "f", "strokes": []}
+		{"name": "Fe", "sound": "f", "strokes": [
+			{"type":"taper","from":[0.25,0.25],"to":[0.75,0.5],"thickness":1.4,"curve":0.3},
+			{"type":"taper","from":[0.25,0.75],"to":[0.75,0.5],"thickness":1.4,"curve":0.3}
+		]},
+		{"name": "Gul", "sound": "g", "strokes": [
+			{"type":"line","from":[0.25,0.4375],"to":[0.75,0.4375],"weight":1.0},
+			{"type":"dot","at":[0.5,0.625],"size":1.0}
+		]},
+		{"name": "Jub", "sound": "j", "strokes": [
+			{"type":"line","from":[0.25,0.375],"to":[0.75,0.375],"weight":1.0},
+			{"type":"dot","at":[0.25,0.5625],"size":1.0},
+			{"type":"dot","at":[0.5,0.5625],"size":1.0},
+			{"type":"dot","at":[0.75,0.5625],"size":1.0}
+		]},
+		{"name": "Kac", "sound": "k", "strokes": [
+			{"type":"dot","at":[0.4375,0.375],"size":1.0},
+			{"type":"taper","from":[0.6875,0.3125],"to":[0.3125,0.6875],"thickness":1.35,"curve":0.3}
+		]},
+		{"name": "Lam", "sound": "l", "strokes": [
+			{"type":"taper","from":[0.75,0.625],"to":[0.25,0.625],"thickness":1.35,"curve":0.3},
+			{"type":"taper","from":[0.25,0.375],"to":[0.75,0.375],"thickness":1.35,"curve":0.3},
+			{"type":"dot","at":[0.5,0.5],"size":1.0}
+		]},
+		{"name": "Min", "sound": "m", "strokes": [
+			{"type":"taper","from":[0.25,0.75],"to":[0.75,0.25],"thickness":1.35,"curve":0.3},
+			{"type":"dot","at":[0.625,0.625],"size":1.0}
+		]},
+		{"name": "Nok", "sound": "n", "strokes": [
+			{"type":"taper","from":[0.25,0.75],"to":[0.75,0.75],"thickness":1.35,"curve":0.3},
+			{"type":"taper","from":[0.75,0.25],"to":[0.75,0.75],"thickness":1.35,"curve":0.3}
+		]},
+		{"name": "Op", "sound": "o", "strokes": [
+			{"type":"taper","from":[0.25,0.3125],"to":[0.75,0.4375],"thickness":1.35,"curve":0.3},
+			{"type":"taper","from":[0.25,0.5],"to":[0.75,0.6875],"thickness":1.35,"curve":0.3}
+		]},
+		{"name": "Pak", "sound": "p", "strokes": [
+			{"type":"line","from":[0.25,0.25],"to":[0.75,0.25],"weight":1.25},
+			{"type":"taper","from":[0.75,0.75],"to":[0.25,0.25],"thickness":1.35,"curve":0.3},
+			{"type":"dot","at":[0.625,0.5],"size":1.0}
+		]},
+		{"name": "Rar", "sound": "r", "strokes": [
+			{"type":"taper","from":[0.25,0.4375],"to":[0.75,0.6875],"thickness":1.35,"curve":0.3},
+			{"type":"line","from":[0.25,0.3125],"to":[0.75,0.3125],"weight":1.25}
+		]},
+		{"name": "Sar", "sound": "s", "strokes": [
+			{"type":"taper","from":[0.25,0.5],"to":[0.75,0.5],"thickness":1.35,"curve":0.3},
+			{"type":"dot","at":[0.5,0.625],"size":1.0}
+		]},
+		{"name": "", "sound": "t", "strokes": [
+			{"type":"taper","from":[0.25,0.625],"to":[0.75,0.375],"thickness":1.35,"curve":0.3},
+			{"type":"dot","at":[0.25,0.375],"size":1.0}
+		]},
+		{"name": "Ut", "sound": "u", "strokes": [
+			{"type":"taper","from":[0.5,0.25],"to":[0.3125,0.75],"thickness":1.35,"curve":0.3}
+		]},
+		{"name": "", "sound": "v", "strokes": [
+			{"type":"line","from":[0.25,0.375],"to":[0.75,0.375],"weight":1.25},
+			{"type":"line","from":[0.25,0.625],"to":[0.75,0.625],"weight":1.25}
+		]},
+		{"name": "", "sound": "w", "strokes": [
+			{"type":"line","from":[0.25,0.5],"to":[0.75,0.5],"weight":1.25},
+			{"type":"taper","from":[0.25,0.25],"to":[0.75,0.5],"thickness":1.35,"curve":0.3}
+		]},
+		{"name": "", "sound": "x", "strokes": [
+			{"type":"taper","from":[0.25,0.5],"to":[0.75,0.375],"thickness":1.35,"curve":0.3},
+			{"type":"taper","from":[0.25,0.5],"to":[0.6875,0.6875],"thickness":1.35,"curve":0.3}
+		]},
+		{"name": "", "sound": "y", "strokes": [
+			{"type":"line","from":[0.625,0.25],"to":[0.625,0.8125],"weight":1.25},
+			{"type":"taper","from":[0.25,0.875],"to":[0.625,0.25],"thickness":1.35,"curve":0.3},
+			{"type":"taper","from":[0.375,0.875],"to":[0.625,0.5],"thickness":1.35,"curve":0.3}
+		]},
+		{"name": "", "sound": "z", "strokes": [
+			{"type":"taper","from":[0.75,0.25],"to":[0.25,0.75],"thickness":1.35,"curve":0.3},
+			{"type":"taper","from":[0.5625,0.25],"to":[0.25,0.5],"thickness":1.35,"curve":0.3}
+		]},
+		{"name": "Im", "sound": "i", "strokes": [
+			{"type":"line","from":[0.25,0.5],"to":[0.75,0.5],"weight":1.25}
+		]},
+		{"name": "Hir", "sound": "h", "strokes": [
+			{"type":"taper","from":[0.25,0.4375],"to":[0.75,0.625],"thickness":1.35,"curve":0.3},
+			{"type":"dot","at":[0.5,0.6875],"size":1.0},
+			{"type":"dot","at":[0.375,0.6875],"size":1.0}
+		]},
+		{"name": "Dash", "sound": "-", "strokes": [
+			{"type":"dot","at":[0.5,0.5],"size":1.0}
+		]}
 	],
 	"diacritics": [
 		{"name": "Ack", "symbol": "a", "strokes": [

@@ -1,7 +1,1 @@
 res://default_env.tres
-res://Scripts/Grammaire.gd
-res://Scripts/GlyphCanvas.gd
-res://Scripts/Alphabet.gd
-res://Scripts/GlyphThumb.gd
-res://Scripts/Quill.gd
-res://Scenes/Main.gd
