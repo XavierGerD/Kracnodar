@@ -1,0 +1,209 @@
+extends RefCounted
+
+# Kracnodar written in its own script, the letters and diacritics drawn in the
+# Alphabet tab (glyphs.json). Its state is static: every script that preloads
+# this shares one alphabet, and the Alphabet tab calls reload() after it saves.
+#
+# How a word is spelled:
+# - each consonant is its letter;
+# - a vowel after a consonant is that vowel's diacritic, on top of the
+#   consonant's letter: "ga" is the letter for g with the diacritic for a;
+# - any other vowel (one that starts a word, or follows a vowel) is that
+#   vowel's own letter.
+# What isn't drawn yet shows as an empty square: a letter, or a diacritic
+# shrunk on top of its letter.
+#
+# Words are drawn into textures, registered under a path of their own so that
+# BBCode can show them: [img]res://writing/...[/img] (see image_path).
+
+const Quill = preload("res://Scripts/Quill.gd")
+
+const FILE = "glyphs.json"
+const VOWELS = ["a", "e", "i", "o", "u"]
+# Stands for a letter or diacritic not drawn yet.
+const MISSING = [
+	{"type": "line", "from": Vector2(0.25, 0.2), "to": Vector2(0.75, 0.2), "weight": 0.5},
+	{"type": "line", "from": Vector2(0.75, 0.2), "to": Vector2(0.75, 0.8), "weight": 0.5},
+	{"type": "line", "from": Vector2(0.75, 0.8), "to": Vector2(0.25, 0.8), "weight": 0.5},
+	{"type": "line", "from": Vector2(0.25, 0.8), "to": Vector2(0.25, 0.2), "weight": 0.5},
+]
+const LETTER_GAP = 0.14  # em between two letters of a word
+const SIDE = 0.06  # em of space at each end of a word
+const SUPERSAMPLE = 4  # drawn this many times larger, then shrunk: smooth edges
+
+static var _loaded = false
+static var _settings = {}
+static var _letters = {}  # sound -> strokes ("i/y" gives both sounds the letter)
+static var _marks = {}  # vowel -> its diacritic's strokes
+static var _textures = {}  # image path -> ImageTexture, kept alive for BBCode
+static var _sizes = {}  # image path -> [word, height in pixels, scale]
+
+
+# Reads glyphs.json again, and redraws every word already drawn.
+static func reload() -> void:
+	_loaded = true
+	_settings = Quill.DEFAULTS.duplicate()
+	_letters = {}
+	_marks = {}
+	var path = Dict.read_path(FILE)
+	var data = JSON.parse_string(FileAccess.get_file_as_string(path)) if FileAccess.file_exists(path) else null
+	if data is Dictionary:
+		var saved = data.get("settings", {})
+		if saved is Dictionary:
+			for key in Quill.DEFAULTS:
+				if saved.has(key):
+					_settings[key] = float(saved[key])
+		_read_glyphs(data.get("letters", []), "sound", _letters)
+		_read_glyphs(data.get("diacritics", []), "symbol", _marks)
+	for image_path in _textures:
+		var size = _sizes[image_path]
+		_textures[image_path].set_image(_draw_word(size[0], size[1], size[2]))
+
+
+static func _read_glyphs(entries, key: String, into: Dictionary) -> void:
+	if not entries is Array:
+		return
+	for entry in entries:
+		if not entry is Dictionary:
+			continue
+		var strokes = []
+		for saved in entry.get("strokes", []) if entry.get("strokes") is Array else []:
+			var stroke = Quill.stroke_from_json(saved)
+			if stroke != null:
+				strokes.append(stroke)
+		if strokes.is_empty():
+			continue  # not drawn yet
+		for sound in str(entry.get(key, "")).to_lower().split("/", false):
+			sound = sound.strip_edges()
+			if sound != "" and not into.has(sound):
+				into[sound] = strokes
+
+
+static func _ensure_loaded() -> void:
+	if not _loaded:
+		reload()
+
+
+# The letters of a word, as [{"letter": strokes, "mark": strokes or []}]:
+# what gets drawn, one glyph after the other.
+static func spell(word: String) -> Array:
+	_ensure_loaded()
+	var text = word.to_lower()
+	var longest = 1
+	for sound in _letters.keys() + _marks.keys():
+		longest = maxi(longest, sound.length())
+	var glyphs = []
+	var after_consonant = false
+	var i = 0
+	while i < text.length():
+		# The longest sound that matches here: "i/y" style letters can be digraphs.
+		var sound = text[i]
+		for n in range(mini(longest, text.length() - i), 1, -1):
+			var candidate = text.substr(i, n)
+			if _letters.has(candidate) or _marks.has(candidate):
+				sound = candidate
+				break
+		i += sound.length()
+		if sound in VOWELS or (_marks.has(sound) and not _letters.has(sound)):
+			if after_consonant:
+				glyphs[-1]["mark"] = _marks.get(sound, MISSING)
+				after_consonant = false
+			else:
+				glyphs.append({"letter": _letters.get(sound, MISSING), "mark": []})
+		else:
+			glyphs.append({"letter": _letters.get(sound, MISSING), "mark": []})
+			after_consonant = true
+	return glyphs
+
+
+# The top of the space a word is drawn in, in em: high enough for a diacritic
+# over the tallest letter. The bottom is the letters' baseline, 1.
+static func _top() -> float:
+	return -(Quill.value(_settings, "diacritic_size") + Quill.value(_settings, "diacritic_gap") + 0.08)
+
+
+# How wide a word is drawn, as a multiple of its height.
+static func aspect(word: String) -> float:
+	_ensure_loaded()
+	return _layout(word)["width"] / (1.0 - _top())
+
+
+# Each glyph's strokes (letter and diacritic composed), where it starts along
+# the word, and the word's width, all in em.
+static func _layout(word: String) -> Dictionary:
+	var placed = []
+	var x = SIDE
+	for glyph in spell(word):
+		var layers = Quill.compose(glyph["letter"], glyph["mark"], _settings)
+		var ink = Rect2()
+		for list in layers:
+			if not list.is_empty():
+				var bounds = Quill.ink_bounds(list, _settings)
+				ink = bounds if ink.size == Vector2.ZERO else ink.merge(bounds)
+		placed.append({"layers": layers, "offset": x - ink.position.x})
+		x += ink.size.x + LETTER_GAP
+	return {"glyphs": placed, "width": maxf(x - LETTER_GAP + SIDE, 2.0 * SIDE)}
+
+
+# The path of a word drawn height pixels tall (scale times as many pixels,
+# for a scaled-up window), for BBCode's [img]. Drawn once, then kept.
+static func image_path(word: String, height: int, scale := 1.0) -> String:
+	_ensure_loaded()
+	word = word.to_lower()
+	var path = "res://writing/%s/%d/%d.tex" % [word.uri_encode(), height, int(round(scale * 100))]
+	if not _textures.has(path):
+		var texture = ImageTexture.create_from_image(_draw_word(word, height, scale))
+		texture.take_over_path(path)
+		_textures[path] = texture
+		_sizes[path] = [word, height, scale]
+	return path
+
+
+# The word in white on transparent, to be tinted where it's shown.
+static func _draw_word(word: String, height: int, scale: float) -> Image:
+	var layout = _layout(word)
+	var top = _top()
+	var pixels = maxf(1.0, round(height * scale))
+	var em = pixels / (1.0 - top) * SUPERSAMPLE
+	var size = Vector2i(ceili(layout["width"] * em / SUPERSAMPLE) * SUPERSAMPLE, int(pixels) * SUPERSAMPLE)
+	var image = Image.create_empty(size.x, size.y, false, Image.FORMAT_RGBA8)
+	image.fill(Color(1, 1, 1, 0))  # white, so the edges shrink to white too
+	for glyph in layout["glyphs"]:
+		var origin = Vector2(glyph["offset"], -top) * em
+		for list in glyph["layers"]:
+			for stroke in list:
+				for shape in Quill.shapes(stroke, _settings):
+					_fill(image, shape, origin, em)
+	image.shrink_x2()
+	image.shrink_x2()
+	return image
+
+
+# Fills a convex polygon (in em) a pixel row at a time.
+static func _fill(image: Image, shape: PackedVector2Array, origin: Vector2, em: float) -> void:
+	var points = PackedVector2Array()
+	var low = INF
+	var high = -INF
+	for p in shape:
+		var q = origin + p * em
+		points.append(q)
+		low = minf(low, q.y)
+		high = maxf(high, q.y)
+	var count = points.size()
+	if count < 3:
+		return
+	for row in range(maxi(0, floori(low)), mini(image.get_height(), ceili(high))):
+		var y = row + 0.5
+		var left = INF
+		var right = -INF
+		for i in count:
+			var a = points[i]
+			var b = points[(i + 1) % count]
+			if (a.y <= y) != (b.y <= y):
+				var x = a.x + (y - a.y) * (b.x - a.x) / (b.y - a.y)
+				left = minf(left, x)
+				right = maxf(right, x)
+		var from = clampi(roundi(left), 0, image.get_width())
+		var to = clampi(roundi(right), 0, image.get_width())
+		if to > from:
+			image.fill_rect(Rect2i(from, row, to - from, 1), Color.WHITE)

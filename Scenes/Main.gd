@@ -8,6 +8,7 @@ func _ready():
 	%WordGenerator.wordPicked.connect(%WordSelector.add_word)
 	%WordSelector.words_changed.connect(%WordGenerator.set_listed_words)
 	%TabContainer.tab_changed.connect(_on_TabContainer_tab_changed)
+	%Alphabet.alphabet_changed.connect(%Grammaire.alphabet_changed)
 	Dict.save_failed.connect(_show_save_problem)
 	if Dict.load_problem != "":
 		_show_save_problem.call_deferred(

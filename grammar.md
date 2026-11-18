@@ -9,7 +9,7 @@ The Kracnodar grammar, shown (and editable) in the app's Grammaire tab.
   |---|------|        under it sets the relative column widths
   *word*              a Kracnodar word, shown in the Kracnodar style
   ~~word~~            a masked word, struck through
-  ![name](path)       an image from the project, as tall as the text is: ![Dul](Runes/Dul.png)
+  ![name](path)       an image from the project, as tall as the text is: ![Icon](icon.png)
   ```                 a quote block: the lines between two ``` lines, shown as written
   other text          a paragraph; a blank line starts a new block
 The Library uses the same markup, images apart.
@@ -30,30 +30,31 @@ By Xavier Gervais-Dumont · translated from “Grammaire Kracnodar.docx”
 
 ### 1.1  The alphabet
 
-- Kracnodar is written in runes: 23 runes for its 25 sounds.
-- This grammar spells it in Latin letters, one per sound: the Latin alphabet, minus *q*, which duplicates a sound (*k* already covers it).
+- Kracnodar has its own script, written with a quill: a letter for each consonant, and for each vowel both a letter and a diacritic.
+- A vowel after a consonant is written as its diacritic, on top of the consonant's letter: *ga* is the letter for *g* with the diacritic for *a* above it.
+- A vowel that starts a word is written with its own letter: *atari*.
+- A vowel after another vowel, where two lexemes join (see 1.3), is written with its own letter too: *atariex*.
+- This grammar spells Kracnodar in Latin letters, one per sound: the Latin alphabet, minus *q*, which duplicates a sound (*k* already covers it).
 - *c* is only the voiceless postalveolar fricative /ʃ/ (“sh”); *s* is only the voiceless alveolar fricative /s/.
 - *y* is a consonant, never a vowel.
-- Vowels: *a*, *e*, *i*, *o*, *u*. The only semivowel: *w*.
-- No accents, cedillas or other diacritics.
+- Vowels: *a*, *e*, *i*, *o*, *u*. The only semivowel: *w*, written as a consonant.
+- The Latin spelling has no accents, cedillas or other diacritics.
 
-| Letter | Rune | Letter | Rune | Letter | Rune |
-|---|---|---|---|---|---|
-| a | ![Spyr](Runes/Spyr.png) | i / y | ![Dul](Runes/Dul.png) | r | ![Sol](Runes/Sol.png) |
-| b | ![Stor](Runes/Stor.png) | j | ![Skiv](Runes/Skiv.png) | s | ![Keln](Runes/Keln.png) |
-| c | ![Omb](Runes/Omb.png) | k | ![Brak](Runes/Brak.png) | t | ![Cres](Runes/Cres.png) |
-| d | ![Vex](Runes/Vex.png) | l | ![Nol](Runes/Nol.png) | u / w | ![Vel](Runes/Vel.png) |
-| e | ![Orn](Runes/Orn.png) | m | ![Ak](Runes/Ak.png) | v | ![Xor](Runes/Xor.png) |
-| f | ![Mal](Runes/Mal.png) | n | ![Fae](Runes/Fae.png) | x | ![Ort](Runes/Ort.png) |
-| g | ![Tyr](Runes/Tyr.png) | o | ![Durn](Runes/Durn.png) | z | ![Hod](Runes/Hod.png) |
-| h | ![Run](Runes/Run.png) | p | ![Eld](Runes/Eld.png) | | |
+| Consonant | Consonant | Consonant | Consonant |
+|---|---|---|---|
+| *b* | *h* | *n* | *v* |
+| *c* | *j* | *p* | *w* |
+| *d* | *k* | *r* | *x* |
+| *f* | *l* | *s* | *y* |
+| *g* | *m* | *t* | *z* |
 
-### 1.1.1  Runes shared by two sounds
-
-- One rune, ![Dul](Runes/Dul.png), writes both *i* and *y*; another, ![Vel](Runes/Vel.png), writes both *u* and *w*.
-- Before a vowel, a shared rune is the consonant, *y* or *w*; anywhere else, it is the vowel, *i* or *u*: *wet* and *hotuyavin* are read with *w* and *y*, *ili* and *tul* with *i* and *u*.
-- A module or affix never has two vowels in a row (see 1.3), so inside one the rule always holds.
-- Where two lexemes join, an *i* or *u* that ends the first stays a vowel even before a vowel: *atari* + *ex* → *atariex*, not “ataryex”; *tagu* + *atari* → *taguatari*, not “tagwatari”. Knowing the lexemes tells the reader where the join is.
+| Vowel | After a consonant |
+|---|---|
+| *a* | *ba* |
+| *e* | *be* |
+| *i* | *bi* |
+| *o* | *bo* |
+| *u* | *bu* |
 
 ### 1.2  Pronunciation
 

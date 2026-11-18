@@ -1,0 +1,49 @@
+{
+	"settings": {"nib_angle":80.0,"nib_width":0.09,"hairline":0.012,"taper_start":0.1,"taper_min":0.6,"taper_max":2.2,"taper_swell":1.6,"diacritic_size":0.35,"diacritic_gap":0.06},
+	"letters": [
+		{"name": "Ber", "sound": "b", "strokes": [
+			{"type":"taper","from":[0.75,0.25],"to":[0.25,0.25],"thickness":1.4,"curve":0.3},
+			{"type":"taper","from":[0.25,0.8125],"to":[0.25,0.25],"thickness":1.4,"curve":0.3}
+		]},
+		{"name": "Shar", "sound": "c", "strokes": [
+			{"type":"taper","from":[0.25,0.4375],"to":[0.75,0.4375],"thickness":1.4,"curve":0.3},
+			{"type":"taper","from":[0.25,0.6875],"to":[0.75,0.6875],"thickness":1.4,"curve":0.3}
+		]},
+		{"name": "Dat", "sound": "d", "strokes": [
+			{"type":"line","from":[0.25,0.25],"to":[0.75,0.25],"weight":1.0},
+			{"type":"taper","from":[0.5,0.75],"to":[0.75,0.25],"thickness":1.4,"curve":0.3},
+			{"type":"dot","at":[0.25,0.5],"size":1.0}
+		]},
+		{"name": "Ar", "sound": "a", "strokes": [
+			{"type":"taper","from":[0.375,0.75],"to":[0.625,0.25],"thickness":1.4,"curve":0.3},
+			{"type":"line","from":[0.625,0.25],"to":[0.625,0.875],"weight":1.0}
+		]},
+		{"name": "Er", "sound": "e", "strokes": [
+			{"type":"line","from":[0.25,0.375],"to":[0.8125,0.375],"weight":1.0},
+			{"type":"dot","at":[0.375,0.625],"size":1.0},
+			{"type":"dot","at":[0.625,0.625],"size":1.0}
+		]},
+		{"name": "Fe", "sound": "f", "strokes": []}
+	],
+	"diacritics": [
+		{"name": "Ack", "symbol": "a", "strokes": [
+			{"type":"dot","at":[0.3125,0.5],"size":1.0},
+			{"type":"dot","at":[0.6875,0.5],"size":1.0}
+		]},
+		{"name": "Et", "symbol": "e", "strokes": [
+			{"type":"line","from":[0.1875,0.5],"to":[0.8125,0.5],"weight":1.0}
+		]},
+		{"name": "Im", "symbol": "i", "strokes": [
+			{"type":"dot","at":[0.5,0.5],"size":1.0}
+		]},
+		{"name": "Ot", "symbol": "o", "strokes": [
+			{"type":"line","from":[0.1875,0.625],"to":[0.75,0.625],"weight":1.0},
+			{"type":"dot","at":[0.3125,0.25],"size":1.0}
+		]},
+		{"name": "Us", "symbol": "u", "strokes": [
+			{"type":"dot","at":[0.375,0.5625],"size":1.0},
+			{"type":"dot","at":[0.625,0.5625],"size":1.0},
+			{"type":"dot","at":[0.5,0.1875],"size":1.0}
+		]}
+	]
+}

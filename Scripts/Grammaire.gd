@@ -9,6 +9,7 @@ extends Control
 const TextFold = preload("res://Scripts/TextFold.gd")
 const MarkdownToolbar = preload("res://Scripts/MarkdownToolbar.gd")
 const Markup = preload("res://Scripts/Markup.gd")
+const Writing = preload("res://Scripts/Writing.gd")
 
 const GRAMMAR_FILE = "grammar.md"
 const CHAPTER = 1
@@ -24,7 +25,7 @@ The Kracnodar grammar, shown (and editable) in the app's Grammaire tab.
   |---|------|        under it sets the relative column widths
   *word*              a Kracnodar word, shown in the Kracnodar style
   ~~word~~            a masked word, struck through
-  ![name](path)       an image from the project, as tall as the text is: ![Dul](Runes/Dul.png)
+  ![name](path)       an image from the project, as tall as the text is: ![Icon](icon.png)
   ```                 a quote block: the lines between two ``` lines, shown as written
   other text          a paragraph; a blank line starts a new block
 The Library uses the same markup, images apart.
@@ -35,7 +36,12 @@ The Library uses the same markup, images apart.
 # highlighting and the other marks pass over it whole.
 const IMAGE_CHAR = 0xE000
 # An image's height, against the text's font size.
-const IMAGE_SCALE = 1.6
+const IMAGE_SCALE = 1.4
+# A word in the Kracnodar script, against the text's font size: taller than an
+# image, as it leaves room above its letters for diacritics.
+const SCRIPT_SCALE = 2.4
+# What separates two Kracnodar parts of one text in a script column.
+const SCRIPT_PARTS = "  ·  "
 
 # Search highlights are marked with these before the text becomes BBCode.
 const MARK_OPEN = "\u0001"
@@ -52,6 +58,8 @@ var _krac_word = RegEx.create_from_string("\\*([^*]+)\\*")
 var _masked = RegEx.create_from_string("~~(.+?)~~")
 var _image = RegEx.create_from_string("!\\[([^\\]]*)\\]\\(([^)\\s]+)\\)")
 var _comment = RegEx.create_from_string("(?s)<!--.*?-->")
+var _letter_run = RegEx.create_from_string("[A-Za-z]+")
+var _stale = false  # the alphabet changed while the page was hidden
 
 
 func _ready():
@@ -70,6 +78,10 @@ func _ready():
 	toolbar.setup(%BodyInput)
 	%Editor.add_child(toolbar)
 	%Editor.move_child(toolbar, %BodyInput.get_index())
+	visibility_changed.connect(func():
+		if _stale and is_visible_in_tree():
+			_stale = false
+			render())
 	load_grammar()
 	render()
 
@@ -403,10 +415,10 @@ func _block(kind: String, items: Array, query: String) -> Control:
 		"quote":
 			return _quote(items, query)
 		"note":
-			var note = _rich(" ".join(items), query)
+			var note = _rich(_with_script(" ".join(items)), query)
 			note.add_theme_color_override("default_color", get_theme_color("font_color", "HintLabel"))
 			return note
-	return _rich(" ".join(items), query)
+	return _rich(_with_script(" ".join(items)), query)
 
 
 func _rules(items: Array, query: String) -> Control:
@@ -418,7 +430,7 @@ func _rules(items: Array, query: String) -> Control:
 		var bullet = _label("•", "BulletLabel", false)
 		bullet.size_flags_vertical = Control.SIZE_SHRINK_BEGIN  # on the first line of a long rule
 		row.add_child(bullet)
-		row.add_child(_rich(rule, query))
+		row.add_child(_rich(_with_script(rule), query))
 		list.add_child(row)
 	return list
 
@@ -426,6 +438,9 @@ func _rules(items: Array, query: String) -> Control:
 func _examples(items: Array, query: String) -> Control:
 	var list = VBoxContainer.new()
 	list.add_theme_constant_override("separation", 2)
+	var script_width = 0.0
+	for item in items:
+		script_width = max(script_width, _script_width(_script_of(_as_krac(Markup.split_line(item).get("kr", "")))))
 	for i in items.size():
 		var sides = Markup.split_line(items[i])
 		var panel = PanelContainer.new()
@@ -434,7 +449,9 @@ func _examples(items: Array, query: String) -> Control:
 		row.add_theme_constant_override("separation", 12)
 		row.add_child(_rich(sides.get("en", ""), query))
 		row.add_child(_label("→", "DimLabel", false))
-		row.add_child(_rich(_as_krac(sides.get("kr", "")), query))
+		var kr = _as_krac(sides.get("kr", ""))
+		row.add_child(_rich(kr, query))
+		row.add_child(_one_line(_rich(_script_of(kr)), script_width))
 		panel.add_child(row)
 		list.add_child(panel)
 	return list
@@ -445,7 +462,7 @@ func _examples(items: Array, query: String) -> Control:
 func _quote(items: Array, query: String) -> Control:
 	var lines = Markup.trimmed_quote(items.map(func(item): return {"text": item}))
 	var panel = Markup.quote_panel(self)
-	panel.add_child(_rich("\n".join(lines.map(func(line): return line["text"])), query))
+	panel.add_child(_rich(_with_script("\n".join(lines.map(func(line): return line["text"]))), query))
 	return panel
 
 
@@ -459,6 +476,25 @@ func _table(lines: Array, query: String) -> Control:
 	if lines.size() > 1 and _is_separator(lines[1]):
 		widths = rows[1].map(func(cell): return float(max(1, cell.count("-"))))
 		rows.remove_at(1)
+	# Each column with Kracnodar in it is followed by one with it in the script, as wide.
+	var krac_columns = []
+	for c in rows[0].size():
+		if rows.slice(1).any(func(cells): return c < cells.size() and cells[c].contains("*")):
+			krac_columns.append(c)
+	for k in range(krac_columns.size() - 1, -1, -1):
+		var c = krac_columns[k]
+		for r in rows.size():
+			if c < rows[r].size():
+				rows[r].insert(c + 1, "Script" if r == 0 else _script_of(rows[r][c]))
+		if c < widths.size():
+			widths.insert(c + 1, widths[c])
+	var script_widths = {}  # script column -> the width of its widest cell
+	for k in krac_columns.size():
+		var c = krac_columns[k] + k + 1
+		script_widths[c] = 0.0
+		for r in range(1, rows.size()):
+			if c < rows[r].size():
+				script_widths[c] = max(script_widths[c], _script_width(rows[r][c]))
 	var table = VBoxContainer.new()
 	table.add_theme_constant_override("separation", 2)
 	for r in rows.size():
@@ -470,14 +506,87 @@ func _table(lines: Array, query: String) -> Control:
 			var cell: Control
 			if r == 0:
 				cell = _label(rows[r][c].replace("*", "").replace("~~", "").to_upper(), "ColumnLabel")
+				cell.custom_minimum_size.x = script_widths.get(c, 0.0)
 			else:
 				cell = _rich(rows[r][c], query)
+				if script_widths.has(c):
+					_one_line(cell, script_widths[c])
 			cell.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			cell.size_flags_stretch_ratio = widths[c] if c < widths.size() else 1.0
 			row.add_child(cell)
 		panel.add_child(row)
 		table.add_child(panel)
 	return table
+
+
+# --- The script ---------------------------------------------------------
+
+# The Alphabet tab changed the letters: the page shows them now, or when next shown.
+func alphabet_changed() -> void:
+	if is_visible_in_tree():
+		render()
+	else:
+		_stale = true
+
+
+# A Kracnodar text in the script, as image markup (see _image_bbcode), a word
+# to an image; what isn't a letter (spaces, punctuation) stays as it is.
+# Empty when there are no letters.
+func _spell(text: String) -> String:
+	var out = ""
+	var from = 0
+	for found in _letter_run.search_all(text):
+		out += text.substr(from, found.get_start() - from)
+		out += "![%s](writing:%s)" % [found.get_string(), found.get_string().to_lower()]
+		from = found.get_end()
+	return (out + text.substr(from)).strip_edges() if from > 0 else ""
+
+
+# A script label kept on one line, as wide as its words (a line could break
+# in the middle of a text) and at least `width`: the width of the widest in
+# its column, so that each row lines its columns up alike.
+func _one_line(rich: RichTextLabel, width := 0.0) -> RichTextLabel:
+	rich.autowrap_mode = TextServer.AUTOWRAP_OFF
+	rich.custom_minimum_size.x = width
+	return rich
+
+
+# About how wide a script text (from _script_of) is drawn: each word as wide
+# as the script draws it, any other image square, and the rest about half
+# the font size a character.
+func _script_width(markup: String) -> float:
+	var size = get_theme_font_size("normal_font_size", "RichTextLabel")
+	var width = 0.0
+	for found in _image.search_all(markup):
+		var path = found.get_string(2)
+		if path.begins_with("writing:"):
+			width += round(size * SCRIPT_SCALE) * Writing.aspect(path.trim_prefix("writing:"))
+		else:
+			width += round(size * IMAGE_SCALE)
+	return ceil(width + _image.sub(markup, "", true).length() * size * 0.5)
+
+
+# The Kracnodar in a text (its *word* parts) in the script, the parts apart.
+func _script_of(text: String) -> String:
+	var parts = []
+	for found in _krac_word.search_all(text):
+		var spelled = _spell(found.get_string(1))
+		if spelled != "":
+			parts.append(spelled)
+	return SCRIPT_PARTS.join(parts)
+
+
+# A text with each *word* followed by it in the script, in parentheses.
+func _with_script(text: String) -> String:
+	var out = ""
+	var from = 0
+	for found in _krac_word.search_all(text):
+		var spelled = _spell(found.get_string(1))
+		out += text.substr(from, found.get_end() - from)
+		if spelled != "":
+			out += " (%s)" % spelled
+		from = found.get_end()
+	return out + text.substr(from)
 
 
 # Marks a whole text as Kracnodar, unless it already marks its own words.
@@ -580,12 +689,22 @@ func _rich(text: String, query := "") -> RichTextLabel:
 # text and in the Kracnodar colour, its name shown on hover. One that isn't
 # there shows as its name in brackets.
 func _image_bbcode(label: String, path: String, rich: RichTextLabel, color: String) -> String:
+	if path.begins_with("writing:"):
+		return _script_bbcode(path.trim_prefix("writing:"), rich, color)
 	var res_path = path if path.begins_with("res://") else "res://" + path.trim_prefix("/")
 	var safe_name = label.replace("[", "").replace("]", "").replace("\"", "")
 	if not ResourceLoader.exists(res_path):
 		return "[lb]%s[rb]" % safe_name
 	var height = int(round(rich.get_theme_font_size("normal_font_size") * IMAGE_SCALE))
 	return "[img height=%d color=#%s tooltip=\"%s\"]%s[/img]" % [height, color, safe_name, res_path]
+
+
+# A word in the Kracnodar script as BBCode: drawn for the window's scale, so
+# it stays sharp when the window is scaled up.
+func _script_bbcode(word: String, rich: RichTextLabel, color: String) -> String:
+	var height = int(round(rich.get_theme_font_size("normal_font_size") * SCRIPT_SCALE))
+	var scale = maxf(1.0, ceilf(get_viewport().get_final_transform().get_scale().y * 2.0) / 2.0)
+	return "[img height=%d color=#%s tooltip=\"%s\"]%s[/img]" % [height, color, word, Writing.image_path(word, height, scale)]
 
 
 func _error(message: String) -> void:
