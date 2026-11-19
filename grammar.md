@@ -21,6 +21,8 @@ By Xavier Gervais-Dumont · translated from “Grammaire Kracnodar.docx”
 
 ## Introduction
 
+Kracnodar → Kracnodar
+
 - Kracnodar (/ˈkraʃnodar/) is a synthetic, sung language, invented for the Québécois band of the same name.
 - Words are built by agglutinating lexemes of two kinds: modules, which carry the meaning (like word roots), and affixes (prefixes or suffixes), which refine the form.
 - An affix never changes the spelling of the module, except where the two share a vowel at the join (see 1.3): from one module you can make a noun, a verb, an adjective, an adverb, and so on.

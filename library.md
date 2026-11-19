@@ -23,37 +23,29 @@ The Grammaire uses the same markup.
 On the morning of February 11th, 1916, you receive this letter, addressed personally to you, at your office.
 
 ```
-Dear Lord Sitwell,
+My dear Sitwell,
 
-It is with a troubled mind that I write to you in this time of unrest.
+It is with a troubled mind that I write to you in this time of war and unrest.
 
-As you know, the Great War is raging on the Continent, and with every passing day, the threat of annihilation spreads, slowly but steadily, towards our beautiful nation. Soon, the twisted tentacles of Prussian forces will enter the Channel waters and emerge on our coasts. When that happens, it shall be too late. We will be powerless.
+About half a decade ago, before the War, our efforts in archaeology led Gregory Chamfer and me to the remote reaches of the Caucasus. There we made the most fascinating discoveries. Therein lay the remains of an ancient civilization, lost to time, that has puzzled us ever since.
 
-Yet great hope remains. That is the reason for my letter today.
+Its people settled in every crevice, nook and cave, yet hardly a trace of them remains. Among the few artefacts they left behind is a book, beautifully preserved, and quite unlike anything I have ever seen.
 
-About half a decade ago, before the War, our efforts in archaeology led Lord Chamfer and me to the remote reaches of the Caucasus, a secluded mountain range beyond the Black Sea, where we made the most fascinating discoveries. Therein lay an ancient civilization, lost to time, whose connection with telluric forces has left us bewildered and confounded.
+We have tried to read it, but to no avail; its leathery pages seem bound by some kind of supernatural force. Only its cover will open, revealing on the first leaf what seems to be a strange poem, written in a script utterly foreign to us. Yet the script is not quite dead. My guide, Irakli, found a few villagers who still use it, and though they could recognize its letters, they could not decipher the language. With their help, we created a guide to the alphabet, and we used it to transliterate the script into Latin letters.
 
-Its people settled in every crevice, nook and cave, yet time has all but wiped them out. Only a few artefacts remain. Among them is a book, whose strangeness is surpassed only by the immense reverence it commands. Beautifully preserved, it emanates a sort of feeling that can only be described as pure strength, resilience, and, dare I say, evil. 
+What we found was most incredible: the language bears absolutely no resemblance to any Kartvelian language, nor to Indo-European or Semitic tongues, nor to any other we could find. The poem's origin, and indeed its meaning, remains completely opaque even to our best deductions.
 
-Nevertheless, we have tried to read it, but to no avail; its leathery pages seem bound by some kind of supernatural force. Only its cover will open, revealing on the first leaf a singular and most incredible poem, written in a language that is almost totally unknown to us. Indeed, this language bears absolutely no resemblance to any Kartvelian language, nor to Proto-Indo-European, nor to the Semitic tongues, nor to any other we could find. The poem's origin, and indeed its meaning, remain completely opaque even to our best experts. Most bewilderingly, the characters in which the poem is written change depending on who is reading them. An English speaker like myself would read Latin characters, a speaker of Russian would read Cyrillic, and so forth. This is something I still struggle to come to terms with, but it was confirmed by Irakli, my local guide, a man I trust to this day, who swore on his life that he saw Mkhedruli characters on the page. In any case, it would be absurd for so secluded a civilization to know Latin letters, let alone write in them.
+Thankfully, the cave where we found the book held more: signs of an ancient religion and forgotten rites, scraps of parchment and tablets. The scraps contain a few short phrases, and all of the scraps begin with the same phrase. One of them is written in a strange pidgin of Russian and Georgian, suggesting an attempt at a revival of this ancient religion. Irakli was kind enough to translate it for us.
 
-I can draw but one conclusion: the book wants to be read. It yearns for its pages to be turned.
+For five years I have kept this book in my office, unable to unlock its secrets. I believe the poem is a riddle, and its answer is the key to accessing the rest of the book. So today, I turn to you, old friend. If any linguist can solve this riddle, it is you.
 
-Thankfully, the book is not all they left behind. Among the ruins, we found tablets of their own making, just as strange and fascinating as the book itself. Each bears two columns: one in their own tongue, again in the reader's script, and one in the reader's own language. Where I read English, my guide reads Georgian. It is as though their ancient tongue refuses to be translated directly. I suspect it wants to be learned. These tablets even give the tongue its name: Kracnodar, which, as near as we can make out, means “the song of stone.” They also speak of the book itself: that it holds the power to move mountains, split the seas, and unleash the forces of the Earth at will. They write that its power answers to the commands of those who speak its tongue. But, to turn its pages, one must solve the riddles it presents. The poem on the first page, I believe, is the first of these riddles.
-
-Moreover, among the ruins, we also found some notes written in a strange pidgin of Russian and Georgian, suggesting an attempt at a revival of this ancient religion. These have been conveniently translated by Irakli.
-
-For five years I have kept this book in my office, unable to break its secrets. But the threat of impending doom from the continent changes everything. If the tablets speak the truth, it could be the key to holding back the enemy, and indeed to restoring peace to the Continent. I do not pretend the book is benign; I have felt what it gives off. But I would sooner wield an evil thing than watch Britain fall, and the whole of Europe with her.
-
-Your part in this affair is no simple matter, but it is something that only a linguist of your calibre can achieve. What I require from you, old friend, is nothing short of a miracle. Please, you MUST decipher this language, answer the book's riddles, and open it, before it is too late for us all. The survival of our great Empire depends on it.
-
-By the time this letter reaches you, I shall have returned to the Caucasus to further my research. With it you will find the book itself, and a bundle. This bundle contains fragments of text found in the cave where the book lay, along with a precise description of the room and where each fragment was found. Use it to learn the language and solve the first riddle. I will send more bundles as my dig progresses. Should you need me, do not hesitate to telegraph. I have stationed a man at the Tiflis telegraph office, and he will carry any word from you up to me without delay. Be guarded in your telegrams. The enemy may be listening.
+By the time this letter reaches you, I shall have returned to the Caucasus to further my research. With it you will find the book itself, and a bundle. This bundle contains fragments of text found in the cave where the book lay, each with its own transliteration and description of how it was found. I have also included the guide to this most curious alphabet. Use them to learn the language and solve the riddle. I shall send more bundles as my dig progresses. Should you need me, do not hesitate to telegraph. I have stationed a man at the Tiflis telegraph office, and he will carry any word from you up to me without delay. 
 
 Godspeed, old friend,
 
 Aldermoor
 
-P.S. Keep this to yourself for now. Let us not bother His Majesty until we have achieved certainty.
+P.S. I need not remind you to remain discreet. Be guarded in your telegrams. The enemy may be listening.
 ```
 
 ## Prologue - The Blacksmith

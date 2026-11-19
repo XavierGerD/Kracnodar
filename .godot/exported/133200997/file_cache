@@ -1,0 +1,13 @@
+res://Scenes/Alphabet.tscn::93c8bbe114a4d85e020cd4a2759c39a2::1795008060::res://.godot/exported/133200997/export-9e62919d474030e891adc30496e8f851-Alphabet.scn
+res://Scenes/DictEntry.tscn::219852fc097bc92861dd7522ac18fd2a::1794592580::res://.godot/exported/133200997/export-f7edd91e1fad533d9e75cf83a4cf0c63-DictEntry.scn
+res://Scenes/Dictionnaire.tscn::17b9d076a905b58f5de8ee98266e5818::1794592580::res://.godot/exported/133200997/export-72e0fbbdf087e60e7d59115b9888e2ec-Dictionnaire.scn
+res://Scenes/Grammaire.tscn::3ec6247bed278201fbc94b9c30e790ee::1794602251::res://.godot/exported/133200997/export-ff7f50c5e25dfcb6c900e9da59d1ff66-Grammaire.scn
+res://Scenes/Library.tscn::0da5c35a8320b22dab39c750cf254e8a::1795008060::res://.godot/exported/133200997/export-85b52ef0b0d0cb32f69ba7158734f798-Library.scn
+res://Scenes/Main.tscn::57a4ee5af6f8eb224b04855f5a8ec9c1::1795035332::res://.godot/exported/133200997/export-a8e1520d83f25710dd4e3da8c6f32601-Main.scn
+res://Scenes/WordButton.tscn::3bfe443ab8e32ae61432c1391037b656::1794515374::res://.godot/exported/133200997/export-84a7aa8600ea32cdc226e1825a5f5109-WordButton.scn
+res://Scenes/WordGenerator.tscn::3aec10f1e167c5d160981c868a5a2ef5::1794515374::res://.godot/exported/133200997/export-f7212d3fe6f90becd40118a3112f02b9-WordGenerator.scn
+res://Scenes/WordLinker.tscn::4be54a940384b5ad38c62baed7e26ca9::1794592580::res://.godot/exported/133200997/export-86bc69be33a0d895ecbc6183ea18fed9-WordLinker.scn
+res://Scenes/WordSelector.tscn::586775b3246706b8a39d3dafec5a49c3::1794592580::res://.godot/exported/133200997/export-db67c668e6102afed9514180b570e6f7-WordSelector.scn
+res://Theme/kracnodar_theme.tres::0cbbc84b83673d838d33ca8edd274c9c::1794520778::res://.godot/exported/133200997/export-634c918307908faadde54384c010672f-kracnodar_theme.res
+res://default_env.tres::f606bf2021c38f13bbfaaef47413cdf7::1795025332::res://.godot/exported/133200997/export-7cf3fd67ad9f55210191d77b582b8209-default_env.res
+res://Scenes/Sandbox.tscn::c491a9d4beca95bc5b77caf0daf83501::1795035269::res://.godot/exported/133200997/export-fb5fefc0b1332a7e9b33733840d34bc8-Sandbox.scn

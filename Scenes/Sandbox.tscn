@@ -1,0 +1,131 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scripts/Sandbox.gd" id="1"]
+
+[node name="Sandbox" type="HBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+script = ExtResource("1")
+
+[node name="Controls" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+
+[node name="Layout" type="VBoxContainer" parent="Controls"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Heading" type="Label" parent="Controls/Layout"]
+layout_mode = 2
+theme_type_variation = &"HeadingLabel"
+text = "Sandbox"
+
+[node name="Intro" type="Label" parent="Controls/Layout"]
+layout_mode = 2
+theme_type_variation = &"HintLabel"
+text = "Type Kracnodar in Latin letters: it is written in the script as you type, a line of text to a line."
+autowrap_mode = 3
+
+[node name="TextInput" type="TextEdit" parent="Controls/Layout"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 130)
+layout_mode = 2
+placeholder_text = "Kracnodar"
+wrap_mode = 1
+
+[node name="Scroll" type="ScrollContainer" parent="Controls/Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Sections" type="VBoxContainer" parent="Controls/Layout/Scroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="ExportButtons" type="HBoxContainer" parent="Controls/Layout"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="PngButton" type="Button" parent="Controls/Layout/ExportButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Save the text as a PNG image, at the letter size set above"
+theme_type_variation = &"AccentButton"
+text = "Export PNG…"
+
+[node name="SvgButton" type="Button" parent="Controls/Layout/ExportButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Save the text as an SVG drawing: its letters as shapes, sharp at any size"
+theme_type_variation = &"AccentButton"
+text = "Export SVG…"
+
+[node name="Status" type="HBoxContainer" parent="Controls/Layout"]
+layout_mode = 2
+
+[node name="StatusLabel" type="Label" parent="Controls/Layout/Status"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+theme_type_variation = &"HintLabel"
+autowrap_mode = 3
+
+[node name="ShowButton" type="Button" parent="Controls/Layout/Status"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Show the exported file in its folder"
+focus_mode = 0
+text = "Show"
+
+[node name="Page" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="Preview" type="Control" parent="Page"]
+unique_name_in_owner = true
+clip_contents = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="EmptyLabel" type="Label" parent="Page/Preview"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"HintLabel"
+text = "Nothing to write yet."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Footer" type="HBoxContainer" parent="Page"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="SizeLabel" type="Label" parent="Page/Footer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"HintLabel"
+
+[node name="MissingLabel" type="Label" parent="Page/Footer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"HintLabel"
+horizontal_alignment = 2
+autowrap_mode = 3
