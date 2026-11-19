@@ -1,5 +1,5 @@
 78098b89c88a74ebe8c20117b8754620
-::res://::1795035501
+::res://::1795036129
 default_env.tres::Environment::2157875119464751727::1795025332::0::1::::<><><>0<>0<><>::
 dict.json::JSON::-1::1794598053::0::1::::<><><>0<>0<><>::
 export_presets.cfg::TextFile::-1::1795033791::0::1::::<><><>0<>0<><>::
@@ -23,7 +23,7 @@ WordButton.tscn::PackedScene::-1::1794515374::0::1::::<><><>0<>0<><>::uid://bf0k
 WordGenerator.tscn::PackedScene::3279627013384889251::1794515374::0::1::::<><><>0<>0<><>::uid://o0xumcrh5y3h::::res://Scripts/WordGenerator.gd
 WordLinker.tscn::PackedScene::-1::1794592580::0::1::::<><><>0<>0<><>::uid://dnga7unsfa0k2::::res://Scripts/WordLinker.gd
 WordSelector.tscn::PackedScene::7622574648722574331::1794592580::0::1::::<><><>0<>0<><>::uid://djmpdt2xln0ix::::res://Scripts/WordSelector.gd
-::res://Scripts/::1795036102
+::res://Scripts/::1795118921
 Alphabet.gd::GDScript::8362054653291405405::1795008060::0::1::::<>HBoxContainer<><>0<>0<><>::
 AlphabetRail.gd::GDScript::817823904917804213::1794520793::0::1::::<>Control<><>0<>0<><>::
 Dict.gd::GDScript::1081728678324778303::1794601415::0::1::::<>Node<><>0<>0<><>::
@@ -31,10 +31,10 @@ Dictionnaire.gd::GDScript::8107701514926910962::1794592580::0::1::::<>Control<><
 GlyphCanvas.gd::GDScript::2515003546506960561::1795008060::0::1::::<>Control<><>0<>0<><>::
 GlyphThumb.gd::GDScript::651949034358013869::1795008060::0::1::::<>Control<><>0<>0<><>::
 Grammaire.gd::GDScript::4154270094711059325::1795008060::0::1::::<>Control<><>0<>0<><>::
-Library.gd::GDScript::3738947047072951314::1795008060::0::1::::<>Control<><>0<>0<><>::
-MarkdownToolbar.gd::GDScript::9048588738489884851::1795008060::0::1::::<>HBoxContainer<><>0<>0<><>::
+Library.gd::GDScript::3738947047072951314::1795118920::0::1::::<>Control<><>0<>0<><>::
+MarkdownToolbar.gd::GDScript::9048588738489884851::1795118921::0::1::::<>HBoxContainer<><>0<>0<><>::
 MarksHighlighter.gd::GDScript::6732971833780764494::1795008060::0::1::::<>SyntaxHighlighter<><>0<>0<><>::
-Markup.gd::GDScript::8890873516910271585::1795008060::0::1::::<>RefCounted<><>0<>0<><>::
+Markup.gd::GDScript::8890873516910271585::1795118867::0::1::::<>RefCounted<><>0<>0<><>::
 Quill.gd::GDScript::6636670048129816211::1795008060::0::1::::<>RefCounted<><>0<>0<><>::
 Sandbox.gd::GDScript::8698607530260954071::1795035426::0::1::::<>HBoxContainer<><>0<>0<><>::
 TextFold.gd::GDScript::5377602838515065751::1794520617::0::1::::<>RefCounted<><>0<>0<><>::

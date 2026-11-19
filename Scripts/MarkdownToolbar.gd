@@ -29,7 +29,7 @@ const TOOLS = {
 
 # Buttons an editor can ask for on top of TOOLS (see setup).
 const EXTRA_TOOLS = {
-	"required": ["==Required==", "A required word or module, shown green and listed under Required: puts == around the selection, or the word at the caret (again to take them off).\nSelect part of a word for a module: ==lok==tag"],
+	"required": ["==Required==", "A required word or module, shown green and listed under Required: puts == around the selection, or the word at the caret (again to take them off).\nSelect part of a word for a module: ==lok==tag, or both parts for two: ==lok====tag=="],
 }
 
 var editor: TextEdit

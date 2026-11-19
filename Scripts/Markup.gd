@@ -13,7 +13,8 @@ extends RefCounted
 #   *word*                a Kracnodar word, in the Kracnodar style
 #   ~~word~~              a masked word: struck through, and hidden from the
 #                         Library's players until revealed
-#   ==word==              a required word or module (the Library's Required list)
+#   ==word==              a required word or module (the Library's Required list);
+#                         ==lok====tag== marks lok and tag, one after the other
 #   {word}                an appearance the Required list doesn't count
 
 const FENCE = "```"
@@ -22,19 +23,23 @@ const FENCE = "```"
 const MASKED = 1
 const REQUIRED = 2
 const IGNORED = 4
+# The first character of a required stretch that starts right where another
+# ends, as tag in ==lok====tag==: the two are two entries, not one.
+const SPLIT = 8
 
 static var _arrow := RegEx.create_from_string("\\s*(?:→|->)\\s*")
 static var _separator_cell := RegEx.create_from_string("^:?-+:?$")
 
 
 # A text without its ~~, == and {} marks, and what each of its characters is:
-#   {"plain": String, "flags": [MASKED | REQUIRED | IGNORED for each character]}
+#   {"plain": String, "flags": [MASKED | REQUIRED | IGNORED | SPLIT for each character]}
 # ~~ and == each open or close their kind; a last one with no partner runs to
 # the end of the text. A { with no } after it, or a } with no {, is just itself.
 static func parse_marks(text: String) -> Dictionary:
 	var plain = ""
 	var flags = []
 	var state = 0
+	var split = false  # a == opened right after a required character
 	var i = 0
 	while i < text.length():
 		var pair = text.substr(i, 2)
@@ -44,6 +49,7 @@ static func parse_marks(text: String) -> Dictionary:
 			continue
 		if pair == "==":
 			state ^= REQUIRED
+			split = state & REQUIRED != 0 and not flags.is_empty() and flags[-1] & REQUIRED != 0
 			i += 2
 			continue
 		var c = text[i]
@@ -53,9 +59,19 @@ static func parse_marks(text: String) -> Dictionary:
 			state &= ~IGNORED
 		else:
 			plain += c
-			flags.append(state)
+			flags.append(state | SPLIT if split else state)
+			split = false
 		i += 1
 	return {"plain": plain, "flags": flags}
+
+
+# Where the required stretch that starts at `from` ends: at the first character
+# not required, or the next stretch's first (see SPLIT).
+static func required_end(flags: Array, from: int) -> int:
+	var to = from + 1
+	while to < flags.size() and flags[to] & REQUIRED != 0 and flags[to] & SPLIT == 0:
+		to += 1
+	return to
 
 
 # The text parse_marks() read, its marks put back where the flags change.
@@ -64,16 +80,18 @@ static func join_marks(plain: String, flags: Array) -> String:
 	var before = 0
 	for i in plain.length() + 1:
 		var now = flags[i] if i < plain.length() else 0
-		if now != before:
+		# A required stretch right after another closes it and opens anew: ====
+		var split = now & SPLIT != 0 and now & REQUIRED != 0 and before & REQUIRED != 0
+		if now != before or split:
 			if before & IGNORED and not now & IGNORED:
 				out += "}"
-			if before & REQUIRED and not now & REQUIRED:
+			if before & REQUIRED and (split or not now & REQUIRED):
 				out += "=="
 			if before & MASKED and not now & MASKED:
 				out += "~~"
 			if now & MASKED and not before & MASKED:
 				out += "~~"
-			if now & REQUIRED and not before & REQUIRED:
+			if now & REQUIRED and (split or not before & REQUIRED):
 				out += "=="
 			if now & IGNORED and not before & IGNORED:
 				out += "{"

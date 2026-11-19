@@ -28,7 +28,7 @@ The Kracnodar Library, shown (and editable) in the app's Bibliothèque tab.
   ### Document [Kracnodar]   one the players read in Kracnodar only ([English]: in English only)
   English → Kracnodar a line in both languages (-> works too; either side may be empty)
   ~~word~~            a masked word: hidden from the players until revealed
-  ==word==            a required word or module (==lok==tag for a module): green, and listed under Required
+  ==word==            a required word or module (==lok==tag for a module, ==lok====tag== for two): green, and listed under Required
   {word}              an appearance that Required doesn't count
   - text              a rule, one per line
   > text              a note
@@ -48,6 +48,7 @@ const FADED = 0.35  # the opacity of the language the players don't read
 const MASKED = Markup.MASKED
 const REQUIRED = Markup.REQUIRED
 const IGNORED = Markup.IGNORED
+const SPLIT = Markup.SPLIT
 const FOUND_COLOR = Color(0.52, 0.78, 0.45)  # a required word, and one the players can read somewhere
 
 var title = ""
@@ -219,7 +220,8 @@ func join_line(item: Dictionary) -> String:
 # characters are all marked alike (see Markup.parse_marks):
 #   [{"text": String, "word": bool, "flags": int, "start": where the piece starts
 #     in plain(text), "word_start": where its word (or the text between) starts}]
-# A word partly marked, like ==lok==tag, comes in several pieces.
+# A word partly marked, like ==lok==tag, comes in several pieces, and so does
+# one with two required stretches back to back, like ==lok====tag==.
 func tokens(text: String) -> Array:
 	var marks = Markup.parse_marks(text)
 	var shown: String = marks["plain"]
@@ -238,7 +240,7 @@ func tokens(text: String) -> Array:
 		var i = span[0]
 		while i < span[1]:
 			var j = i + 1
-			while j < span[1] and flags[j] == flags[i]:
+			while j < span[1] and flags[j] & SPLIT == 0 and flags[j] & ~SPLIT == flags[i] & ~SPLIT:
 				j += 1
 			out.append({"text": shown.substr(i, j - i), "word": span[2], "flags": flags[i], "start": i, "word_start": span[0]})
 			i = j
@@ -986,9 +988,7 @@ func _required_index() -> Dictionary:
 						if flags[i] & REQUIRED == 0:
 							i += 1
 							continue
-						var j = i
-						while j < shown.length() and flags[j] & REQUIRED != 0:
-							j += 1
+						var j = Markup.required_end(flags, i)
 						var key = _required_key(shown.substr(i, j - i))
 						if key != "":
 							if not index.has(key):
