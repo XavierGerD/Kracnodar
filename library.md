@@ -35,7 +35,7 @@ We have tried to read it, but to no avail; its leathery pages seem bound by some
 
 What we found was most incredible: the language bears absolutely no resemblance to any Kartvelian language, nor to Indo-European or Semitic tongues, nor to any other we could find. The poem's origin, and indeed its meaning, remains completely opaque even to our best deductions.
 
-Thankfully, the cave where we found the book held more: signs of an ancient religion and forgotten rites, scraps of parchment and tablets. The scraps contain a few short phrases, and all of the scraps begin with the same phrase. One of them is written in a strange pidgin of Russian and Georgian, suggesting an attempt at a revival of this ancient religion. Irakli was kind enough to translate it for us.
+Thankfully, the cave where we found the book held more: signs of an ancient religion and forgotten rites, scraps of parchment and tablets. The scraps contain a few short phrases, and all of the scraps begin with the same phrase. One of them is written in a strange pidgin of Russian and Georgian, and its paper is much more recent, suggesting an attempt at a revival of this ancient religion. Irakli was kind enough to translate it for us.
 
 For five years I have kept this book in my office, unable to unlock its secrets. I believe the poem is a riddle, and its answer is the key to accessing the rest of the book. So today, I turn to you, old friend. If any linguist can solve this riddle, it is you.
 
