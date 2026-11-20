@@ -6,7 +6,7 @@ The Kracnodar Library, shown (and editable) in the app's Bibliothèque tab.
   ### Document [Kracnodar]   one the players read in Kracnodar only ([English]: in English only)
   English → Kracnodar a line in both languages (-> works too; either side may be empty)
   ~~word~~            a masked word: hidden from the players until revealed
-  ==word==            a required word or module (==lok==tag for a module): green, and listed under Required
+  ==word==            a required word or module (==lok==tag for a module, ==lok====tag== for two): green, and listed under Required
   {word}              an appearance that Required doesn't count
   - text              a rule, one per line
   > text              a note
@@ -60,27 +60,22 @@ In the middle of this chamber, a status of a blacksmith at work.
 At regular intervals along the walls, four bowls, each containing a note.
 ```
 
-### The clay tablet
-
-Split into two sections, it features your tongue on the left, and another, unknown language on the right. Included with its classification document is a strange photograph of the tablet. You recognize its shape and the damage to the tablet itself matches exactly what you have in your hands, but there are no words written on it.
+### The stone tablet
 
 Document:
 ```
 Clay tablet, about 2 inches tall, 3 inches across.
 Damage rendered some letters illegible.
-Inscriptions appear to in the beholder's language on the left,
-in the be beholder's script on the right.
-Photographs show the tablet as empty. See attached.
-Found in the blacksmith's chamber, laid on top of the book.
+
 ```
 
-~~In my~~ house of stone → ~~Ga enogo~~ tinod kintag
-I work with fire and steel → ~~Dabtag pop~~ vul gi melid
-My hammer rings loud → ~~Zek kintag~~ relinac kenvor
+In my house of stone → Ga enogo tinod kintag
+I work with fire and steel → Dabtag pop vul gi melid
+My hammer rings loud → Zek kintag relinac kenvor
 Work, worker → Dab, dabrom
 Blow, bellows → Lif, lifrom
-Forge, blacksmith → Lok, ~~lokrom~~
-Fire, burn forever → Vul, ~~vultan ral~~
+Forge, blacksmith → Lok, lokrom
+Fire, burn forever → Vul, vultan ral
 
 ### Bowl note: Voni [English]
 
@@ -120,13 +115,11 @@ Where great fortune lies → Nev hura, mulenopbar
 ### Bowl note: Vulrom [Kracnodar]
 
 ```
-Note number four. Found in the third bowl, starting at the left of the entrance. Written in Kracnodar.
+Note number four. Found in the first bowl at the left of the entrance. Similar to all other notes. Written in a strange pidgin of Russian and Georgian, and translated by Irakli, Aldermoore's guide.
 ```
 
 I, Vulrom, wish for work → Tag, Felekrom, lunirtag dabex
-Sadness is in me →
-Since my wife was killed →
-Who else can help me but you, Etovo? →
+Etovo, I am your servant → Etovo, etag wode kinwet
 
 ### Tool labels [Kracnodar]
 
@@ -137,13 +130,13 @@ Tongs → Tor
 
 ### Riddle [Kracnodar]
 
-I forge in fire → ==Lok==tag ga vul
-I work with steel → Dabtag pop melid
-I make the sharpness to kill → Rakatag zirex ipe murok
-I am a servant of Etevo → Etag wode kin-Etovo
-Who am I? → Etag hob ?
+I forge in fire → ==Lok====tag== ga ==vul==
+I work with steel → ==Dab==tag pop ==melid==
+I make the sharpness to kill → ==Rak==tag ==zir==ex ipe murok
+I am a servant of Etevo → Etag ==wode== ==kin==-Etovo
+Who am I? → Etag ==hob== ?
 
-Answer: Blacksmith (lokrom)
+Answer: Blacksmith (lok==rom==)
 
 Grammar: the subject pronoun tag after the verb, ga, kin, ipe, -ex, -rom, hob.
 Vocabulary: lok, dab, vul, melid, zir, murok, raka, e.

@@ -6,10 +6,11 @@ extends Node
 # It loads at startup and saves itself after every change (add_entries,
 # replace_entry, remove_entry).
 #
-# Where the app keeps its files: run from the Godot editor, the project folder
-# itself (dict.json and grammar.md in the repo); exported, its user-data folder,
-# seeded from the copies packed with it. KRACNODAR_DATA_DIR overrides both, so
-# tests can run on scratch copies.
+# Where the app keeps its files: the repo (dict.json, grammar.md and the rest
+# next to project.godot), run from the Godot editor or as the exported app kept
+# in the repo. An exported copy that is not inside the repo falls back on its
+# user-data folder, seeded from the copies packed with it. KRACNODAR_DATA_DIR
+# overrides all of these, so tests can run on scratch copies.
 
 signal save_failed(message)
 
@@ -62,8 +63,12 @@ var dict = {}
 # file is never replaced by an empty dictionary.
 var load_problem = ""
 
+# The exported app's data folder, found once (see data_dir).
+var _repo = ""
+
 
 func _ready():
+	print("Kracnodar data: ", ProjectSettings.globalize_path(data_dir()))
 	var path = read_path(DICT_FILE)
 	if FileAccess.file_exists(path):
 		var problem = load_file(path)
@@ -76,7 +81,29 @@ func data_dir() -> String:
 	var override = OS.get_environment("KRACNODAR_DATA_DIR")
 	if override != "":
 		return override
-	return "res://" if OS.has_feature("editor") else "user://"
+	if OS.has_feature("editor"):
+		return "res://"
+	if _repo == "":
+		_repo = repo_dir()
+		if _repo == "":
+			_repo = "user://"
+	return _repo
+
+
+# The Kracnodar repo the exported app sits in: the nearest folder holding this
+# project's project.godot, from the executable's own folder up ("" if none).
+static func repo_dir(executable := OS.get_executable_path()) -> String:
+	var dir = executable.replace("\\", "/").get_base_dir()
+	while dir != "":
+		var project = ConfigFile.new()
+		if project.load(dir.path_join("project.godot")) == OK \
+				and project.get_value("application", "config/name", "") == "Kracnodar":
+			return dir
+		var parent = dir.get_base_dir()
+		if parent == dir:
+			break
+		dir = parent
+	return ""
 
 
 # Where a data file is saved.

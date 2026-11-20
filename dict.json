@@ -13,7 +13,7 @@
   "immonde": {"en": "vile", "kr": "xo", "class": "adjectif"},
   "gens": {"en": "people", "kr": "ruko", "class": "nom"},
   "toujours": {"en": "always", "kr": "ral", "class": "adverbe"},
-  "faire": {"en": "to do, to make", "kr": "raka", "class": "verbe"},
+  "faire": {"en": "to do, to make", "kr": "rak", "class": "verbe"},
   "etiquette": {"en": "label", "kr": "rori", "class": "nom"},
   "jour": {"en": "day", "kr": "voni", "class": "nom"},
   "approcher": {"en": "to approach", "kr": "foxoko", "class": "verbe"},
@@ -127,5 +127,6 @@
   "present": {"en": "present", "kr": "sele", "class": "temps"},
   "futur proche": {"en": "near future", "kr": "dado", "class": "temps"},
   "futur lointain": {"en": "distant future", "kr": "fojo", "class": "temps"},
-  "question": {"en": "question marker", "kr": "ot", "class": "interrogatif"}
+  "question": {"en": "question marker", "kr": "ot", "class": "interrogatif"},
+  "chanson": {"en": "song", "kr": "dar", "class": "nom"}
 }
