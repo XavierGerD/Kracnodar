@@ -38,15 +38,15 @@ const CLASSES = [
 const MODULE_CLASSES = ["verbe", "nom", "adjectif", "adverbe"]
 
 # The forms of a module, from the grammar's table of affixes (2.1.1). The affix
-# goes after the word ("suffix"), before it ("prefix") or after it as a separate
-# word ("word"). A module already is the form of its own class, with no affix:
+# goes after the word ("suffix") or before it ("prefix"). A module already is
+# the form of its own class, with no affix:
 # felek, a verb, is "to free"; dol, an adjective, gives the verb doltan.
 const FORMS = [
 	{"name": "Verbe", "affix": "tan", "at": "suffix", "class": "verbe"},
 	{"name": "Nom", "affix": "ex", "at": "suffix", "class": "nom"},
 	{"name": "Action", "affix": "am", "at": "suffix"},
 	{"name": "Adverbe", "affix": "ken", "at": "prefix", "class": "adverbe"},
-	{"name": "Adjectif", "affix": "pax", "at": "word", "class": "adjectif"},
+	{"name": "Adjectif", "affix": "pax", "at": "suffix", "class": "adjectif"},
 	{"name": "Agent, instrument", "affix": "rom", "at": "suffix"},
 	{"name": "Diminutif", "affix": "fo", "at": "suffix"},
 	{"name": "Augmentatif", "affix": "op", "at": "suffix"},
@@ -227,9 +227,6 @@ func derived_forms(french: String) -> Array:
 					var link = linking_consonant(form["affix"], module)
 					word = form["affix"] + link + module
 					affix = form["affix"] + (" + %s (liaison)" % link if link != "" else "") + " +"
-				"word":
-					word = module + " " + form["affix"]
-					affix = "+ " + form["affix"]
 				_:
 					var link = linking_consonant(module, form["affix"])
 					word = module + link + form["affix"]
@@ -237,6 +234,17 @@ func derived_forms(french: String) -> Array:
 		var existing = french_for_krac(word) if affix != "" else ""
 		forms.append({"name": form["name"], "word": word, "affix": affix, "existing": existing})
 	return forms
+
+
+# How many words the modules give through their affixes (see derived_forms):
+# each spelling counted once, and none that is already an entry of its own.
+func derived_count() -> int:
+	var words = {}
+	for french in dict:
+		for form in derived_forms(french):
+			if form["affix"] != "" and form["existing"] == "":
+				words[form["word"].to_lower()] = true
+	return words.size()
 
 
 # The consonant that goes between two lexemes joined into one word, or "" when

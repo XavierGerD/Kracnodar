@@ -17,7 +17,20 @@ extends RefCounted
 #                         ==lok====tag== marks lok and tag, one after the other
 #   {word}                an appearance the Required list doesn't count
 
+const Writing = preload("res://Scripts/Writing.gd")
+
 const FENCE = "```"
+
+# A word in the Kracnodar script, against the text's font size: taller than an
+# image, as it leaves room above its letters for diacritics.
+const SCRIPT_SCALE = 2.4
+# What separates two Kracnodar parts of one text in a script column.
+const SCRIPT_PARTS = "  ·  "
+# The room added to the space between two words in the script, against the
+# text's font size: a plain space is narrow beside the script's tall words.
+const SCRIPT_WORD_GAP = 0.4
+
+static var _gap_texture: ImageTexture  # see script_gap()
 
 # What a character of a text is, past its marks (see parse_marks); one bit each.
 const MASKED = 1
@@ -227,3 +240,41 @@ static func trimmed_quote(items: Array) -> Array:
 	while not lines.is_empty() and lines[-1]["text"].strip_edges() == "":
 		lines.pop_back()
 	return lines
+
+
+# A word in the Kracnodar script as BBCode, drawn for text `font_size` tall
+# in `color` (hex), its letters shown on hover unless `hint` is off. `owner`
+# gives the window's scale.
+static func script_image(word: String, owner: Control, font_size: int, color: String, hint := true) -> String:
+	var height = int(round(font_size * SCRIPT_SCALE))
+	var scale = maxf(1.0, ceilf(owner.get_viewport().get_final_transform().get_scale().y * 2.0) / 2.0)
+	var tooltip = " tooltip=\"%s\"" % word if hint else ""
+	return "[img height=%d color=#%s%s]%s[/img]" % [height, color, tooltip, Writing.image_path(word, height, scale)]
+
+
+# The room added after the space between two words in the script, as BBCode:
+# a clear image SCRIPT_WORD_GAP wide.
+static func script_gap(font_size: int) -> String:
+	if _gap_texture == null:
+		var image = Image.create_empty(1, 1, false, Image.FORMAT_RGBA8)
+		image.fill(Color(1, 1, 1, 0))
+		_gap_texture = ImageTexture.create_from_image(image)
+		_gap_texture.take_over_path("res://writing/gap.tex")
+	return "[img width=%d height=1]res://writing/gap.tex[/img]" % script_gap_width(font_size)
+
+
+static func script_gap_width(font_size: int) -> int:
+	return int(round(font_size * SCRIPT_WORD_GAP))
+
+
+# How wide script_image() draws a word.
+static func script_image_width(word: String, font_size: int) -> float:
+	return round(font_size * SCRIPT_SCALE) * Writing.aspect(word)
+
+
+# A table row's cells centred on its height: a line in the script is taller
+# than the text around it.
+static func center_cells(row: HBoxContainer) -> HBoxContainer:
+	for cell in row.get_children():
+		cell.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	return row

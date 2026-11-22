@@ -18,58 +18,157 @@ The Kracnodar Library, shown (and editable) in the app's Bibliothèque tab.
 The Grammaire uses the same markup.
 -->
 
-# The Kracnodar Library
+# The Dar Kinnod Library
 
-On the morning of February 11th, 1916, you receive this letter, addressed personally to you, at your office.
+## Prologue
+
+On the morning of February 11th, 1912, you receive this letter, addressed personally to you, at your office.
 
 ```
 My dear Sitwell,
 
-It is with a troubled mind that I write to you in this time of war and unrest.
+It is with the greatest pleasure, and no small excitement, that I write to you today from Tiflis, at the very edge of the European continent.
 
-About half a decade ago, before the War, our efforts in archaeology led Gregory Chamfer and me to the remote reaches of the Caucasus. There we made the most fascinating discoveries. Therein lay the remains of an ancient civilization, lost to time, that has puzzled us ever since.
+Last year, our archaeological endeavours led Gregory Chamfer and me into the remotest reaches of the Caucasus, where we made the most remarkable discoveries: the remains of an ancient civilisation, long lost to time, which has puzzled us ever since. Its people settled in every crevice, nook and cave, and yet scarcely a trace of them remains.
 
-Its people settled in every crevice, nook and cave, yet hardly a trace of them remains. Among the few artefacts they left behind is a book, beautifully preserved, and quite unlike anything I have ever seen.
+Among the few artefacts they left behind is a book, beautifully preserved and quite unlike anything I have ever seen. Its pages are written in a strange script whose ancestry we have been wholly unable to trace. Happily, the script is not altogether dead. My guide, Irakli, found a few villagers who still make use of it; and though they could recognise its letters, they could make nothing of the language itself. With their help, we drew up a guide to the alphabet, by means of which we transliterated the script into Latin letters.
 
-We have tried to read it, but to no avail; its leathery pages seem bound by some kind of supernatural force. Only its cover will open, revealing on the first leaf what seems to be a strange poem, written in a script utterly foreign to us. Yet the script is not quite dead. My guide, Irakli, found a few villagers who still use it, and though they could recognize its letters, they could not decipher the language. With their help, we created a guide to the alphabet, and we used it to transliterate the script into Latin letters.
+What we found was most extraordinary. The language bears not the slightest resemblance to any of the Kartvelian tongues, nor to the Indo-European or Semitic families, nor indeed to any other we could find. Even with our guide in hand, we could not make out a single word, nor so much as guess at its meaning. And so I turn to you, old friend. If any linguist in England can solve this riddle, it is you.
 
-What we found was most incredible: the language bears absolutely no resemblance to any Kartvelian language, nor to Indo-European or Semitic tongues, nor to any other we could find. The poem's origin, and indeed its meaning, remains completely opaque even to our best deductions.
+By the same post I have dispatched a bundle containing the book and the other artefacts found with it, together with our guide to this most curious alphabet. I trust you will find them of use in deciphering this unknown tongue. 
 
-Thankfully, the cave where we found the book held more: signs of an ancient religion and forgotten rites, scraps of parchment and tablets. The scraps contain a few short phrases, and all of the scraps begin with the same phrase. One of them is written in a strange pidgin of Russian and Georgian, and its paper is much more recent, suggesting an attempt at a revival of this ancient religion. Irakli was kind enough to translate it for us.
+Godspeed, old friend.
 
-For five years I have kept this book in my office, unable to unlock its secrets. I believe the poem is a riddle, and its answer is the key to accessing the rest of the book. So today, I turn to you, old friend. If any linguist can solve this riddle, it is you.
-
-By the time this letter reaches you, I shall have returned to the Caucasus to further my research. With it you will find the book itself, and a bundle. This bundle contains fragments of text found in the cave where the book lay, each with its own transliteration and description of how it was found. I have also included the guide to this most curious alphabet. Use them to learn the language and solve the riddle. I shall send more bundles as my dig progresses. Should you need me, do not hesitate to telegraph. I have stationed a man at the Tiflis telegraph office, and he will carry any word from you up to me without delay. 
-
-Godspeed, old friend,
+Yours ever,
 
 Aldermoor
 
-P.S. I need not remind you to remain discreet. Be guarded in your telegrams. The enemy may be listening.
+P.S. Should you ever need me, dispatch a telegraph to the Tiflis office. A man of mine there will carry any word up to me in the mountains.
 ```
 
-## Prologue - The Blacksmith
-
-With the letter from Aldermoore, you receive a bundle of artefacts. Each of these artefacts is carefully labelled with the location where it was found and what state it was in.
-
-### Archaeological findings
+### Loose leaf 1
 
 ```
-The following book and artefacts were found in a circular chamber.
-In the middle of this chamber, a status of a blacksmith at work.
-At regular intervals along the walls, four bowls, each containing a note.
+A loose leaf found right on top of the box. Written on one side in a strange form of old slavic, which is translated below, and on the other in the mysterious script.
 ```
+
+The hammer speaks → Zek hac
+His words sound → Re kinac relinacu
+Here in the house of stone →  Ven ga eno tinod
+Words of fire → Re tivul
+Words of steel → Re timelid
+Etovo, the blacksmith → Etovo, lokrom
+In his forge → Ga lokbar kinac
+
+### Riddle
+
+```
+A box with a riddle inscribed on it. Three dials with letters can be turned. On it, an riddle is inscribed:
+```
+
+Riddle:
+I am the home of fire → E==tag== ==eno== kin==vul==
+I am the home of steel → Etag eno kin==melid==
+I am the home of the hammer → Etag ego kin==zek==
+Etovo lives here → ==Etovo== ==id==ac ==ven==
+
+Answer:
+ Forge →  ==lokbar==
+
+Telegraph to Tbilisi.
+Globe spinning.
+Train.
+Plane.
+Work map travel.
+Arrival in the Caucasus. 
+
+Chapter 1
+
+## Chapter 1
+
+After traveling to the Caucasus, Aldermoore uses the map to locate the monument to Etovo. Inside a cave, a groin-vaulted chamber. Directly in front of the entrance, a pedestal with the feet of a broken statue. Its arm, holding a hammer, lays on the ground. The rest of the statue is missing. At its base, a stone tablet with inscriptions. Around the room, in the four corners of supporting walls, large stone bowls supported by a metal structure. The end of each barrel vault is blocked, except the first. Clockwise: entrance, depiction of a hammer, a forge, depiction of the bellows.
+
+Ffrom the entrance, in front of the statue, a lectern with a singular, well preserved book.
+
+### The Stone Tablet [Kracnodar]
+
+```
+Stone  tablet, about 2 inches tall, 3 inches across.
+Damage rendered some letters illegible.
+```
+
+In my house of stone → Ga eno tinod kintag
+I work with fire and steel → Dabtag pop vul gi melid
+My hammer rings loud → Zek kintag relinac kenvor
+Work, worker → Dab, dabrom
+Blow, bellows → Lif, lifrom
+Forge, blacksmith → Lok, lokrom
+Fire, burn forever → Vul, vultan ral
+
+## Additional stuff
+
+### Loose leaf 1
+
+```
+A loose leaf found tucked inside the book. Written on one side in a strange form of old slavic, which is translated below, and on the other in the mysterious script.
+```
+
+The hammer speaks → Zek hac
+His words sound → Re kinac relinacu
+In the house of stone →  Ga eno tinod
+Words of wisdom → Re tiruten
+Words of war → Re timor
+Words that open doors → Re golkadir saru
+Etovo, the blacksmith → Etovo, lokrom
+Show the way → Ve joka
+Beyond life itself → Resa idex acac
+
+### Loose leaf 2
+
+hammer / rom
+open
+
+I serve Etovo → Wodetantag Etovo
+I see the way → Hitantag joka
+I work for salvation → Dabtag ipe soz
+In life → Ga idex
+Beyond life → Resa idex
+I serve the hammer → Wodetantag zek
+Etovo, open the way → Etovo kadir joka
+
+### Riddle
+
+```
+With the book came a box with a riddle inscribed on it. Four dials with letters can be turned to set the password
+```
+
+Words open the way → ==Ru== ==kadir====acu== ==joka==
+Beyond the one with the hammer → ==Resa== ==zek====rom==
+
+
+Telegraph to Tbilisi.
+Globe spinning.
+Train.
+Plane.
+Work map travel.
+Arrival in the Caucasus. 
+
+Chapter 1
+
+## Chapter X - The Blacksmith
+
+After traveling to the Caucasus, Aldermoore uses the map to locate the monument to Etovo. Inside a cave, a groin-vaulted chamber. Directly in front of the entrance, a pedestal with the feet of a broken statue. Its arm, holding a hammer, lays on the ground. The rest of the statue is missing. At its base, a stone tablet with inscriptions. Around the room, in the four corners of supporting walls, large stone bowls supported by a metal structure. The end of each barrel vault is blocked, except the first. Clockwise: entrance, depiction of a hammer, a forge, depiction of the bellows.
+
+Ffrom the entrance, in front of the statue, a lectern with a singular, well preserved book.
 
 ### The stone tablet
 
-Document:
 ```
-Clay tablet, about 2 inches tall, 3 inches across.
+Stone  tablet, about 2 inches tall, 3 inches across.
 Damage rendered some letters illegible.
-
 ```
 
-In my house of stone → Ga enogo tinod kintag
+In my house of stone → Ga eno tinod kintag
 I work with fire and steel → Dabtag pop vul gi melid
 My hammer rings loud → Zek kintag relinac kenvor
 Work, worker → Dab, dabrom
@@ -131,17 +230,15 @@ Tongs → Tor
 ### Riddle [Kracnodar]
 
 I forge in fire → ==Lok====tag== ga ==vul==
-I work with steel → ==Dab==tag pop ==melid==
+I work with steel → ==Dab==tag ka ==melid==
 I make the sharpness to kill → ==Rak==tag ==zir==ex ipe murok
 I am a servant of Etevo → Etag ==wode== ==kin==-Etovo
 Who am I? → Etag ==hob== ?
 
-Answer: Blacksmith (lok==rom==)
+Answer: Blacksmith (*lok==rom==*)
 
 Grammar: the subject pronoun tag after the verb, ga, kin, ipe, -ex, -rom, hob.
 Vocabulary: lok, dab, vul, melid, zir, murok, raka, e.
-
-## Chapter 1
 
 ## Chapter 2
 
