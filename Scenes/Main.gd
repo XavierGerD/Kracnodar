@@ -11,6 +11,7 @@ func _ready():
 	%TabContainer.tab_changed.connect(_on_TabContainer_tab_changed)
 	%Alphabet.alphabet_changed.connect(%Grammaire.alphabet_changed)
 	%Alphabet.alphabet_changed.connect(%Sandbox.alphabet_changed)
+	%Alphabet.alphabet_changed.connect(%Bibliotheque.alphabet_changed)
 	Dict.save_failed.connect(_show_save_problem)
 	if Dict.load_problem != "":
 		_show_save_problem.call_deferred(

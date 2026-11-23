@@ -9,7 +9,6 @@ extends Control
 const TextFold = preload("res://Scripts/TextFold.gd")
 const MarkdownToolbar = preload("res://Scripts/MarkdownToolbar.gd")
 const Markup = preload("res://Scripts/Markup.gd")
-const Writing = preload("res://Scripts/Writing.gd")
 
 const GRAMMAR_FILE = "grammar.md"
 const CHAPTER = 1
@@ -37,11 +36,6 @@ The Library uses the same markup, images apart.
 const IMAGE_CHAR = 0xE000
 # An image's height, against the text's font size.
 const IMAGE_SCALE = 1.4
-# A word in the Kracnodar script, against the text's font size: taller than an
-# image, as it leaves room above its letters for diacritics.
-const SCRIPT_SCALE = 2.4
-# What separates two Kracnodar parts of one text in a script column.
-const SCRIPT_PARTS = "  ·  "
 
 # Search highlights are marked with these before the text becomes BBCode.
 const MARK_OPEN = "\u0001"
@@ -452,7 +446,7 @@ func _examples(items: Array, query: String) -> Control:
 		var kr = _as_krac(sides.get("kr", ""))
 		row.add_child(_rich(kr, query))
 		row.add_child(_one_line(_rich(_script_of(kr)), script_width))
-		panel.add_child(row)
+		panel.add_child(Markup.center_cells(row))
 		list.add_child(panel)
 	return list
 
@@ -514,7 +508,7 @@ func _table(lines: Array, query: String) -> Control:
 			cell.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			cell.size_flags_stretch_ratio = widths[c] if c < widths.size() else 1.0
 			row.add_child(cell)
-		panel.add_child(row)
+		panel.add_child(Markup.center_cells(row))
 		table.add_child(panel)
 	return table
 
@@ -536,7 +530,10 @@ func _spell(text: String) -> String:
 	var out = ""
 	var from = 0
 	for found in _letter_run.search_all(text):
-		out += text.substr(from, found.get_start() - from)
+		var between = text.substr(from, found.get_start() - from)
+		out += between
+		if from > 0 and between != "" and between.strip_edges() == "":
+			out += "![](gap:)"  # more room between two words (see Markup.script_gap)
 		out += "![%s](writing:%s)" % [found.get_string(), found.get_string().to_lower()]
 		from = found.get_end()
 	return (out + text.substr(from)).strip_edges() if from > 0 else ""
@@ -560,7 +557,9 @@ func _script_width(markup: String) -> float:
 	for found in _image.search_all(markup):
 		var path = found.get_string(2)
 		if path.begins_with("writing:"):
-			width += round(size * SCRIPT_SCALE) * Writing.aspect(path.trim_prefix("writing:"))
+			width += Markup.script_image_width(path.trim_prefix("writing:"), size)
+		elif path == "gap:":
+			width += Markup.script_gap_width(size)
 		else:
 			width += round(size * IMAGE_SCALE)
 	return ceil(width + _image.sub(markup, "", true).length() * size * 0.5)
@@ -573,7 +572,7 @@ func _script_of(text: String) -> String:
 		var spelled = _spell(found.get_string(1))
 		if spelled != "":
 			parts.append(spelled)
-	return SCRIPT_PARTS.join(parts)
+	return Markup.SCRIPT_PARTS.join(parts)
 
 
 # A text with each *word* followed by it in the script, in parentheses.
@@ -691,6 +690,8 @@ func _rich(text: String, query := "") -> RichTextLabel:
 func _image_bbcode(label: String, path: String, rich: RichTextLabel, color: String) -> String:
 	if path.begins_with("writing:"):
 		return _script_bbcode(path.trim_prefix("writing:"), rich, color)
+	if path == "gap:":
+		return Markup.script_gap(rich.get_theme_font_size("normal_font_size"))
 	var res_path = path if path.begins_with("res://") else "res://" + path.trim_prefix("/")
 	var safe_name = label.replace("[", "").replace("]", "").replace("\"", "")
 	if not ResourceLoader.exists(res_path):
@@ -702,9 +703,7 @@ func _image_bbcode(label: String, path: String, rich: RichTextLabel, color: Stri
 # A word in the Kracnodar script as BBCode: drawn for the window's scale, so
 # it stays sharp when the window is scaled up.
 func _script_bbcode(word: String, rich: RichTextLabel, color: String) -> String:
-	var height = int(round(rich.get_theme_font_size("normal_font_size") * SCRIPT_SCALE))
-	var scale = maxf(1.0, ceilf(get_viewport().get_final_transform().get_scale().y * 2.0) / 2.0)
-	return "[img height=%d color=#%s tooltip=\"%s\"]%s[/img]" % [height, color, word, Writing.image_path(word, height, scale)]
+	return Markup.script_image(word, self, rich.get_theme_font_size("normal_font_size"), color)
 
 
 func _error(message: String) -> void:

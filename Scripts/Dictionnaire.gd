@@ -10,6 +10,7 @@ const TextFold = preload("res://Scripts/TextFold.gd")
 var sort_column = Column.KRAC
 var sort_ascending = true
 var shown_count = 0
+var _derived = [0, -1]  # [Dict.derived_count(), the hash of the dictionary it counted]
 var _groups = []  # the letter index: [{"letter", "count", "first": French key of its first row}]
 var _row_groups = []  # for each row, its letter's index in _groups (-1 for none)
 var _expanded = {}  # French keys of the rows showing their derived forms, kept across rebuilds
@@ -84,12 +85,23 @@ func _search_text() -> String:
 	return %SearchInput.text.strip_edges()
 
 
-# Whether the entry's three words, or its class, contain the (folded) search text.
+# Whether the entry's three words, or its class, contain the (folded) search
+# text, or one of its derived forms that was given a meaning does.
 func _matches(french: String, query: String) -> bool:
 	if query == "":
 		return true
 	var texts = [Dict.krac_of(french), french, Dict.english_of(french), Dict.class_label(Dict.class_of(french))]
-	return _fold("\n".join(texts)).contains(query)
+	return _fold("\n".join(texts)).contains(query) or _matches_derived(french, query)
+
+
+# Whether a derived form with a meaning, its word or that meaning, contains the search text.
+func _matches_derived(french: String, query: String) -> bool:
+	if query == "" or Dict.derived_meanings(french).is_empty():
+		return false
+	for form in Dict.derived_forms(french):
+		if form["meaning"] != "" and _fold(form["word"] + "\n" + form["meaning"]).contains(query):
+			return true
+	return false
 
 
 # Rebuilds the list; `reveal` names an entry to scroll to and highlight. It is
@@ -108,7 +120,8 @@ func refresh(reveal := "") -> void:
 	for i in keys.size():
 		var row = DictEntryScene.instantiate()
 		%Rows.add_child(row)
-		row.set_entry(keys[i], i % 2 == 1, _expanded.has(keys[i]))
+		# A row the search found through a derived form opens on it.
+		row.set_entry(keys[i], i % 2 == 1, _expanded.has(keys[i]) or _matches_derived(keys[i], query), query)
 		row.expanded_changed.connect(_on_row_expanded_changed)
 		row.deleted.connect(_on_row_deleted)
 		row.edit_started.connect(_on_row_edit_started.bind(row))
@@ -199,6 +212,14 @@ func _update_count() -> void:
 		%CountLabel.text = "%d terme%s" % [total, plural]
 	else:
 		%CountLabel.text = "%d sur %d terme%s" % [shown_count, total, plural]
+	# Counted again only when the dictionary changed, not as the search is typed.
+	if _derived[1] != Dict.dict.hash():
+		_derived = [Dict.derived_count(), Dict.dict.hash()]
+	var derived = _derived[0]
+	if derived > 0:
+		%CountLabel.text += " · %d mot%s dérivé%s" % [derived, "s" if derived > 1 else "", "s" if derived > 1 else ""]
+	%CountLabel.mouse_filter = Control.MOUSE_FILTER_PASS  # for the tooltip
+	%CountLabel.tooltip_text = "Mots dérivés : les formes que les modules (verbes, noms, adjectifs, adverbes) donnent avec leurs affixes, chacune comptée une fois, sans celles qui sont déjà des termes du dictionnaire."
 	%EmptyLabel.visible = shown_count == 0
 	if total == 0:
 		%EmptyLabel.text = "Le dictionnaire est vide."

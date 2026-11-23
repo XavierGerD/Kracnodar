@@ -14,12 +14,18 @@ extends Control
 # chapters on every page: green when the players can read them somewhere else
 # (see _required_index), red when they can't. An appearance that shouldn't
 # count is wrapped in {}, which the list's page for that word does on a click.
+# By chapter (the default), a word must be read in the chapter that requires
+# it, and the list groups the words by chapter; Global counts the whole library.
+#
+# As in the Grammaire, the Kracnodar of each table is shown in the script too,
+# in a column of its own (see _script_of).
 
 const MarkdownToolbar = preload("res://Scripts/MarkdownToolbar.gd")
 const Markup = preload("res://Scripts/Markup.gd")
 const MarksHighlighter = preload("res://Scripts/MarksHighlighter.gd")
 
 const LIBRARY_FILE = "library.md"
+const FOLDS_FILE = "library_folds.cfg"  # the chapters folded in the sidebar, on this machine
 const FORMAT_NOTE = """<!--
 The Kracnodar Library, shown (and editable) in the app's Bibliothèque tab.
   # Title             the library's title, once at the top; the text under it introduces it
@@ -65,12 +71,17 @@ var _struck_font: FontVariation  # see _strike_font()
 var _doc_modes = false  # whether Preview and Mask words apply: on a document's page
 var required_key = ""  # the required word whose page shows, over the page above; "" for none
 var _required = {}     # see _required_index(), as of the last render
+var required_by_chapter = true  # whether a required word must be read in its own chapter
+var _scope_button: Button  # switches required_by_chapter, by the Required heading
 
 var _comment = RegEx.create_from_string("(?s)<!--.*?-->")
 var _word = RegEx.create_from_string("[\\p{L}\\p{N}'’\\-]+")
 var _heading = RegEx.create_from_string("^#{1,3} ")
 var _language_tag = RegEx.create_from_string("(?i)^(.*?)\\s*\\[(english|kracnodar|krac|both)\\]$")
 var _edge_punctuation = RegEx.create_from_string("^[^\\p{L}\\p{N}]+|[^\\p{L}\\p{N}]+$")
+var _letter = RegEx.create_from_string("[A-Za-z]")
+var _stale = false  # the alphabet changed while the page was hidden
+var _collapsed = {}  # the names of the chapters whose documents the sidebar hides
 
 
 func _ready():
@@ -97,6 +108,16 @@ func _ready():
 	%Editor.add_child(toolbar)
 	%Editor.move_child(toolbar, %BodyInput.get_index())
 	%BodyInput.syntax_highlighter = _marks_highlighter()
+	_scope_button = Button.new()
+	_scope_button.focus_mode = Control.FOCUS_NONE
+	_scope_button.pressed.connect(_on_scope_pressed)
+	%RequiredCount.get_parent().add_child(_scope_button)
+	%RequiredCount.get_parent().move_child(_scope_button, %RequiredCount.get_index())
+	visibility_changed.connect(func():
+		if _stale and is_visible_in_tree():
+			_stale = false
+			_rerender())
+	_load_folds()
 	load_library()
 	render()
 
@@ -390,7 +411,7 @@ func open_editor(kind: String, chapter: int, doc: int) -> void:
 			%EditorHeading.text = "Edit document" if doc >= 0 else "New document"
 			%NameInput.placeholder_text = "Title, e.g. The stone tablet"
 			%NameInput.text = current["title"]
-			%BodyInput.placeholder_text = "Written on a stone tablet:\n\nIn my house of stone → Ga enogo ~~tinod~~ kintag"
+			%BodyInput.placeholder_text = "Written on a stone tablet:\n\nIn my house of stone → Ga eno ~~tinod~~ kintag"
 			%BodyInput.text = current["body"]
 			%ChapterInput.clear()
 			for i in chapters.size():
@@ -429,6 +450,9 @@ func save_editor() -> void:
 			doc_index = -1
 		"chapter":
 			if chapter >= 0:
+				if _collapsed.erase(chapters[chapter]["name"]):  # a renamed chapter stays folded
+					_collapsed[name_text] = true
+					_save_folds()
 				chapters[chapter]["name"] = name_text
 				chapters[chapter]["description"] = body
 			else:
@@ -677,6 +701,20 @@ func _table(items: Array) -> Control:
 	if rows.size() > 1 and Markup.is_separator(plain(rows[1][TEXT])):
 		widths = Markup.cells(plain(rows[1][TEXT])).map(func(cell): return float(max(1, cell.count("-"))))
 		rows.remove_at(1)
+	var ranges = rows.map(func(item): return Markup.cell_ranges(plain(item[TEXT])))
+	# Each column with Kracnodar in it is followed by one with it in the script,
+	# as wide, as in the Grammaire: {column: [the script of each row, its widest]}.
+	var scripts = {}
+	for r in range(1, rows.size()):
+		for c in ranges[r].size():
+			var script = _script_of(rows[r][TEXT], ranges[r][c][0], ranges[r][c][1], false)
+			if script["width"] > 0.0 and not scripts.has(c):
+				scripts[c] = [[], 0.0]
+	for c in scripts:
+		for r in range(1, rows.size()):
+			var script = _script_of(rows[r][TEXT], ranges[r][c][0], ranges[r][c][1], false) if c < ranges[r].size() else {"bbcode": "", "width": 0.0}
+			scripts[c][0].append(script["bbcode"])
+			scripts[c][1] = max(scripts[c][1], script["width"])
 	var table = VBoxContainer.new()
 	table.add_theme_constant_override("separation", 2)
 	for r in rows.size():
@@ -685,20 +723,41 @@ func _table(items: Array) -> Control:
 		panel.theme_type_variation = "DictRow" if r == 0 or r % 2 == 0 else "DictRowAlt"
 		var row = HBoxContainer.new()
 		row.add_theme_constant_override("separation", 12)
-		var ranges = Markup.cell_ranges(plain(text))
-		for c in ranges.size():
+		for c in ranges[r].size():
 			var cell: Control
+			var ratio = widths[c] if c < widths.size() else 1.0
 			if r == 0:
-				var heading = plain(text).substr(ranges[c][0], ranges[c][1] - ranges[c][0])
+				var heading = plain(text).substr(ranges[r][c][0], ranges[r][c][1] - ranges[r][c][0])
 				cell = _label(heading.replace("*", "").to_upper(), "ColumnLabel")
 			else:
-				cell = _text_rich(_side_bbcode(text, rows[r]["line"], TEXT, ranges[c][0], ranges[c][1]))
+				cell = _text_rich(_side_bbcode(text, rows[r]["line"], TEXT, ranges[r][c][0], ranges[r][c][1]))
 			cell.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			cell.size_flags_stretch_ratio = widths[c] if c < widths.size() else 1.0
+			cell.size_flags_stretch_ratio = ratio
 			row.add_child(cell)
-		panel.add_child(row)
+			if scripts.has(c):
+				var script = _script_cell(scripts[c][0][r - 1] if r > 0 else "", scripts[c][1], r == 0)
+				script.size_flags_stretch_ratio = ratio
+				row.add_child(script)
+		panel.add_child(Markup.center_cells(row))
 		table.add_child(panel)
 	return table
+
+
+# A cell of a script column, at least `width` wide (its column's widest) and on
+# one line, so that each row lines its columns up alike; or its heading.
+func _script_cell(bbcode: String, width: float, heading: bool) -> Control:
+	var cell: Control
+	if heading:
+		cell = _label("SCRIPT", "ColumnLabel")
+	else:
+		var rich = _rich("")
+		rich.autowrap_mode = TextServer.AUTOWRAP_OFF
+		rich.text = bbcode
+		_make_clickable(rich)
+		cell = rich
+	cell.custom_minimum_size.x = width
+	cell.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	return cell
 
 
 # The lines of a block in two columns, the language the players don't read
@@ -710,6 +769,14 @@ func _lines_table(items: Array, language: String) -> Control:
 	var rows = items.filter(func(item): return sides.any(func(side): return item[side] != ""))
 	if rows.is_empty():
 		return null
+	# The Kracnodar side in the script too, in a column after it (see _table).
+	var scripts = []
+	var script_width = 0.0
+	if sides.has(KRAC):
+		for item in rows:
+			var script = _script_of(item[KRAC], 0, -1, true)
+			scripts.append(script["bbcode"])
+			script_width = max(script_width, script["width"])
 	var table = VBoxContainer.new()
 	table.add_theme_constant_override("separation", 2)
 	var header_panel = PanelContainer.new()
@@ -722,7 +789,11 @@ func _lines_table(items: Array, language: String) -> Control:
 		if side == faded:
 			column.modulate.a = FADED
 		header.add_child(column)
-	header_panel.add_child(header)
+		if side == KRAC and script_width > 0.0:
+			var script = _script_cell("", script_width, true)
+			script.modulate.a = column.modulate.a
+			header.add_child(script)
+	header_panel.add_child(Markup.center_cells(header))
 	table.add_child(header_panel)
 	for r in rows.size():
 		var panel = PanelContainer.new()
@@ -740,7 +811,11 @@ func _lines_table(items: Array, language: String) -> Control:
 			cell.text = _side_bbcode(rows[r][side], rows[r]["line"], side)
 			_make_clickable(cell)
 			row.add_child(cell)
-		panel.add_child(row)
+			if side == KRAC and script_width > 0.0:
+				var script = _script_cell(scripts[r], script_width, false)
+				script.modulate.a = cell.modulate.a
+				row.add_child(script)
+		panel.add_child(Markup.center_cells(row))
 		table.add_child(panel)
 	return table
 
@@ -877,12 +952,22 @@ func _render_toc() -> void:
 		var row = HBoxContainer.new()
 		row.add_theme_constant_override("separation", 2)
 		row.add_child(_toc_button(chapters[i]["name"], "TocButton", here and chapter_index == i and doc_index < 0, show_page.bind(i, -1)))
+		var docs = chapters[i]["docs"]
+		var folded = _collapsed.has(chapters[i]["name"])
+		if not docs.is_empty():
+			var fold = _row_button("▶" if folded else "▼",
+				"Show its %d documents" % docs.size() if folded else "Hide its documents")
+			fold.add_theme_font_size_override("font_size", 10)
+			fold.pressed.connect(_toggle_chapter.bind(chapters[i]["name"]))
+			row.add_child(fold)
 		if organizing:
 			_add_row_tools(row, i > 0, i < chapters.size() - 1, move_chapter.bind(i, -1), move_chapter.bind(i, 1),
 				open_editor.bind("chapter", i, -1))
 		%TocList.add_child(row)
-		var docs = chapters[i]["docs"]
 		for j in docs.size():
+			# A folded chapter still shows the document open on the page.
+			if folded and not (here and chapter_index == i and doc_index == j):
+				continue
 			var doc_row = HBoxContainer.new()
 			doc_row.add_theme_constant_override("separation", 2)
 			doc_row.add_child(_toc_button(docs[j]["title"], "TocSubButton", here and chapter_index == i and doc_index == j, show_page.bind(i, j)))
@@ -890,6 +975,27 @@ func _render_toc() -> void:
 				_add_row_tools(doc_row, j > 0, j < docs.size() - 1, move_doc.bind(i, j, -1), move_doc.bind(i, j, 1),
 					open_editor.bind("doc", i, j))
 			%TocList.add_child(doc_row)
+
+
+func _toggle_chapter(chapter_name: String) -> void:
+	if not _collapsed.erase(chapter_name):
+		_collapsed[chapter_name] = true
+	_save_folds()
+	_render_toc()
+
+
+# The folded chapters are kept on this machine (FOLDS_FILE), not in the library.
+func _load_folds() -> void:
+	var folds = ConfigFile.new()
+	if folds.load(Dict.scratch_path(FOLDS_FILE)) == OK:
+		for chapter_name in folds.get_value("sidebar", "collapsed", []):
+			_collapsed[str(chapter_name)] = true
+
+
+func _save_folds() -> void:
+	var folds = ConfigFile.new()
+	folds.set_value("sidebar", "collapsed", _collapsed.keys())
+	folds.save(Dict.scratch_path(FOLDS_FILE))
 
 
 func _add_row_tools(row: HBoxContainer, can_up: bool, can_down: bool, up_action: Callable, down_action: Callable, edit_action: Callable) -> void:
@@ -960,17 +1066,84 @@ func _rich(text: String) -> RichTextLabel:
 	return rich
 
 
+# --- The script ------------------------------------------------------------
+
+# The Alphabet tab changed the letters: the page shows them now, or when next shown.
+func alphabet_changed() -> void:
+	if is_visible_in_tree():
+		_rerender()
+	else:
+		_stale = true
+
+
+# The Kracnodar of a text, from `from` to `to` in plain(text) (-1 for its end),
+# in the script: {"bbcode", "width" (about how wide it's drawn; 0 for nothing)}.
+# That is its *Kracnodar words*, the parts apart, as in the Grammaire; or, with
+# `whole` and no * in it, all of it (the Kracnodar side of a line). Each word is
+# an image; what isn't a letter stays as it is. Masked words show dim, or in
+# preview vanish, keeping their room, as in _side_bbcode.
+func _script_of(text: String, from: int, to: int, whole: bool) -> Dictionary:
+	var marks = Markup.parse_marks(text)
+	var shown: String = marks["plain"]
+	var flags: Array = marks["flags"]
+	if to < 0:
+		to = shown.length()
+	var spans = _star_spans(shown.substr(from, to - from)).map(func(span): return [span[0] + from, span[1] + from])
+	if spans.is_empty() and whole and not shown.substr(from, to - from).contains("*"):
+		spans = [[from, to]]
+	var hiding = _doc_modes and %PreviewButton.button_pressed and not %MarkButton.button_pressed
+	var krac = get_theme_color("font_color", "KracLabel").to_html(false)
+	var dim = get_theme_color("font_color", "DimLabel").to_html(false)
+	var size = get_theme_font_size("normal_font_size", "RichTextLabel")
+	var parts = []
+	var width = 0.0
+	for span in spans:
+		var out = ""
+		var letters = false
+		var i = span[0]
+		while i < span[1]:
+			var masked = flags[i] & MASKED != 0
+			var j = i + 1
+			var is_letter = _letter.search(shown[i]) != null
+			while j < span[1] and (_letter.search(shown[j]) != null) == is_letter and (flags[j] & MASKED != 0) == masked:
+				j += 1
+			var piece = shown.substr(i, j - i)
+			if is_letter:
+				var vanish = masked and hiding  # nor shown on hover
+				out += Markup.script_image(piece, self, size, "00000000" if vanish else (dim if masked else krac), not vanish)
+				width += Markup.script_image_width(piece, size)
+				letters = true
+			else:
+				var escaped = piece.replace("[", "[lb]")
+				out += "[color=#00000000]%s[/color]" % escaped if masked and hiding else escaped
+				width += piece.length() * size * 0.5
+				# Between two words, more room (see Markup.script_gap).
+				if i > span[0] and j < span[1] and piece.strip_edges() == "" and _letter.search(shown[i - 1]) != null and _letter.search(shown[j]) != null:
+					out += Markup.script_gap(size)
+					width += Markup.script_gap_width(size)
+			i = j
+		if letters:
+			parts.append(out.strip_edges())
+	if parts.is_empty():
+		return {"bbcode": "", "width": 0.0}
+	width += (parts.size() - 1) * Markup.SCRIPT_PARTS.length() * size * 0.5
+	return {"bbcode": Markup.SCRIPT_PARTS.join(parts), "width": ceil(width)}
+
+
 # --- Required words ---------------------------------------------------------
 
 # Every ==required== word or module, in the order the library first marks it:
-#   {key: {"required": [place], "found": [place], "ignored": [place]}}
+#   {key: {"word": String, "chapter": int, "required": [place], "found": [place], "ignored": [place]}}
 # where a place is {"chapter", "doc" (-1 for a description or the introduction),
 # "line" (in that body), "side" (en, kr or text), "plain" (that side without
 # its marks), "from", "to" (where in it)}. "required" holds its marks; "found"
 # where the players read it otherwise, which is: on the Kracnodar side of lines
 # in a language they read, or in a *Kracnodar word* in any other text, not in
 # a masked word or a required mark; "ignored" the same within {} marks.
-# A key is matched anywhere in a word, so a module shows inside the words built on it.
+# A word is matched anywhere in a word, so a module shows inside the words built on it.
+# By chapter, a word required in two chapters is two entries, keyed
+# "chapter:word" (-1 for the introduction), each found in its own chapter
+# only; globally, the key is the word, found anywhere, and "chapter" is -2.
 func _required_index() -> Dictionary:
 	var index = {}
 	var regions = []  # the Kracnodar the players read: [place, lowercase plain, flags, [[from, to]]]
@@ -989,10 +1162,12 @@ func _required_index() -> Dictionary:
 							i += 1
 							continue
 						var j = Markup.required_end(flags, i)
-						var key = _required_key(shown.substr(i, j - i))
-						if key != "":
+						var word = _required_key(shown.substr(i, j - i))
+						if word != "":
+							var key = "%d:%s" % [place[0], word] if required_by_chapter else word
 							if not index.has(key):
-								index[key] = {"required": [], "found": [], "ignored": []}
+								index[key] = {"word": word, "chapter": place[0] if required_by_chapter else -2,
+									"required": [], "found": [], "ignored": []}
 							index[key]["required"].append(where.merged({"from": i, "to": j}))
 						i = j
 					var read = side == TEXT or (side == ENGLISH and language != KRAC) or (side == KRAC and language != ENGLISH)
@@ -1000,11 +1175,14 @@ func _required_index() -> Dictionary:
 						var spans = [[0, shown.length()]] if side == KRAC else _star_spans(shown)
 						regions.append([where, shown.to_lower(), flags, spans])
 	for key in index:
+		var word: String = index[key]["word"]
 		for region in regions:
+			if required_by_chapter and region[0]["chapter"] != index[key]["chapter"]:
+				continue
 			for span in region[3]:
-				var at = region[1].find(key, span[0])
-				while at != -1 and at + key.length() <= span[1]:
-					var to = at + key.length()
+				var at = region[1].find(word, span[0])
+				while at != -1 and at + word.length() <= span[1]:
+					var to = at + word.length()
 					var flags = region[2]
 					var unseen = false  # masked, or another required mark
 					for c in range(at, to):
@@ -1013,8 +1191,23 @@ func _required_index() -> Dictionary:
 					if not unseen:
 						var kind = "ignored" if _all_flagged(flags, at, to, IGNORED) else "found"
 						index[key][kind].append(region[0].merged({"from": at, "to": to}))
-					at = region[1].find(key, at + 1)
+					at = region[1].find(word, at + 1)
 	return index
+
+
+# Switches between By chapter and Global, the page of a required word kept:
+# globally, the word's; by chapter, the word's in the first chapter requiring it.
+func _on_scope_pressed() -> void:
+	var entry = _required.get(required_key, {})
+	required_by_chapter = not required_by_chapter
+	if not entry.is_empty():
+		required_key = "%d:%s" % [entry["required"][0]["chapter"], entry["word"]] if required_by_chapter else entry["word"]
+	_rerender()
+
+
+# The name of a chapter, the introduction (-1) included.
+func _chapter_name(chapter: int) -> String:
+	return "Introduction" if chapter < 0 else chapters[chapter]["name"]
 
 
 # [chapter, doc, body, language] for the introduction, each chapter's
@@ -1082,42 +1275,82 @@ func show_required(key: String) -> void:
 
 
 # The list under the chapters, on every page: each word green when the
-# players can read it somewhere, red when not, with how many places.
+# players can read it somewhere, red when not, with how many places. On a
+# chapter's pages, only the words that chapter requires.
 func _render_required_list() -> void:
 	for child in %RequiredList.get_children():
 		%RequiredList.remove_child(child)
 		child.queue_free()
-	var found = _required.keys().filter(func(key): return not _required[key]["found"].is_empty()).size()
-	%RequiredCount.text = "" if _required.is_empty() else "%d of %d found" % [found, _required.size()]
+	_scope_button.text = "By chapter" if required_by_chapter else "Global"
+	_scope_button.tooltip_text = ("By chapter: a required word counts as found only where the players read it in the same chapter. Click for Global."
+		if required_by_chapter else "Global: a required word counts as found wherever the players read it in the library. Click for By chapter.")
+	# On a chapter, or anything in it, only the words it requires; on the library, all.
+	var focus = chapter_index
+	var keys = _required.keys().filter(func(key): return focus < 0 or _required[key]["required"].any(func(place): return place["chapter"] == focus))
+	var found = keys.filter(func(key): return not _required[key]["found"].is_empty()).size()
+	%RequiredCount.text = "" if keys.is_empty() else "%d of %d found" % [found, keys.size()]
 	if _required.is_empty():
 		%RequiredList.add_child(_label("None yet. In the editor, select a word or part of one and press ==Required==.", "HintLabel"))
 		return
-	for key in _required:
-		var count = _required[key]["found"].size()
+	if keys.is_empty():
+		%RequiredList.add_child(_label("None in this chapter.", "HintLabel"))
+		return
+	var chapter = -2  # the chapter of the words listed last
+	for key in keys:
+		var entry = _required[key]
+		if required_by_chapter and entry["chapter"] != chapter:
+			chapter = entry["chapter"]
+			var heading = _label(_chapter_name(chapter).to_upper(), "ColumnLabel")
+			heading.autowrap_mode = TextServer.AUTOWRAP_OFF
+			heading.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+			heading.clip_text = true
+			%RequiredList.add_child(heading)
+		var count = entry["found"].size()
 		var row = HBoxContainer.new()
-		var button = _toc_button(key, "TocSubButton", key == required_key, show_required.bind(key))
+		var button = _toc_button(entry["word"], "TocSubButton", key == required_key, show_required.bind(key))
 		var colour = _found_colour(key)
 		for state in ["font_color", "font_hover_color", "font_pressed_color", "font_hover_pressed_color", "font_focus_color"]:
 			button.add_theme_color_override(state, colour)
-		button.tooltip_text = "%s: %s" % [key, "found in %d place%s" % [count, "" if count == 1 else "s"] if count > 0 else "not found in any text the players read"]
+		var anywhere = " in this chapter" if required_by_chapter else ""
+		button.tooltip_text = "%s: %s" % [entry["word"], "found in %d place%s%s" % [count, "" if count == 1 else "s", anywhere] if count > 0 else "not found in any text the players read" + anywhere]
 		row.add_child(button)
+		var meaning = _english_for(entry["word"])
+		var english = _label(meaning if meaning != "" else "—", "DimLabel")
+		english.autowrap_mode = TextServer.AUTOWRAP_OFF
+		english.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+		english.clip_text = true
+		english.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		english.mouse_filter = Control.MOUSE_FILTER_PASS
+		english.tooltip_text = meaning if meaning != "" else "Not in the dictionary"
+		row.add_child(english)
 		var number = _label(str(count), "HintLabel")
 		number.autowrap_mode = TextServer.AUTOWRAP_OFF
+		number.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		number.custom_minimum_size.x = 22
 		row.add_child(number)
 		%RequiredList.add_child(row)
+
+
+# The English of a Kracnodar word or module, from the dictionary; "" when it isn't there.
+func _english_for(word: String) -> String:
+	for french in Dict.dict:
+		if Dict.krac_of(french).strip_edges().to_lower() == word:
+			return Dict.english_of(french)
+	return ""
 
 
 # A required word's page: where it is required, where the players read it,
 # and the appearances set aside, each with a button to change that.
 func _render_required(key: String) -> void:
 	var entry = _required[key]
-	%Content.add_child(_label(key, "SectionTitle"))
+	%Content.add_child(_label(entry["word"], "SectionTitle"))
+	var within = " in %s" % _chapter_name(entry["chapter"]) if required_by_chapter else ""
 	var count = entry["found"].size()
-	var status = _label("Found in %d place%s the players read." % [count, "" if count == 1 else "s"] if count > 0
-		else "Not found in any text the players read.", "HeadingLabel")
+	var status = _label("Found in %d place%s the players read%s." % [count, "" if count == 1 else "s", within] if count > 0
+		else "Not found in any text the players read%s." % within, "HeadingLabel")
 	status.add_theme_color_override("font_color", _found_colour(key))
 	%Content.add_child(status)
-	%Content.add_child(_label("What counts: the Kracnodar side of lines in a language the players read, and *Kracnodar words* in any other text, outside masked words and required marks. A part of a word counts too, so ignore the appearances that only look alike.", "HintLabel"))
+	%Content.add_child(_label("What counts: the Kracnodar side of lines in a language the players read, and *Kracnodar words* in any other text, outside masked words and required marks%s. A part of a word counts too, so ignore the appearances that only look alike." % (", in the same chapter (By chapter, by the Required heading)" if required_by_chapter else ""), "HintLabel"))
 	%Content.add_child(_label("Required in", "HeadingLabel"))
 	for place in entry["required"]:
 		%Content.add_child(_appearance_row(place, FOUND_COLOR, "", Callable()))

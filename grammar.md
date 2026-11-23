@@ -25,7 +25,7 @@ Kracnodar → Kracnodar
 
 - Kracnodar (/ˈkraʃnodar/) is a synthetic, sung language, invented for the Québécois band of the same name.
 - Words are built by agglutinating lexemes of two kinds: modules, which carry the meaning (like word roots), and affixes (prefixes or suffixes), which refine the form.
-- An affix never changes the spelling of the module, except where the two share a vowel at the join (see 1.3): from one module you can make a noun, a verb, an adjective, an adverb, and so on.
+- An affix never changes the spelling of the module, except where the two share a vowel at the join (see 1.3) and in the plural (see 2.1.3): from one module you can make a noun, a verb, an adjective, an adverb, and so on.
 - Some modules can temporarily act as affixes.
 
 ## 1.  Building words
@@ -80,7 +80,6 @@ Kracnodar → Kracnodar
 ### 2.1  Modules
 
 - Roughly the equivalent of word roots; they are the units that carry the most meaning.
-- Usually one or two syllables, starting and ending with a vowel.
 - A module with no affix already belongs to a word class: *felek* on its own is a verb, “to free”.
 
 ### 2.1.1  Affixes
@@ -94,7 +93,7 @@ Kracnodar → Kracnodar
 | Noun (*ex*) | Freedom | *Felekex* | (The) cold | *Dolex* |
 | Action (*am*) | Liberation | *Felekam* | Cooling | *Dolam* |
 | Adverb (*ken*) | Freely | *Kenfelek* | Coldly | *Kendol* |
-| Adjective (*pax*) | I am free | *Felektag pax* | Cold (I am cold) | *Dol* (*Doltag pax*) |
+| Adjective (*pax*) | I am free | *Felekpaxtag* | Cold (I am cold) | *Dol* (*Dolpaxtag*) |
 | Agent, instrument (*rom*) | Liberator | *Felekrom* | Cooler | *Dolrom* |
 | Smaller noun (*fo*) | Small liberation | *Felekfo* | A slight chill | *Dolfo* |
 | Bigger noun (*op*) | Great liberation | *Felekop* | A great cold | *Dolop* |
@@ -108,18 +107,42 @@ Kracnodar → Kracnodar
 |-------|---|---------|
 | Origin (coming from, of, by)¹ | *Kin* | Dim's apple → *Atari kin-Dim* |
 | Direction of origin (from where, through where) | *Nik* | Music from the world → *Hotuyavin nikatazu* |
-| Direction of destination (to, toward) | *Kan* | I'm going home → *Exotag kanenogo* |
+| Direction of destination (to, toward) | *Kan* | I'm going home → *Exotag kaneno* |
 | Recipient (to whom, toward whom) | *Nak* | I give you a cat → *Ilitag nakwet zanu* |
 | Manner (thus, in this way) | *Ken* | He dances while jumping → *Avac kendexu* |
 | Cause (what makes) | *Nek* | The film makes them cry → *Kija nekacu nuto* |
-| Relation (of) | *Ti* | The presence of things → *Urivo tioja* |
+| Relation (of) | *Ti* | The presence of things → *Urivo tioju* |
 | Relative, possessive (whose, of which) | *Osa* | The dwarf whose hammer rings → *Wanon osazek relinac* |
-| Relative (who, which) | *Golu* | A person who stinks → *Onupo goluawu* |
+| Relative (who, which) | *Gol* | A person who stinks → *Onupo golawu* |
 | Time (at the time of, at) | *Kosa* | We dance at the time of the liberation → *Avatagu kosafelekam* |
 | Relation (as for) | *Vof* | As for me → *Voftag* |
 | Because | *Iduri* | I cry because you go → *Nutotag iduri exowet* |
 
 > ¹ Possession can also be expressed with pronouns (see 2.2).
+
+### 2.1.3  Plural
+
+- A noun is made plural with *u*, after any other affix: the plural always ends the word.
+- After a final consonant, *u* is added: *nod* → *nodu*; *felekrom* → *felekromu*.
+- A final vowel is replaced by *u*: *atari* → *ataru*; *eno* → *enogu*; *kija* → *kiju*.
+- A final *u* is replaced by *e*: *ru* → *re*; *zanu* → *zane*.
+- This is the only affix that changes the spelling of what it attaches to, an affix included: *felekfo* → *felekfu*, small liberations.
+- A noun takes the plural wherever it is plural, even when the verb already says so: words open the way → *re kadiracu joka*.
+- Pronouns have plurals of their own (see 2.2), and adjectives don't agree with the noun.
+- In the script, the plural is the diacritic on the last letter: added after a consonant (*nodu*), changed where it replaces a vowel (*ataru*).
+
+| Noun ends with | Plural | Singular | Plural |
+|------|------|----|----|
+| A consonant | *u* added | *Nod* | *Nodu* |
+| *a*, *e*, *i*, *o* | Replaced by *u* | *Atari* | *Ataru* |
+| *u* | Replaced by *e* | *Ru* | *Re* |
+
+Stones → Nodu
+The houses of stone → Enogu tinod
+Our apples → Taguataru
+Small liberations → Felekfu
+
+> The singular can't always be told from the plural: *ataru* could come from *atar*, *atara*, *atare*, *atari* or *ataro*. When coining a noun, avoid one that differs from another only by its last vowel, or ends like the plural of another: *kijo* beside *kija* would share its plural, *kiju*.
 
 ### 2.2  Pronouns
 
@@ -136,12 +159,20 @@ Kracnodar → Kracnodar
 | They | *Acu* |
 | One | *Tul* |
 
-- Possession can be expressed with the pronoun when the object is a direct object: the pronoun goes in front of it.
+- Possession is expressed with the pronoun in front of the noun, wherever the noun stands in the sentence: *taguatari*, our apple; *tageti*, my mother.
+- For emphasis, the pronoun goes after the noun with *kin* instead, like “of mine”: *eti kintag*, mother of mine. A possessor that isn't a pronoun always takes *kin*: *atari kin-Dim*.
 
 We eat an apple → Gewigtagu atari
 We eat our apple → Gewigtagu taguatari
-We feed the prisoners → Fedamotagu adovis
-We feed our prisoners → Fedamotagu taguadovis
+We feed the prisoners → Fedamotagu adovisu
+We feed our prisoners → Fedamotagu taguadovisu
+My mother, the fire → Tageti, vul
+Mother of mine → Eti kintag
+
+- A doubled pronoun after a noun stresses it, as “itself” does, and agrees with the noun. On a verb, a doubled pronoun is reflexive instead (see 2.3).
+
+Life itself → Idex acac
+The words themselves → Re acuacu
 
 ### 2.3  Verbs
 
@@ -167,10 +198,10 @@ We feed our prisoners → Fedamotagu taguadovis
 | In | *ga* |
 | On | *gu* |
 | But | *tirel* |
-| With | *pop* |
+| With | *ka* |
 | For | *ipe* |
 
-- *Ipe* followed by an infinitive expresses a purpose: I'm going home to eat → *exotag kanenogo ipe gewig*.
+- *Ipe* followed by an infinitive expresses a purpose: I'm going home to eat → *exotag kaneno ipe gewig*.
 
 ### 2.6  Determiners
 
