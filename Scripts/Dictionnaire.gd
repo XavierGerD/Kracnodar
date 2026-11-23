@@ -85,12 +85,23 @@ func _search_text() -> String:
 	return %SearchInput.text.strip_edges()
 
 
-# Whether the entry's three words, or its class, contain the (folded) search text.
+# Whether the entry's three words, or its class, contain the (folded) search
+# text, or one of its derived forms that was given a meaning does.
 func _matches(french: String, query: String) -> bool:
 	if query == "":
 		return true
 	var texts = [Dict.krac_of(french), french, Dict.english_of(french), Dict.class_label(Dict.class_of(french))]
-	return _fold("\n".join(texts)).contains(query)
+	return _fold("\n".join(texts)).contains(query) or _matches_derived(french, query)
+
+
+# Whether a derived form with a meaning, its word or that meaning, contains the search text.
+func _matches_derived(french: String, query: String) -> bool:
+	if query == "" or Dict.derived_meanings(french).is_empty():
+		return false
+	for form in Dict.derived_forms(french):
+		if form["meaning"] != "" and _fold(form["word"] + "\n" + form["meaning"]).contains(query):
+			return true
+	return false
 
 
 # Rebuilds the list; `reveal` names an entry to scroll to and highlight. It is
@@ -109,7 +120,8 @@ func refresh(reveal := "") -> void:
 	for i in keys.size():
 		var row = DictEntryScene.instantiate()
 		%Rows.add_child(row)
-		row.set_entry(keys[i], i % 2 == 1, _expanded.has(keys[i]))
+		# A row the search found through a derived form opens on it.
+		row.set_entry(keys[i], i % 2 == 1, _expanded.has(keys[i]) or _matches_derived(keys[i], query), query)
 		row.expanded_changed.connect(_on_row_expanded_changed)
 		row.deleted.connect(_on_row_deleted)
 		row.edit_started.connect(_on_row_edit_started.bind(row))

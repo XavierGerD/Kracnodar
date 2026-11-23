@@ -69,7 +69,7 @@ A box with a riddle inscribed on it. Three dials with letters can be turned. On 
 Riddle:
 I am the home of fire → E==tag== ==eno== kin==vul==
 I am the home of steel → Etag eno kin==melid==
-I am the home of the hammer → Etag ego kin==zek==
+I am the home of the hammer → Etag eno kin==zek==
 Etovo lives here → ==Etovo== ==id==ac ==ven==
 
 Answer:
@@ -98,12 +98,31 @@ Damage rendered some letters illegible.
 ```
 
 In my house of stone → Ga eno tinod kintag
-I work with fire and steel → Dabtag pop vul gi melid
+I work with fire and steel → Dabtag ka vul gi melid
 My hammer rings loud → Zek kintag relinac kenvor
 Work, worker → Dab, dabrom
 Blow, bellows → Lif, lifrom
 Forge, blacksmith → Lok, lokrom
 Fire, burn forever → Vul, vultan ral
+
+### Riddles
+
+On the back wall of one of the barrel vaults, a mural depticting Etovo in 4 different poses. Each pose is part of the progression of a story. In each pose, two holes. Below the mural, on the floor, twelve circular stones that fit into the slots with a pictogram. Below each pose, a poem.
+
+Storyline and answers:
+```
+1. From the sun, Etovo forges the stars. (sun, stars)
+2. Etovo plucks a star with his tongs and turns it into the Earth (tongs, earth)
+3. With his hammer, Etovo breaks a chunk of the earth to create the moon (hammer, moon)
+4. From the fire, Etovo pulls out the people of the earth (fire, people)
+```
+
+Riddle 1:
+Etovo transforms the sun into the stars → Etovo levoac iwa kanuzu
+
+Riddle 2:
+```
+Etovo grabs a star with his tongs
 
 ## Additional stuff
 

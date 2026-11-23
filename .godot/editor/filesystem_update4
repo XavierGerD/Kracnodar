@@ -7,3 +7,5 @@ res://Scripts/Dict.gd
 res://Scripts/Dictionnaire.gd
 res://Scenes/Library.tscn
 res://Theme/kracnodar_theme.tres
+res://Scenes/DictEntry.gd
+res://Scenes/DictEntry.tscn
