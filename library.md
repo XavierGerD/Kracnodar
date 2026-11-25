@@ -20,6 +20,39 @@ The Grammaire uses the same markup.
 
 # The Dar Kinnod Library
 
+## Dar Kinnod - The Song of Stone
+
+### The Creation
+
+Hear now the words of Kulena, she who keeps the river of time aflow. She speaks the breath of the world onto the scrolls. → Jas zipo re kin-Kulena. Katoac hejazo. Rutanac lifex tiatazu gu cizu.
+She writes of the Gods and of their quarrels, there in their house of stone and gold. → Falac tilorevu g acumorfu, nev ga acueno tinod g lox.
+She writes of the beginning, before the age of Man, before the age of the sun and the moon. → Falac tikadiram, ezop rukohej, ezop hej tiiwa g umi.
+In those days the Gods are weary of one another, and swift to anger. → Kosa k hej, lorevu nasovetan-tulacu ral.
+
+Many a day they war over things both great and small, and their wounds they leave to fester. But Kulena, wisest of the Gods, sees that this cannot endure, and she devises a remedy. "Let us turn our eyes from one another," she says to them, "and make a new world, and a people to dwell within it, whose lives we may guide and shape according to our will."
+
+And all the Gods give their assent, and the labour begins. Etovo, smith of the Gods, sets to fashioning the moulds that will hold the bodies of Men. Then Kulena the all-wise plucks from her head a single strand of hair. It shimmers as she draws it forth, and she breaks it into seven parts. And as she lays them down, they curl into radiant spheres, and softly she breathes into them a will and a conscience. She turns to Etovo and proclaims: "Behold my making: the souls of Men. To thee I leave the shaping of their vessels." And at her words, a flame awakens in Etovo's breast.
+
+And so Etovo, consumed by the will to create, lays his ingots in the crucible and sets it upon the fire. As the metal yields, he fills it with the essence of all the Gods, and each God in turn gives of their nature. Kulena pours her wisdom. Javi pours his strength. Kemac pours her love. And Etovo pours his skill. When all runs molten, he casts it into the rough moulds of Men, and draws them forth, and begins to shape them in his image. With his hammer he strikes the glowing metal, and blow by blow he refines their forms.
+
+Then, when he is ready, and their forms are pleasing to him, he takes the souls that Kulena has set aside for him and lays them within his creations, as jewels are set in a crown. And for a moment all is still; then they tremble, and stir, and rise. And soon they ask why they have been made, and they are quick of hand and mind. They speak of love, and they speak of sorrow. And his heart goes out to them, his creation, and he swears to them a home of their own.
+
+First, to keep them warm, Etovo draws from his forge the hottest of its embers and lays it in the palm of his hand. He closes his fingers upon it and presses it with all his might, and within his grasp it burns red, then yellow, then white. And when he opens his hand, the ember holds its glow, and he is content.
+
+And to light their way, Etovo works the bellows, and plucks the sparks that leap from his forge, and lays them upon his finest silk.
+
+Then he takes from his hoard a cold ingot and turns it in his hands, and in it he sees the world that he will shape for Man. So he lays it upon his anvil, and with his hammer he strikes it with great blows, until it breaks in two. One half he presses between his palms and rolls into a sphere. And when it is round, he dips it into his quenching trough, so that the waters gather in its lowest places. And the other half he crushes roughly in his palm. And he sets the ember and both halves upon the silk among the sparks, and folds the silk closed around them.
+
+Thus does Etovo make the world. And he turns to the Gods and proclaims: "Behold, my brothers and sisters, the work of my hands!" And all who see it are struck with awe.
+
+Then Javi steps forth and takes hold of the silk, and with a mighty sweep of his arm he sets in motion the sun and the stars, the world and the moon, so that day gives way to night, and night to day.
+
+Thus it is written by Kulena, mother of scribes and keeper of all that is recorded. Her words endure, and we recite them still, lest we forget who we are.
+
+### Before Time
+
+So it begins, the days of the sun and the stars, the earth and the moon. In their realms, Men live without fear or hunger or sleep. Their days are spent in song and carvings, singing and writing about the wonders of the nature that surrounds them. And at first, the Gods are filled with joy, and they forget their quarrels. But that is not enough, and now they quarrel over the
+
 ## Prologue
 
 On the morning of February 11th, 1912, you receive this letter, addressed personally to you, at your office.
@@ -111,17 +144,17 @@ On the back wall of one of the barrel vaults, a mural depticting Etovo in 4 diff
 
 Storyline and answers:
 ```
-1. From the sun, Etovo forges the stars. (sun, stars)
-2. Etovo plucks a star with his tongs and turns it into the Earth (tongs, earth)
-3. With his hammer, Etovo breaks a chunk of the earth to create the moon (hammer, moon)
-4. From the fire, Etovo pulls out the people of the earth (fire, people)
+1. From the forge, Etovo takes an ember with his tongs and crushes it into the sun (tongs, sun).
+2. Etovo swells the bellows and plucks sparks from the forge, placing them on silk to create the stars (bellows, stars)
+3. With his hammer, Etovo breaks a chunk on ingot and creates the Earth and the Moon (earth, moon)
+4. Etovo melts his ingots and pours them into the moulds of Men (ingot, fire)
 ```
 
 Riddle 1:
 Etovo transforms the sun into the stars → Etovo levoac iwa kanuzu
 
 Riddle 2:
-```
+
 Etovo grabs a star with his tongs
 
 ## Additional stuff

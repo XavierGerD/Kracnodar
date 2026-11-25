@@ -1,11 +1,1 @@
 res://default_env.tres
-res://Scenes/Main.gd
-res://Scripts/Grammaire.gd
-res://Scripts/Library.gd
-res://Scripts/Markup.gd
-res://Scripts/Dict.gd
-res://Scripts/Dictionnaire.gd
-res://Scenes/Library.tscn
-res://Theme/kracnodar_theme.tres
-res://Scenes/DictEntry.gd
-res://Scenes/DictEntry.tscn

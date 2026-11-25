@@ -81,6 +81,10 @@ Kracnodar → Kracnodar
 
 - Roughly the equivalent of word roots; they are the units that carry the most meaning.
 - A module with no affix already belongs to a word class: *felek* on its own is a verb, “to free”.
+- Modules can join into compounds, where the first module acts as an affix on the second: the modifier comes first, the head last. Only the last module can take the plural (see 2.1.3).
+
+The age of Men → Rukohej
+The river of the ages → Hejazo
 
 ### 2.1.1  Affixes
 
@@ -119,6 +123,12 @@ Kracnodar → Kracnodar
 | Because | *Iduri* | I cry because you go → *Nutotag iduri exowet* |
 
 > ¹ Possession can also be expressed with pronouns (see 2.2).
+
+- A marker attaches directly to a common noun (*tinod*), but takes a hyphen before a name (*kin-Dim*).
+- A marker on a noun also covers the nouns joined to it by *g*, which joins the noun right before it: the marker isn't repeated.
+
+The houses of stone and gold → Enogu tinod g lox
+The age of the sun and the moon → Hej tiiwa g umi
 
 ### 2.1.3  Plural
 
@@ -185,7 +195,11 @@ The words themselves → Re acuacu
 - The present marker (*sele*) is usually left out, except to stress that something is happening right now.
 - The conditional is marked by *s*: we could → *siredotagu*.
 - A reflexive verb doubles the pronoun: I isolate myself → *ojisitagtag*.
+- A reciprocal verb puts *tul* before the plural pronoun: they anger one another → *nasovetantulacu*; we love one another → *gerentultagu*.
+- In the Latin spelling, a hyphen can split a long reflexive or reciprocal verb before its pronouns, to show where they start: *nasovetan-tulacu*. It is still one word, sung without a break.
 - The imperative is the same as the infinitive, with no pronoun: eat an apple → *gewig atari*.
+- Word order is subject, verb, object. A noun subject goes before the verb, and the verb keeps its pronoun: Dim eats an apple → *Dim gewigac atari*.
+- An adverb goes right after the verb: hear now → *jas zipo*.
 
 ### 2.4  Intensity markers
 
@@ -208,6 +222,9 @@ The words themselves → Re acuacu
 | English | Kracnodar |
 |---|---|
 | This / That | *k* |
+
+- *K* is a separate word, placed before the noun: that stone → *k nod*.
+- A relation marker before *k* stays a separate word too: in that age → *kosa k hej*.
 
 ### 2.7  Question words
 
