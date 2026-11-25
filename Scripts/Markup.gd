@@ -278,3 +278,82 @@ static func center_cells(row: HBoxContainer) -> HBoxContainer:
 	for cell in row.get_children():
 		cell.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	return row
+
+
+# Lets a table's text break between words wherever it can: each text column is
+# kept at least as wide as its widest word (headings included). When the row
+# is too narrow for all of them, those widths shrink alike, and only then do
+# long words break. Columns with a width of their own (the script's: an image
+# can't break) and those that don't stretch (arrows) keep theirs. `table` holds
+# a row per child, each a PanelContainer around an HBoxContainer of cells.
+static func keep_words_whole(table: Container) -> void:
+	table.resized.connect(func(): _fit_words(table))
+
+
+static func _fit_words(table: Container) -> void:
+	var rows = []
+	for panel in table.get_children():
+		if panel is PanelContainer and panel.get_child_count() > 0 and panel.get_child(0) is HBoxContainer:
+			rows.append(panel.get_child(0))
+	if rows.is_empty() or table.size.x <= 0.0:
+		return
+	if not table.has_meta("word_widths"):
+		_measure_words(table, rows)
+	var words: Dictionary = table.get_meta("word_widths")  # column -> its widest word
+	var fixed: Dictionary = table.get_meta("fixed_widths")  # column -> its own width
+	var columns = 0
+	for row in rows:
+		columns = maxi(columns, row.get_child_count())
+	var panel: PanelContainer = rows[0].get_parent()
+	var room = table.size.x - panel.get_theme_stylebox("panel").get_minimum_size().x
+	room -= rows[0].get_theme_constant("separation") * (columns - 1)
+	for c in fixed:
+		room -= fixed[c]
+	var need = 0.0
+	for c in words:
+		need += words[c]
+	var share = clampf(room / need, 0.0, 1.0) if need > 0.0 else 1.0
+	for row in rows:
+		for c in row.get_child_count():
+			if words.has(c):
+				row.get_child(c).custom_minimum_size.x = floorf(words[c] * share)
+
+
+# Once, before _fit_words sets any: each column's widest word, or its own width.
+static func _measure_words(table: Container, rows: Array) -> void:
+	var words = {}
+	var fixed = {}
+	for row in rows:
+		for c in row.get_child_count():
+			var cell: Control = row.get_child(c)
+			if cell.custom_minimum_size.x > 0.0 or not cell.size_flags_horizontal & Control.SIZE_EXPAND:
+				fixed[c] = maxf(fixed.get(c, 0.0), cell.get_combined_minimum_size().x)
+			else:
+				words[c] = maxf(words.get(c, 0.0), _widest_word(cell))
+	for c in fixed:
+		words.erase(c)
+	table.set_meta("word_widths", words)
+	table.set_meta("fixed_widths", fixed)
+
+
+# About how wide a label's widest word is drawn. A line can break after a
+# dash, so the parts of a dashed word count apart. Rich text is measured in
+# its plain and bold fonts both, the wider of the two.
+static func _widest_word(cell: Control) -> float:
+	var text = ""
+	var fonts = []
+	if cell is Label:
+		text = cell.text
+		fonts = [[cell.get_theme_font("font"), cell.get_theme_font_size("font_size")]]
+	elif cell is RichTextLabel:
+		text = cell.get_parsed_text()
+		fonts = [[cell.get_theme_font("normal_font"), cell.get_theme_font_size("normal_font_size")],
+			[cell.get_theme_font("bold_font"), cell.get_theme_font_size("bold_font_size")]]
+	var widest = 0.0
+	for word in text.replace("\n", " ").replace("\t", " ").split(" ", false):
+		var parts = word.split("-")
+		for i in parts.size():
+			var part = parts[i] + ("-" if i < parts.size() - 1 else "")
+			for font in fonts:
+				widest = maxf(widest, font[0].get_string_size(part, HORIZONTAL_ALIGNMENT_LEFT, -1, font[1]).x)
+	return ceilf(widest) + 2.0 if widest > 0.0 else 0.0

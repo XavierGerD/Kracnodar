@@ -434,7 +434,7 @@ func _examples(items: Array, query: String) -> Control:
 	list.add_theme_constant_override("separation", 2)
 	var script_width = 0.0
 	for item in items:
-		script_width = max(script_width, _script_width(_script_of(_as_krac(Markup.split_line(item).get("kr", "")))))
+		script_width = max(script_width, _widest_script_word(_script_of(_as_krac(Markup.split_line(item).get("kr", "")))))
 	for i in items.size():
 		var sides = Markup.split_line(items[i])
 		var panel = PanelContainer.new()
@@ -445,9 +445,10 @@ func _examples(items: Array, query: String) -> Control:
 		row.add_child(_label("→", "DimLabel", false))
 		var kr = _as_krac(sides.get("kr", ""))
 		row.add_child(_rich(kr, query))
-		row.add_child(_one_line(_rich(_script_of(kr)), script_width))
+		row.add_child(_script_column(_rich(_script_of(kr)), script_width))
 		panel.add_child(Markup.center_cells(row))
 		list.add_child(panel)
+	Markup.keep_words_whole(list)
 	return list
 
 
@@ -482,13 +483,13 @@ func _table(lines: Array, query: String) -> Control:
 				rows[r].insert(c + 1, "Script" if r == 0 else _script_of(rows[r][c]))
 		if c < widths.size():
 			widths.insert(c + 1, widths[c])
-	var script_widths = {}  # script column -> the width of its widest cell
+	var script_widths = {}  # script column -> the width of its widest word
 	for k in krac_columns.size():
 		var c = krac_columns[k] + k + 1
 		script_widths[c] = 0.0
 		for r in range(1, rows.size()):
 			if c < rows[r].size():
-				script_widths[c] = max(script_widths[c], _script_width(rows[r][c]))
+				script_widths[c] = max(script_widths[c], _widest_script_word(rows[r][c]))
 	var table = VBoxContainer.new()
 	table.add_theme_constant_override("separation", 2)
 	for r in rows.size():
@@ -504,12 +505,13 @@ func _table(lines: Array, query: String) -> Control:
 			else:
 				cell = _rich(rows[r][c], query)
 				if script_widths.has(c):
-					_one_line(cell, script_widths[c])
+					_script_column(cell, script_widths[c])
 			cell.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			cell.size_flags_stretch_ratio = widths[c] if c < widths.size() else 1.0
 			row.add_child(cell)
 		panel.add_child(Markup.center_cells(row))
 		table.add_child(panel)
+	Markup.keep_words_whole(table)
 	return table
 
 
@@ -531,38 +533,34 @@ func _spell(text: String) -> String:
 	var from = 0
 	for found in _letter_run.search_all(text):
 		var between = text.substr(from, found.get_start() - from)
-		out += between
+		# More room between two words (see Markup.script_gap), before the space,
+		# so that a line broken at the space doesn't start with it.
 		if from > 0 and between != "" and between.strip_edges() == "":
-			out += "![](gap:)"  # more room between two words (see Markup.script_gap)
+			out += "![](gap:)"
+		out += between
 		out += "![%s](writing:%s)" % [found.get_string(), found.get_string().to_lower()]
 		from = found.get_end()
 	return (out + text.substr(from)).strip_edges() if from > 0 else ""
 
 
-# A script label kept on one line, as wide as its words (a line could break
-# in the middle of a text) and at least `width`: the width of the widest in
-# its column, so that each row lines its columns up alike.
-func _one_line(rich: RichTextLabel, width := 0.0) -> RichTextLabel:
-	rich.autowrap_mode = TextServer.AUTOWRAP_OFF
+# A script label, which wraps between its words, at least `width` wide: the
+# widest word in its column (see _widest_script_word), so that no word sticks
+# out of its cell and each row lines its columns up alike.
+func _script_column(rich: RichTextLabel, width := 0.0) -> RichTextLabel:
 	rich.custom_minimum_size.x = width
 	return rich
 
 
-# About how wide a script text (from _script_of) is drawn: each word as wide
-# as the script draws it, any other image square, and the rest about half
-# the font size a character.
-func _script_width(markup: String) -> float:
+# About how wide the widest word of a script text (from _script_of) is drawn,
+# with room for a sign after it (a comma can't start a line).
+func _widest_script_word(markup: String) -> float:
 	var size = get_theme_font_size("normal_font_size", "RichTextLabel")
-	var width = 0.0
+	var widest = 0.0
 	for found in _image.search_all(markup):
 		var path = found.get_string(2)
 		if path.begins_with("writing:"):
-			width += Markup.script_image_width(path.trim_prefix("writing:"), size)
-		elif path == "gap:":
-			width += Markup.script_gap_width(size)
-		else:
-			width += round(size * IMAGE_SCALE)
-	return ceil(width + _image.sub(markup, "", true).length() * size * 0.5)
+			widest = max(widest, Markup.script_image_width(path.trim_prefix("writing:"), size))
+	return ceil(widest + size * 0.5) if widest > 0.0 else 0.0
 
 
 # The Kracnodar in a text (its *word* parts) in the script, the parts apart.

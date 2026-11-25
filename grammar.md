@@ -127,14 +127,14 @@ The river of the ages → Hejazo
 - A marker attaches directly to a common noun (*tinod*), but takes a hyphen before a name (*kin-Dim*).
 - A marker on a noun also covers the nouns joined to it by *g*, which joins the noun right before it: the marker isn't repeated.
 
-The houses of stone and gold → Enogu tinod g lox
+The houses of stone and gold → Enu tinod g lox
 The age of the sun and the moon → Hej tiiwa g umi
 
 ### 2.1.3  Plural
 
 - A noun is made plural with *u*, after any other affix: the plural always ends the word.
 - After a final consonant, *u* is added: *nod* → *nodu*; *felekrom* → *felekromu*.
-- A final vowel is replaced by *u*: *atari* → *ataru*; *eno* → *enogu*; *kija* → *kiju*.
+- A final vowel is replaced by *u*: *atari* → *ataru*; *eno* → *enu*; *kija* → *kiju*.
 - A final *u* is replaced by *e*: *ru* → *re*; *zanu* → *zane*.
 - This is the only affix that changes the spelling of what it attaches to, an affix included: *felekfo* → *felekfu*, small liberations.
 - A noun takes the plural wherever it is plural, even when the verb already says so: words open the way → *re kadiracu joka*.
@@ -148,7 +148,7 @@ The age of the sun and the moon → Hej tiiwa g umi
 | *u* | Replaced by *e* | *Ru* | *Re* |
 
 Stones → Nodu
-The houses of stone → Enogu tinod
+The houses of stone → Enu tinod
 Our apples → Taguataru
 Small liberations → Felekfu
 
@@ -158,6 +158,7 @@ Small liberations → Felekfu
 
 - Pronouns don't take affixes, but they join onto other modules in some conjugations.
 - The subject pronoun attaches to the end of the verb: *Exotag*, I go; *Gewigac*, he eats.
+- *Noc* (all) attaches to the verb like the others. After a noun subject, it takes the place of *acu* and says that all of them do it: *lorevu evohenoc*, the Gods all agree. In front of a noun it would mean possession, so “all the Gods” is never *noclorevu*.
 
 | English | Kracnodar |
 |---|---|
@@ -168,7 +169,9 @@ Small liberations → Felekfu
 | You (plural) | *Wetu* |
 | They | *Acu* |
 | One | *Tul* |
+| All | *Noc* |
 
+- There is no polite form: *wet* is anyone spoken to, a friend or a god, and *wetu* any number of them.
 - Possession is expressed with the pronoun in front of the noun, wherever the noun stands in the sentence: *taguatari*, our apple; *tageti*, my mother.
 - For emphasis, the pronoun goes after the noun with *kin* instead, like “of mine”: *eti kintag*, mother of mine. A possessor that isn't a pronoun always takes *kin*: *atari kin-Dim*.
 
@@ -178,6 +181,7 @@ We feed the prisoners → Fedamotagu adovisu
 We feed our prisoners → Fedamotagu taguadovisu
 My mother, the fire → Tageti, vul
 Mother of mine → Eti kintag
+The Gods all agree → Lorevu evohenoc
 
 - A doubled pronoun after a noun stresses it, as “itself” does, and agrees with the noun. On a verb, a doubled pronoun is reflexive instead (see 2.3).
 
@@ -212,10 +216,12 @@ The words themselves → Re acuacu
 | In | *ga* |
 | On | *gu* |
 | But | *tirel* |
+| And, between clauses | *o* |
 | With | *ka* |
 | For | *ipe* |
 
 - *Ipe* followed by an infinitive expresses a purpose: I'm going home to eat → *exotag kaneno ipe gewig*.
+- “And” is *g* between words, and *o* between two clauses: I go home and I eat → *exotag kaneno, o gewigtag*.
 
 ### 2.6  Determiners
 
@@ -231,7 +237,7 @@ The words themselves → Re acuacu
 - A question word takes the place in the sentence that the answer would take.
 - Since subject and direct object are told apart only by their position, *hob* and *her* can't be moved without creating ambiguity.
 - *Hura*, *hen* and *reh*, whose function is clear from the word itself, can go anywhere, including at the start of the sentence.
-- Outside a question, “where” is *nev hura*: where his hammer sounds → *nev hura, zek kinac relinac*.
+- Outside a question, “where” is *nev hura*: where his hammer sounds → *nev hura, aczek relinac*.
 
 Who eats an apple? → Hob gewigac atari ?
 What does Dim eat? → Dim gewigac her ?
@@ -249,6 +255,7 @@ Where does Dim eat? → *Dim gewigac hura ?* or *Hura Dim gewigac ?*
 
 - Negation is expressed with *fem*, placed right after the word it negates; its position alone sets its scope.
 - On its own, *fem* means “no”.
+- *Femop* (*fem* + *op*, “not more”) means “no more, no longer”, and is placed like *fem*. It is a word of its own, not a stronger *fem*.
 - In a question, it comes before the marker *ot*.
 - Attached to a question word, it forms the negative words, which are placed like question words.
 - One negation per clause is enough.
@@ -256,13 +263,53 @@ Where does Dim eat? → *Dim gewigac hura ?* or *Hura Dim gewigac ?*
 He doesn't eat an apple → Gewigac fem atari
 Doesn't he eat an apple? → Gewigac fem ot atari ?
 He eats nothing → Gewigac femher
+He no longer eats apples → Gewigac femop ataru
+We war no more → Mortantagu femop
 I can't free → Iredotag fem felek
 I can not free (I'm able not to) → Iredotag felek fem
 
 | English | Kracnodar |
 |---|---|
+| No more, no longer | *Femop* |
 | Nowhere | *Femhura* |
 | Never | *Femhen* |
 | In no way | *Femreh* |
 | Nothing | *Femher* |
 | Nobody | *Femhob* |
+
+### 2.9  Numbers
+
+- A number is a separate word placed before the noun, like *k*. The noun still takes the plural: three stones → *va nodu*; one stone → *tu nod*.
+
+| Number | Kracnodar | Number | Kracnodar |
+|---|---|---|---|
+| 0 | *ra* | 6 | *do* |
+| 1 | *tu* | 7 | *sa* |
+| 2 | *go* | 8 | *ko* |
+| 3 | *va* | 9 | *su* |
+| 4 | *ju* | 10 | *de* |
+| 5 | *he* | | |
+
+- From eleven to nineteen: *de*, then *o* (“and”), then the digit: twelve → *deogo*.
+- The tens: *de*, then how many tens, with no *o*: twenty → *dego*; thirty → *deva*.
+- Between two tens: the digit, then *o*, then the tens: thirty-five → *heodeva*.
+- After *go*, *do* and *ko*, the two *o* always merge into one: thirty-two → *godeva*, not *goodeva*.
+- In a number, *o* always adds: *deogo* is ten and two, *dego* is two tens.
+- A *t* at the end of a number makes it an ordinal, placed like the number: first → *tut*; ninth → *sut*; thirty-fifth → *heodevat*.
+- *Tuop* (*tu* + *op*, see 2.4) is “a single one”, placed like a number, before a singular noun: a single stone → *tuop nod*.
+- *Tufo* (*tu* + *fo*, “less than one”) is a piece, a part of a whole. It is a noun, plural *tufu*: she breaks it into seven pieces → *berac sa tufu*.
+
+Eleven → Deotu
+Twelve → Deogo
+Twenty → Dego
+Twenty-one → Tuodego
+Thirty-two → Godeva
+Thirty-five → Heodeva
+Ninety-nine → Suodesu
+Three stones → Va nodu
+The first day → Tut voni
+The twelfth stone → Deogot nod
+A single day → Tuop voni
+Seven pieces → Sa tufu
+
+> Numbers stop at ninety-nine for now: the hundreds aren't settled yet.

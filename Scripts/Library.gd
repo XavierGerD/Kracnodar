@@ -703,7 +703,7 @@ func _table(items: Array) -> Control:
 		rows.remove_at(1)
 	var ranges = rows.map(func(item): return Markup.cell_ranges(plain(item[TEXT])))
 	# Each column with Kracnodar in it is followed by one with it in the script,
-	# as wide, as in the Grammaire: {column: [the script of each row, its widest]}.
+	# as in the Grammaire: {column: [the script of each row, its widest word]}.
 	var scripts = {}
 	for r in range(1, rows.size()):
 		for c in ranges[r].size():
@@ -712,9 +712,9 @@ func _table(items: Array) -> Control:
 				scripts[c] = [[], 0.0]
 	for c in scripts:
 		for r in range(1, rows.size()):
-			var script = _script_of(rows[r][TEXT], ranges[r][c][0], ranges[r][c][1], false) if c < ranges[r].size() else {"bbcode": "", "width": 0.0}
+			var script = _script_of(rows[r][TEXT], ranges[r][c][0], ranges[r][c][1], false) if c < ranges[r].size() else {"bbcode": "", "width": 0.0, "widest": 0.0}
 			scripts[c][0].append(script["bbcode"])
-			scripts[c][1] = max(scripts[c][1], script["width"])
+			scripts[c][1] = max(scripts[c][1], script["widest"])
 	var table = VBoxContainer.new()
 	table.add_theme_constant_override("separation", 2)
 	for r in rows.size():
@@ -740,18 +740,19 @@ func _table(items: Array) -> Control:
 				row.add_child(script)
 		panel.add_child(Markup.center_cells(row))
 		table.add_child(panel)
+	Markup.keep_words_whole(table)
 	return table
 
 
-# A cell of a script column, at least `width` wide (its column's widest) and on
-# one line, so that each row lines its columns up alike; or its heading.
+# A cell of a script column, which wraps between its words, at least `width`
+# wide (its column's widest word), so that no word sticks out of its cell and
+# each row lines its columns up alike; or its heading.
 func _script_cell(bbcode: String, width: float, heading: bool) -> Control:
 	var cell: Control
 	if heading:
 		cell = _label("SCRIPT", "ColumnLabel")
 	else:
 		var rich = _rich("")
-		rich.autowrap_mode = TextServer.AUTOWRAP_OFF
 		rich.text = bbcode
 		_make_clickable(rich)
 		cell = rich
@@ -771,12 +772,12 @@ func _lines_table(items: Array, language: String) -> Control:
 		return null
 	# The Kracnodar side in the script too, in a column after it (see _table).
 	var scripts = []
-	var script_width = 0.0
+	var script_width = 0.0  # its widest word
 	if sides.has(KRAC):
 		for item in rows:
 			var script = _script_of(item[KRAC], 0, -1, true)
 			scripts.append(script["bbcode"])
-			script_width = max(script_width, script["width"])
+			script_width = max(script_width, script["widest"])
 	var table = VBoxContainer.new()
 	table.add_theme_constant_override("separation", 2)
 	var header_panel = PanelContainer.new()
@@ -817,6 +818,7 @@ func _lines_table(items: Array, language: String) -> Control:
 				row.add_child(script)
 		panel.add_child(Markup.center_cells(row))
 		table.add_child(panel)
+	Markup.keep_words_whole(table)
 	return table
 
 
@@ -1077,7 +1079,9 @@ func alphabet_changed() -> void:
 
 
 # The Kracnodar of a text, from `from` to `to` in plain(text) (-1 for its end),
-# in the script: {"bbcode", "width" (about how wide it's drawn; 0 for nothing)}.
+# in the script: {"bbcode", "width" (about how wide it's drawn on one line; 0
+# for nothing), "widest" (about how wide its widest word is, with room for a
+# sign after it: a comma can't start a line)}.
 # That is its *Kracnodar words*, the parts apart, as in the Grammaire; or, with
 # `whole` and no * in it, all of it (the Kracnodar side of a line). Each word is
 # an image; what isn't a letter stays as it is. Masked words show dim, or in
@@ -1097,6 +1101,7 @@ func _script_of(text: String, from: int, to: int, whole: bool) -> Dictionary:
 	var size = get_theme_font_size("normal_font_size", "RichTextLabel")
 	var parts = []
 	var width = 0.0
+	var widest = 0.0
 	for span in spans:
 		var out = ""
 		var letters = false
@@ -1112,22 +1117,24 @@ func _script_of(text: String, from: int, to: int, whole: bool) -> Dictionary:
 				var vanish = masked and hiding  # nor shown on hover
 				out += Markup.script_image(piece, self, size, "00000000" if vanish else (dim if masked else krac), not vanish)
 				width += Markup.script_image_width(piece, size)
+				widest = max(widest, Markup.script_image_width(piece, size))
 				letters = true
 			else:
-				var escaped = piece.replace("[", "[lb]")
-				out += "[color=#00000000]%s[/color]" % escaped if masked and hiding else escaped
-				width += piece.length() * size * 0.5
-				# Between two words, more room (see Markup.script_gap).
+				# Between two words, more room (see Markup.script_gap), before the
+				# space, so that a line broken at the space doesn't start with it.
 				if i > span[0] and j < span[1] and piece.strip_edges() == "" and _letter.search(shown[i - 1]) != null and _letter.search(shown[j]) != null:
 					out += Markup.script_gap(size)
 					width += Markup.script_gap_width(size)
+				var escaped = piece.replace("[", "[lb]")
+				out += "[color=#00000000]%s[/color]" % escaped if masked and hiding else escaped
+				width += piece.length() * size * 0.5
 			i = j
 		if letters:
 			parts.append(out.strip_edges())
 	if parts.is_empty():
-		return {"bbcode": "", "width": 0.0}
+		return {"bbcode": "", "width": 0.0, "widest": 0.0}
 	width += (parts.size() - 1) * Markup.SCRIPT_PARTS.length() * size * 0.5
-	return {"bbcode": Markup.SCRIPT_PARTS.join(parts), "width": ceil(width)}
+	return {"bbcode": Markup.SCRIPT_PARTS.join(parts), "width": ceil(width), "widest": ceil(widest + size * 0.5)}
 
 
 # --- Required words ---------------------------------------------------------

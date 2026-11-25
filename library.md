@@ -24,14 +24,20 @@ The Grammaire uses the same markup.
 
 ### The Creation
 
-Hear now the words of Kulena, she who keeps the river of time aflow. She speaks the breath of the world onto the scrolls. → Jas zipo re kin-Kulena. Katoac hejazo. Rutanac lifex tiatazu gu cizu.
+Hear now the words of Kulena, she who keeps the river of time aflow. She speaks the breath of the world onto the scrolls. → Jas zipo re kin-Kulena. Katoac solazo. Rutanac lifex tiatazu gu cizu.
 She writes of the Gods and of their quarrels, there in their house of stone and gold. → Falac tilorevu g acumorfu, nev ga acueno tinod g lox.
-She writes of the beginning, before the age of Man, before the age of the sun and the moon. → Falac tikadiram, ezop rukohej, ezop hej tiiwa g umi.
-In those days the Gods are weary of one another, and swift to anger. → Kosa k hej, lorevu nasovetan-tulacu ral.
-
-Many a day they war over things both great and small, and their wounds they leave to fester. But Kulena, wisest of the Gods, sees that this cannot endure, and she devises a remedy. "Let us turn our eyes from one another," she says to them, "and make a new world, and a people to dwell within it, whose lives we may guide and shape according to our will."
-
-And all the Gods give their assent, and the labour begins. Etovo, smith of the Gods, sets to fashioning the moulds that will hold the bodies of Men. Then Kulena the all-wise plucks from her head a single strand of hair. It shimmers as she draws it forth, and she breaks it into seven parts. And as she lays them down, they curl into radiant spheres, and softly she breathes into them a will and a conscience. She turns to Etovo and proclaims: "Behold my making: the souls of Men. To thee I leave the shaping of their vessels." And at her words, a flame awakens in Etovo's breast.
+She writes of the beginning, before the age of Man, before the age of the sun and the moon. → Falac la vixa, ezop rukohej, ezop hej tiiwa g umi.
+In those days the Gods are weary of one another, and swift to anger. → Kosa k hej, lorevu mogetan-tulacu, nasovetan-tulacu kenzewo.
+Many a day they war over things both great and small, and their wounds they leave to fester. → Mortanacu hex la ojaopu g ojafu, o acumavu xotan-acuacu.
+But Kulena, wisest of the Gods, sees that this cannot endure, and she devises a means of salvation.. → Tirel Kulena, rutenop tilorevu, fideac k oja iredoac fem e ral, o rakac sozrom.
+"Let us turn our eyes from one another," she says to them, "and make a new world, and a people to dwell within it, whose lives we may guide and shape according to our will." → Menac nakacu, mortantagu femop, o raktagu dalatazu, g ruko golid nev, osaidexu iredotagu kato g levo kentagulunirex.
+And all the Gods give their assent, and the great work begins. → O lorevu evohenoc, o dabop vixatanac.
+Etovo, smith of the Gods, forges moulds to hold the bodies of Men. → Etovo, lokrom tilorevu, lokac levoromu ipe tortan rukoidbaru.
+Then Kulena the all-wise plucks from her head a single strand of hair. → Kulena rutenop atotanac zipo tuop koje nikaczat.
+It shimmers as she draws it forth, and she breaks it into seven parts. → Koje uzotanac kosapirolam, o berac sa tufu.
+And as she lays them down, the pieces turn into little stars, and she lightly breathes to them a will and a knowing. → O kosavegoam, tufu levoacu kanuzofu, o lifac kencawi nakacu lunirex g fiderom.
+She turns to Etovo and proclaims: "Behold my making: the souls of Men. To thee I leave the shaping of their vessels." → Exoac kan-Etovo, o menopac, Hitan zipo tagrakex, rukoidromu. Ilitag nakwet levoam tiacuidbaru.
+And at her words, a flame awakens in Etovo's lungs. → O kosacre, vulfo kasac ga lifrom kin-Etovo.
 
 And so Etovo, consumed by the will to create, lays his ingots in the crucible and sets it upon the fire. As the metal yields, he fills it with the essence of all the Gods, and each God in turn gives of their nature. Kulena pours her wisdom. Javi pours his strength. Kemac pours her love. And Etovo pours his skill. When all runs molten, he casts it into the rough moulds of Men, and draws them forth, and begins to shape them in his image. With his hammer he strikes the glowing metal, and blow by blow he refines their forms.
 
