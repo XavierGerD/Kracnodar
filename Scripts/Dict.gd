@@ -33,6 +33,7 @@ const CLASSES = [
 	["interrogatif", "interrogatif"],
 	["negation", "négation"],
 	["conjonction", "conjonction"],
+	["nombre", "nombre"],
 	["autre", "autre"],
 ]
 
@@ -67,6 +68,10 @@ var load_problem = ""
 
 # The exported app's data folder, found once (see data_dir).
 var _repo = ""
+
+# Each data file's text as the app last read or wrote it, by file name, so
+# Refresh can tell which ones were changed outside the app (see changed_on_disk).
+var _disk = {}
 
 
 func _ready():
@@ -136,8 +141,37 @@ func save() -> bool:
 		save_failed.emit("Impossible d'enregistrer « %s » (%s)." % [
 			ProjectSettings.globalize_path(path), error_string(FileAccess.get_open_error())])
 		return false
-	file.store_string(to_json())
+	var text = to_json()
+	file.store_string(text)
+	remember(DICT_FILE, text)
 	return true
+
+
+# Reads dict.json again, in place of the dictionary loaded (after it was edited
+# outside the app). Returns "" or what went wrong; then the dictionary loaded
+# stays, and saving is off until a reload works, so the bad file isn't replaced.
+func reload() -> String:
+	var path = read_path(DICT_FILE)
+	if not FileAccess.file_exists(path):
+		return ""
+	var before = dict
+	dict = {}
+	load_problem = load_file(path)
+	if load_problem != "":
+		dict = before
+	return load_problem
+
+
+# Notes a data file's text, as just read or written (see changed_on_disk).
+func remember(file_name: String, text: String) -> void:
+	_disk[file_name] = text
+
+
+# Whether a data file on disk differs from what the app last read or wrote.
+func changed_on_disk(file_name: String) -> bool:
+	var path = read_path(file_name)
+	var text = FileAccess.get_file_as_string(path) if FileAccess.file_exists(path) else ""
+	return text != _disk.get(file_name, "")
 
 
 # Reads a dictionary file and merges it in. Returns "" or what went wrong.
@@ -147,8 +181,10 @@ func load_file(path: String) -> String:
 		if FileAccess.get_open_error() == ERR_FILE_NOT_FOUND:
 			return "« %s » est introuvable." % path
 		return "impossible de lire « %s » (%s)." % [path, error_string(FileAccess.get_open_error())]
+	var text = file.get_as_text()
+	remember(path.get_file(), text)
 	var json = JSON.new()
-	if json.parse(file.get_as_text()) != OK:
+	if json.parse(text) != OK:
 		return "« %s » n'est pas du JSON valide (ligne %d : %s)." % [
 			path.get_file(), json.get_error_line() + 1, json.get_error_message()]
 	if merge(json.data) < 0:
@@ -279,7 +315,7 @@ func derived_count() -> int:
 # they join as they are (grammar 1.3): only where the first ends with the vowel
 # the second starts with, and dropping one of the two would spell another word
 # or affix. e + ex gives enex, since dropping a vowel would leave ex. `second`
-# is the whole rest of the word: mihe + etag needs no link, as mihetag is new.
+# is the whole rest of the word: da + avatagu needs no link, as davatagu is new.
 func linking_consonant(first: String, second: String) -> String:
 	var vowel = first.right(1).to_lower()
 	if not LINKING_CONSONANTS.has(vowel) or second.left(1).to_lower() != vowel:

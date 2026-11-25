@@ -655,7 +655,9 @@ func load_letters() -> void:
 	var path = Dict.read_path(FILE)
 	if not FileAccess.file_exists(path):
 		return
-	var data = JSON.parse_string(FileAccess.get_file_as_string(path))
+	var text = FileAccess.get_file_as_string(path)
+	Dict.remember(FILE, text)
+	var data = JSON.parse_string(text)
 	if not data is Dictionary or not data.get("letters", []) is Array or not data.get("diacritics", []) is Array:
 		_load_problem = "« %s » couldn't be read, so the alphabet won't be saved until it is fixed." % ProjectSettings.globalize_path(path)
 		var problem = _load_problem
@@ -692,8 +694,44 @@ func save() -> bool:
 		Dict.save_failed.emit("Couldn't save « %s » (%s)." % [
 			ProjectSettings.globalize_path(path), error_string(FileAccess.get_open_error())])
 		return false
-	file.store_string(to_json())
+	var text = to_json()
+	file.store_string(text)
 	file.close()
+	Dict.remember(FILE, text)
+	Writing.reload()
+	alphabet_changed.emit()
+	return true
+
+
+# Reads glyphs.json again (after it was changed outside the app), in place of
+# the letters drawn here, a change still waiting to be saved included. The
+# undo history goes with them; the same letter stays selected where it can.
+# A file that can't be read leaves the letters as they are, and saving off
+# (load_letters reports it) until a reload reads it: then this returns false.
+func reload() -> bool:
+	_save_timer.stop()
+	var keep = current
+	var before = [letters, settings]
+	letters = []
+	settings = Quill.DEFAULTS.duplicate()
+	_load_problem = ""
+	load_letters()
+	if _load_problem != "":
+		letters = before[0]
+		settings = before[1]
+		return false
+	if letters.is_empty():
+		letters.append(_new_letter("letter"))
+	_undo.clear()
+	_redo.clear()
+	_last_tag = ""
+	for key in _quill_sliders:
+		_set_slider(_quill_sliders[key], Quill.value(settings, key))
+	_render_list()
+	select_letter(keep)
+	_sync_history_buttons()
+	_changed(true)
+	_save_timer.stop()  # _changed starts it: nothing new to save
 	Writing.reload()
 	alphabet_changed.emit()
 	return true

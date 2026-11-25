@@ -40,6 +40,10 @@ static var _marks = {}  # vowel -> its diacritic's strokes
 static var _textures = {}  # image path -> ImageTexture, kept alive for BBCode
 static var _sizes = {}  # image path -> [word, height in pixels, scale]
 static var _shaped = {}  # word -> what word_shapes gives for it
+# Working out a word's layout is slow (every taper is many pieces), and pages
+# ask for it on every render, so it is kept until the alphabet changes:
+static var _laid_out = {}  # word -> [what _layout gives, what it found missing]
+static var _composed = {}  # [letter, diacritic] strokes -> [their layers, their ink]
 static var _word_run = RegEx.create_from_string("\\S+")
 
 
@@ -50,6 +54,8 @@ static func reload() -> void:
 	_letters = {}
 	_marks = {}
 	_shaped = {}
+	_laid_out = {}
+	_composed = {}
 	var path = Dict.read_path(FILE)
 	var data = JSON.parse_string(FileAccess.get_file_as_string(path)) if FileAccess.file_exists(path) else null
 	if data is Dictionary:
@@ -151,20 +157,37 @@ static func aspect(word: String) -> float:
 
 
 # Each glyph's strokes (letter and diacritic composed), where it starts along
-# the word, and the word's width, all in em.
+# the word, and the word's width, all in em. Kept (see _laid_out): don't change
+# what it gives.
 static func _layout(word: String, missing = null) -> Dictionary:
-	var placed = []
-	var x = SIDE
-	for glyph in spell(word, missing):
-		var layers = Quill.compose(glyph["letter"], glyph["mark"], _settings)
+	word = word.to_lower()
+	if not _laid_out.has(word):
+		var found = {}
+		var placed = []
+		var x = SIDE
+		for glyph in spell(word, found):
+			var composed = _compose(glyph["letter"], glyph["mark"])
+			placed.append({"layers": composed[0], "offset": x - composed[1].position.x})
+			x += composed[1].size.x + LETTER_GAP
+		_laid_out[word] = [{"glyphs": placed, "width": maxf(x - LETTER_GAP + SIDE, 2.0 * SIDE)}, found]
+	if missing is Dictionary:
+		missing.merge(_laid_out[word][1])
+	return _laid_out[word][0]
+
+
+# A letter with its diacritic, as [its layers (see Quill.compose), the box
+# round their ink]. Kept (see _composed).
+static func _compose(letter: Array, mark: Array) -> Array:
+	var key = [letter, mark]
+	if not _composed.has(key):
+		var layers = Quill.compose(letter, mark, _settings)
 		var ink = Rect2()
 		for list in layers:
 			if not list.is_empty():
 				var bounds = Quill.ink_bounds(list, _settings)
 				ink = bounds if ink.size == Vector2.ZERO else ink.merge(bounds)
-		placed.append({"layers": layers, "offset": x - ink.position.x})
-		x += ink.size.x + LETTER_GAP
-	return {"glyphs": placed, "width": maxf(x - LETTER_GAP + SIDE, 2.0 * SIDE)}
+		_composed[key] = [layers, ink]
+	return _composed[key]
 
 
 # How tall a line of the script is, in em: from above the diacritics down to

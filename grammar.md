@@ -25,7 +25,8 @@ Kracnodar → Kracnodar
 
 - Kracnodar (/ˈkraʃnodar/) is a synthetic, sung language, invented for the Québécois band of the same name.
 - Words are built by agglutinating lexemes of two kinds: modules, which carry the meaning (like word roots), and affixes (prefixes or suffixes), which refine the form.
-- An affix never changes the spelling of the module, except where the two share a vowel at the join (see 1.3) and in the plural (see 2.1.3): from one module you can make a noun, a verb, an adjective, an adverb, and so on.
+- What ties a word to the rest of the sentence stands apart from it: relation markers (see 2.1.2) and object pronouns (see 2.2) are words of their own.
+- An affix never changes the spelling of the module, except where the two share a vowel at the join (see 1.3), in the plural (see 2.1.3), and in the short forms some modules take (see 2.1.1): from one module you can make a noun, a verb, an adjective, an adverb, and so on.
 - Some modules can temporarily act as affixes.
 
 ## 1.  Building words
@@ -70,7 +71,7 @@ Kracnodar → Kracnodar
 - Modules are rarely longer than two syllables.
 - A module or affix on its own has no double consonants, double vowels, diphthongs or vowels in a row.
 - This rule doesn't apply where two modules join: *atari* + *ex* → *atariex*.
-- When two lexemes join and the first ends with the vowel the second starts with, one of the two vowels can be dropped: *mihe* + *e* + *tag* → *miheetag* or *mihetag*; *ava* + *ac* → *avac*.
+- When two lexemes join and the first ends with the vowel the second starts with, one of the two vowels can be dropped: *da* + *ava* + *tug* → *daavatug* or *davatug*; *ava* + *ac* → *avac*.
 - Where dropping it would spell another word or affix, both vowels stay, joined by a linking consonant: *n* for *e*, *a* and *i*, *v* for *o* and *u*. *e* + *ex* → *enex*, not *ex*.
 
 > Coining new words is strongly encouraged.
@@ -97,11 +98,23 @@ The river of the ages → Hejazo
 | Noun (*ex*) | Freedom | *Felekex* | (The) cold | *Dolex* |
 | Action (*am*) | Liberation | *Felekam* | Cooling | *Dolam* |
 | Adverb (*ken*) | Freely | *Kenfelek* | Coldly | *Kendol* |
-| Adjective (*pax*) | I am free | *Felekpaxtag* | Cold (I am cold) | *Dol* (*Dolpaxtag*) |
+| Adjective (*pax*) | I am free | *Felekpaxtag* | Cold (I am cold) | *Dol* (*Doltag*, see 2.3) |
 | Agent, instrument (*rom*) | Liberator | *Felekrom* | Cooler | *Dolrom* |
 | Smaller noun (*fo*) | Small liberation | *Felekfo* | A slight chill | *Dolfo* |
 | Bigger noun (*op*) | Great liberation | *Felekop* | A great cold | *Dolop* |
 | Place (*bar*) | A place where one is free | *Felekbar* | A place where it is (or one is) cold | *Dolbar* |
+
+- Some modules are shortened before their affixes, dropping their last letters: *geren*, to love, gives *gerex* rather than *gerenex*. Which modules are shortened, and how, is decided word by word, with no rule to predict it: each one is learned with its short form.
+- The full module stays correct before an affix: *gerenex* is love too.
+
+To love → Geren
+Love → Gerex
+Lovable → Gerpax
+To like → Gerfo
+To adore → Gerop
+A shrine (a place of adoration) → Gerbar
+
+> A short form mustn't spell another module or affix: check the dictionary before giving a module one.
 
 ### 2.1.2  Relation markers
 
@@ -109,26 +122,27 @@ The river of the ages → Hejazo
 
 | Use | Marker | Example |
 |-------|---|---------|
-| Origin (coming from, of, by)¹ | *Kin* | Dim's apple → *Atari kin-Dim* |
-| Direction of origin (from where, through where) | *Nik* | Music from the world → *Hotuyavin nikatazu* |
-| Direction of destination (to, toward) | *Kan* | I'm going home → *Exotag kaneno* |
-| Recipient (to whom, toward whom) | *Nak* | I give you a cat → *Ilitag nakwet zanu* |
+| Origin (coming from, of, by)¹ | *Kin* | Dim's apple → *Atari kin Dim* |
+| Direction of origin (from where, through where) | *Nik* | Music from the world → *Hotuyavin nik atazu* |
+| Direction of destination (to, toward) | *Kan* | I'm going home → *Exotag kan eno* |
+| Recipient (to whom, toward whom) | *Nak* | I give you a cat → *Ilitag nak wet zanu* |
 | Manner (thus, in this way) | *Ken* | He dances while jumping → *Avac kendexu* |
-| Cause (what makes) | *Nek* | The film makes them cry → *Kija nekacu nuto* |
-| Relation (of) | *Ti* | The presence of things → *Urivo tioju* |
-| Relative, possessive (whose, of which) | *Osa* | The dwarf whose hammer rings → *Wanon osazek relinac* |
-| Relative (who, which) | *Gol* | A person who stinks → *Onupo golawu* |
-| Time (at the time of, at) | *Kosa* | We dance at the time of the liberation → *Avatagu kosafelekam* |
-| Relation (as for) | *Vof* | As for me → *Voftag* |
+| Cause (what makes) | *Nek* | The film makes them cry → *Kija nek uc nuto* |
+| Relation (of) | *Ti* | The presence of things → *Urivo ti oju* |
+| Relative, possessive (whose, of which) | *Osa* | The dwarf whose hammer rings → *Wanon osa zek relinac* |
+| Relative (who, which) | *Gol* | A person who stinks → *Onupo gol awu* |
+| Time (at the time of, at) | *Kosa* | We dance at the time of the liberation → *Avatug kosa felekam* |
+| Relation (as for) | *Vof* | As for me → *Vof tag* |
 | Because | *Iduri* | I cry because you go → *Nutotag iduri exowet* |
 
 > ¹ Possession can also be expressed with pronouns (see 2.2).
 
-- A marker attaches directly to a common noun (*tinod*), but takes a hyphen before a name (*kin-Dim*).
-- A marker on a noun also covers the nouns joined to it by *g*, which joins the noun right before it: the marker isn't repeated.
+- A marker is a word of its own, placed before its noun like a preposition (see 2.5): *ti nod*, *kin Dim*.
+- *Ken* on a bare module is the adverb affix instead, joined to it (see 2.1.1): *kendexu*, while jumping. Before a noun, it is a marker like the others: like jewels → *ken uzonodu*.
+- A marker also covers the nouns joined to its noun by *g*, which joins the noun right before it: the marker isn't repeated.
 
-The houses of stone and gold → Enu tinod g lox
-The age of the sun and the moon → Hej tiiwa g umi
+The houses of stone and gold → Enu ti nod g lox
+The age of the sun and the moon → Hej ti iwa g umi
 
 ### 2.1.3  Plural
 
@@ -136,8 +150,8 @@ The age of the sun and the moon → Hej tiiwa g umi
 - After a final consonant, *u* is added: *nod* → *nodu*; *felekrom* → *felekromu*.
 - A final vowel is replaced by *u*: *atari* → *ataru*; *eno* → *enu*; *kija* → *kiju*.
 - A final *u* is replaced by *e*: *ru* → *re*; *zanu* → *zane*.
-- This is the only affix that changes the spelling of what it attaches to, an affix included: *felekfo* → *felekfu*, small liberations.
-- A noun takes the plural wherever it is plural, even when the verb already says so: words open the way → *re kadiracu joka*.
+- Apart from the short forms of some modules (see 2.1.1), this is the only affix that changes the spelling of what it attaches to, an affix included: *felekfo* → *felekfu*, small liberations.
+- A noun takes the plural wherever it is plural, even when the verb already says so: words open the way → *re kadiruc joka*.
 - Pronouns have plurals of their own (see 2.2), and adjectives don't agree with the noun.
 - In the script, the plural is the diacritic on the last letter: added after a consonant (*nodu*), changed where it replaces a vowel (*ataru*).
 
@@ -148,8 +162,8 @@ The age of the sun and the moon → Hej tiiwa g umi
 | *u* | Replaced by *e* | *Ru* | *Re* |
 
 Stones → Nodu
-The houses of stone → Enu tinod
-Our apples → Taguataru
+The houses of stone → Enu ti nod
+Our apples → Tugataru
 Small liberations → Felekfu
 
 > The singular can't always be told from the plural: *ataru* could come from *atar*, *atara*, *atare*, *atari* or *ataro*. When coining a noun, avoid one that differs from another only by its last vowel, or ends like the plural of another: *kijo* beside *kija* would share its plural, *kiju*.
@@ -158,35 +172,41 @@ Small liberations → Felekfu
 
 - Pronouns don't take affixes, but they join onto other modules in some conjugations.
 - The subject pronoun attaches to the end of the verb: *Exotag*, I go; *Gewigac*, he eats.
-- *Noc* (all) attaches to the verb like the others. After a noun subject, it takes the place of *acu* and says that all of them do it: *lorevu evohenoc*, the Gods all agree. In front of a noun it would mean possession, so “all the Gods” is never *noclorevu*.
+- *Noc* (all) attaches to the verb like the others. After a noun subject, it takes the place of *uc* and says that all of them do it: *lorevu evohenoc*, the Gods all agree. In front of a noun it would mean possession, so “all the Gods” is never *noclorevu*.
 
 | English | Kracnodar |
 |---|---|
 | I | *Tag* |
 | You (singular) | *Wet* |
 | He / She | *Ac* |
-| We | *Tagu* |
-| You (plural) | *Wetu* |
-| They | *Acu* |
+| We | *Tug* |
+| You (plural) | *Wut* |
+| They | *Uc* |
 | One | *Tul* |
 | All | *Noc* |
 
-- There is no polite form: *wet* is anyone spoken to, a friend or a god, and *wetu* any number of them.
-- Possession is expressed with the pronoun in front of the noun, wherever the noun stands in the sentence: *taguatari*, our apple; *tageti*, my mother.
-- For emphasis, the pronoun goes after the noun with *kin* instead, like “of mine”: *eti kintag*, mother of mine. A possessor that isn't a pronoun always takes *kin*: *atari kin-Dim*.
+- A plural pronoun is the singular with its vowel replaced by *u*, the vowel of the plural (see 2.1.3): *tag* → *tug*, *wet* → *wut*, *ac* → *uc*. Like the singular, it is one syllable wherever it stands: *gewiguc*, they eat; *ucatari*, their apple.
+- There is no polite form: *wet* is anyone spoken to, a friend or a god, and *wut* any number of them.
+- A pronoun that is the direct object is a word of its own, right before the verb, as French puts “le” before the verb; it is sung onto the verb without a break: he puts it → *ac vegoac*; they free us → *tug felekuc*. The subject stays at the end of the verb, so where the pronoun stands tells them apart: *ac vegoac*, he puts it; *vegoacac*, he puts himself (see 2.3).
+- The object also comes before a tense prefix, which stays on the verb: he is about to put it → *ac davegoac*. A pronoun that receives keeps *nak*: *ilitag nak wet zanu*.
+- Possession is expressed with the pronoun in front of the noun, joined to it, wherever the noun stands in the sentence: *tugatari*, our apple; *tageti*, my mother.
+- So a pronoun joined to the front of a word is always a possessor, and a pronoun standing alone before a verb is always its object: *uclevoam*, their shaping; *uc levo*, to shape them.
+- For emphasis, the pronoun goes after the noun with *kin* instead, like “of mine”: *eti kin tag*, mother of mine. A possessor that isn't a pronoun always takes *kin*: *atari kin Dim*.
 
-We eat an apple → Gewigtagu atari
-We eat our apple → Gewigtagu taguatari
-We feed the prisoners → Fedamotagu adovisu
-We feed our prisoners → Fedamotagu taguadovisu
+We eat an apple → Gewigtug atari
+We eat our apple → Gewigtug tugatari
+We feed the prisoners → Fedamotug adovisu
+We feed our prisoners → Fedamotug tugadovisu
 My mother, the fire → Tageti, vul
-Mother of mine → Eti kintag
+Mother of mine → Eti kin tag
 The Gods all agree → Lorevu evohenoc
+Etovo puts it on the fire → Etovo ac vegoac gu vul
+He puts his ingots in the crucible → Vegoac achosu ga vembar
 
 - A doubled pronoun after a noun stresses it, as “itself” does, and agrees with the noun. On a verb, a doubled pronoun is reflexive instead (see 2.3).
 
 Life itself → Idex acac
-The words themselves → Re acuacu
+The words themselves → Re ucuc
 
 ### 2.3  Verbs
 
@@ -194,14 +214,20 @@ The words themselves → Re acuacu
 
 | Distant past | Recent past | Present | Near future | Distant future |
 |---|---|---|---|---|
-| *tego* | *mihe* | *sele* | *dado* | *fojo* |
+| *tego* | *mi* | *sele* | *da* | *fojo* |
 
 - The present marker (*sele*) is usually left out, except to stress that something is happening right now.
-- The conditional is marked by *s*: we could → *siredotagu*.
+- The conditional is marked by *s*: we could → *siredotug*.
 - A reflexive verb doubles the pronoun: I isolate myself → *ojisitagtag*.
-- A reciprocal verb puts *tul* before the plural pronoun: they anger one another → *nasovetantulacu*; we love one another → *gerentultagu*.
-- In the Latin spelling, a hyphen can split a long reflexive or reciprocal verb before its pronouns, to show where they start: *nasovetan-tulacu*. It is still one word, sung without a break.
+- A reciprocal verb takes *tul* as its object, a word of its own placed like an object pronoun (see 2.2): they anger one another → *tul nasovetanuc*; we love one another → *tul gerentug*. Before a verb, *tul* always means “one another”: as the subject, “one”, it ends the verb like any other subject.
+- In the Latin spelling, a hyphen can split a long reflexive verb before its pronouns, to show where they start: *xotan-ucuc*. It is still one word, sung without a break.
 - The imperative is the same as the infinitive, with no pronoun: eat an apple → *gewig atari*.
+- A noun or an adjective takes *tan* to become a verb (see 2.1.1), but once it ends with its subject, the ending alone makes it a verb and *tan* can be left out: he speaks → *ruac* (or *rutanac*); they speak → *ruc* (*ru* + *uc*, see 1.3); we war → *mortug*. The verb means what it would with *tan*: *ru*, word, gives “to speak”.
+- Wherever the verb has no subject ending, *tan* stays: in the infinitive and the imperative (to speak, speak → *rutan*; behold → *hitan*), after *ipe* (to hold → *ipe tortan*), and after *gol*.
+- On an adjective, the ending alone means “to be”: I am cold → *doltag*; they are rough → *jehouc*. *Pax* is only needed on a module that isn't an adjective: I am free → *felekpaxtag*. With *tan*, an adjective means “to make” or “to become”: I cool it → *ac doltantag*; they anger one another → *tul nasovetanuc*.
+
+> Keeping *tan* is never wrong: it gives a syllable back where the melody needs one.
+
 - Word order is subject, verb, object. A noun subject goes before the verb, and the verb keeps its pronoun: Dim eats an apple → *Dim gewigac atari*.
 - An adverb goes right after the verb: hear now → *jas zipo*.
 
@@ -220,8 +246,8 @@ The words themselves → Re acuacu
 | With | *ka* |
 | For | *ipe* |
 
-- *Ipe* followed by an infinitive expresses a purpose: I'm going home to eat → *exotag kaneno ipe gewig*.
-- “And” is *g* between words, and *o* between two clauses: I go home and I eat → *exotag kaneno, o gewigtag*.
+- *Ipe* followed by an infinitive expresses a purpose: I'm going home to eat → *exotag kan eno ipe gewig*.
+- “And” is *g* between words, and *o* between two clauses: I go home and I eat → *exotag kan eno, o gewigtag*.
 
 ### 2.6  Determiners
 
@@ -230,24 +256,26 @@ The words themselves → Re acuacu
 | This / That | *k* |
 
 - *K* is a separate word, placed before the noun: that stone → *k nod*.
-- A relation marker before *k* stays a separate word too: in that age → *kosa k hej*.
+- A relation marker comes before *k*: in that age → *kosa k hej*.
 
 ### 2.7  Question words
 
 - A question word takes the place in the sentence that the answer would take.
 - Since subject and direct object are told apart only by their position, *hob* and *her* can't be moved without creating ambiguity.
-- *Hura*, *hen* and *reh*, whose function is clear from the word itself, can go anywhere, including at the start of the sentence.
+- *Hura*, *hen*, *reh* and *hid*, whose function is clear from the word itself, can go anywhere, including at the start of the sentence.
 - Outside a question, “where” is *nev hura*: where his hammer sounds → *nev hura, aczek relinac*.
 
 Who eats an apple? → Hob gewigac atari ?
 What does Dim eat? → Dim gewigac her ?
 Where does Dim eat? → *Dim gewigac hura ?* or *Hura Dim gewigac ?*
+Why does Dim eat? → *Dim gewigac hid ?* or *Hid Dim gewigac ?*
 
 | English | Kracnodar |
 |---|---|
 | Where | *Hura* |
 | When | *Hen* |
 | How | *Reh* |
+| Why | *Hid* |
 | What | *Her* |
 | Who | *Hob* |
 
@@ -264,7 +292,7 @@ He doesn't eat an apple → Gewigac fem atari
 Doesn't he eat an apple? → Gewigac fem ot atari ?
 He eats nothing → Gewigac femher
 He no longer eats apples → Gewigac femop ataru
-We war no more → Mortantagu femop
+We war no more → Mortug femop
 I can't free → Iredotag fem felek
 I can not free (I'm able not to) → Iredotag felek fem
 
@@ -274,6 +302,7 @@ I can not free (I'm able not to) → Iredotag felek fem
 | Nowhere | *Femhura* |
 | Never | *Femhen* |
 | In no way | *Femreh* |
+| For no reason | *Femhid* |
 | Nothing | *Femher* |
 | Nobody | *Femhob* |
 

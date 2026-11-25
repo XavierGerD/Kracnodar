@@ -186,6 +186,15 @@ func _on_row_expanded_changed(french: String, on: bool) -> void:
 		_expanded.erase(french)
 
 
+# Whether a row is open for editing, or one of its derived forms' meanings:
+# a change not saved yet.
+func has_open_edit() -> bool:
+	for row in %Rows.get_children():
+		if not row.is_queued_for_deletion() and (row.editing or row._defining != ""):
+			return true
+	return false
+
+
 func _on_row_edit_started(editing_row) -> void:
 	for row in %Rows.get_children():
 		if row != editing_row:

@@ -131,7 +131,34 @@ func load_library() -> void:
 		load_problem = "%s is missing. A new chapter will create it." % LIBRARY_FILE
 		parse_document("")
 		return
-	parse_document(FileAccess.get_file_as_string(path))
+	var text = FileAccess.get_file_as_string(path)
+	Dict.remember(LIBRARY_FILE, text)
+	parse_document(text)
+
+
+# Reads library.md again (after it was edited outside the app), staying on the
+# same chapter and document, found by name, where it was scrolled. What is
+# open in the editor is closed unsaved.
+func reload() -> void:
+	var chapter_name = chapters[chapter_index]["name"] if _has_chapter() else ""
+	var doc_title = chapters[chapter_index]["docs"][doc_index]["title"] if _has_doc() else ""
+	close_editor()
+	load_library()
+	chapter_index = -1
+	doc_index = -1
+	for i in chapters.size():
+		if chapters[i]["name"] == chapter_name:
+			chapter_index = i
+			for j in chapters[i]["docs"].size():
+				if chapters[i]["docs"][j]["title"] == doc_title:
+					doc_index = j
+					break
+			break
+	_rerender()
+
+
+func has_open_edit() -> bool:
+	return %Editor.visible
 
 
 func save_library() -> bool:
@@ -140,7 +167,9 @@ func save_library() -> bool:
 	if file == null:
 		_error("Couldn't save %s (%s)." % [ProjectSettings.globalize_path(path), error_string(FileAccess.get_open_error())])
 		return false
-	file.store_string(to_markdown())
+	var text = to_markdown()
+	file.store_string(text)
+	Dict.remember(LIBRARY_FILE, text)
 	load_problem = ""
 	return true
 
@@ -1076,6 +1105,11 @@ func alphabet_changed() -> void:
 		_rerender()
 	else:
 		_stale = true
+
+
+# The dictionary was read again: the Required list shows its English.
+func dictionary_changed() -> void:
+	alphabet_changed()
 
 
 # The Kracnodar of a text, from `from` to `to` in plain(text) (-1 for its end),

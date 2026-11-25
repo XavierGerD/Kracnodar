@@ -89,7 +89,21 @@ func load_grammar() -> void:
 		load_problem = "%s is missing. New articles will create it." % GRAMMAR_FILE
 		parse_document("")
 		return
-	parse_document(FileAccess.get_file_as_string(path))
+	var text = FileAccess.get_file_as_string(path)
+	Dict.remember(GRAMMAR_FILE, text)
+	parse_document(text)
+
+
+# Reads grammar.md again (after it was edited outside the app). An article
+# open in the editor is closed unsaved; the search stays.
+func reload() -> void:
+	close_editor()
+	load_grammar()
+	render()
+
+
+func has_open_edit() -> bool:
+	return %Editor.visible
 
 
 func save_grammar() -> bool:
@@ -98,7 +112,9 @@ func save_grammar() -> bool:
 	if file == null:
 		_error("Couldn't save %s (%s)." % [ProjectSettings.globalize_path(path), error_string(FileAccess.get_open_error())])
 		return false
-	file.store_string(to_markdown())
+	var text = to_markdown()
+	file.store_string(text)
+	Dict.remember(GRAMMAR_FILE, text)
 	load_problem = ""
 	return true
 

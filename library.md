@@ -24,24 +24,34 @@ The Grammaire uses the same markup.
 
 ### The Creation
 
-Hear now the words of Kulena, she who keeps the river of time aflow. She speaks the breath of the world onto the scrolls. → Jas zipo re kin-Kulena. Katoac solazo. Rutanac lifex tiatazu gu cizu.
-She writes of the Gods and of their quarrels, there in their house of stone and gold. → Falac tilorevu g acumorfu, nev ga acueno tinod g lox.
-She writes of the beginning, before the age of Man, before the age of the sun and the moon. → Falac la vixa, ezop rukohej, ezop hej tiiwa g umi.
-In those days the Gods are weary of one another, and swift to anger. → Kosa k hej, lorevu mogetan-tulacu, nasovetan-tulacu kenzewo.
-Many a day they war over things both great and small, and their wounds they leave to fester. → Mortanacu hex la ojaopu g ojafu, o acumavu xotan-acuacu.
-But Kulena, wisest of the Gods, sees that this cannot endure, and she devises a means of salvation.. → Tirel Kulena, rutenop tilorevu, fideac k oja iredoac fem e ral, o rakac sozrom.
-"Let us turn our eyes from one another," she says to them, "and make a new world, and a people to dwell within it, whose lives we may guide and shape according to our will." → Menac nakacu, mortantagu femop, o raktagu dalatazu, g ruko golid nev, osaidexu iredotagu kato g levo kentagulunirex.
-And all the Gods give their assent, and the great work begins. → O lorevu evohenoc, o dabop vixatanac.
-Etovo, smith of the Gods, forges moulds to hold the bodies of Men. → Etovo, lokrom tilorevu, lokac levoromu ipe tortan rukoidbaru.
-Then Kulena the all-wise plucks from her head a single strand of hair. → Kulena rutenop atotanac zipo tuop koje nikaczat.
-It shimmers as she draws it forth, and she breaks it into seven parts. → Koje uzotanac kosapirolam, o berac sa tufu.
-And as she lays them down, the pieces turn into little stars, and she lightly breathes to them a will and a knowing. → O kosavegoam, tufu levoacu kanuzofu, o lifac kencawi nakacu lunirex g fiderom.
-She turns to Etovo and proclaims: "Behold my making: the souls of Men. To thee I leave the shaping of their vessels." → Exoac kan-Etovo, o menopac, Hitan zipo tagrakex, rukoidromu. Ilitag nakwet levoam tiacuidbaru.
-And at her words, a flame awakens in Etovo's lungs. → O kosacre, vulfo kasac ga lifrom kin-Etovo.
+Hear now the words of Kulena, she who keeps the river of time aflow. She speaks the breath of the world onto the scrolls. → Jas zipo re kin Kulena. Katoac solazo. Ruac lifex ti atazu gu cizu.
+She writes of the Gods and of their quarrels, there in their house of stone and gold. → Falac ti lorevu g ucmorfu, nev ga uceno ti nod g lox.
+She writes of the beginning, before the age of Man, before the age of the sun and the moon. → Falac la vixa, ezop rukohej, ezop hej ti iwa g umi.
+In those days the Gods are weary of one another, and swift to anger. → Kosa k hej, lorevu tul mogeuc, tul nasovetanuc kenzewo.
+Many a day they war over things both great and small, and their wounds they leave to fester. → Mortuc hex la ojaopu g ojafu, o ucmavu xotan-ucuc.
+But Kulena, wisest of the Gods, sees that this cannot endure, and she devises a means of salvation. → Tirel Kulena, rutenop ti lorevu, fideac k oja iredoac fem e ral, o rakac sozrom.
+"Let us turn our eyes from one another," she says to them, "and make a new world, and a people to dwell within it, whose lives we may guide and shape according to our will." → Menac nak uc, mortug femop, o raktug dalatazu, g ruko gol id nev, osa idexu iredotug kato g levo ken tuglunirex.
+And all the Gods give their assent, and the great work begins. → O lorevu evohenoc, o dabop vixac.
+Etovo, smith of the Gods, forges moulds to hold the bodies of Men. → Etovo, lokrom ti lorevu, lokac levoromu ipe tortan rukoidbaru.
+Then Kulena the all-wise plucks from her head a single strand of hair. → Kulena rutenop atoac zipo tuop koje nik aczat.
+It shimmers as she draws it forth, and she breaks it into seven parts. → Koje uzoac kosa pirolam, o berac sa tufu.
+And as she lays them down, the pieces turn into little stars, and she lightly breathes to them a will and a knowing. → O kosa vegoam, tufu levouc kan uzofu, o lifac kencawi nak uc lunirex g fiderom.
+She turns to Etovo and proclaims: "Behold my making: the souls of Men. To thee I leave the shaping of their vessels." → Exoac kan Etovo, o menopac, Hitan zipo tagrakex, rukoidromu. Ilitag nak wet levoam ti ucidbaru.
+And at her words, a flame awakens in Etovo's lungs. → O kosa acre, vulfo kasac ga lifrom kin Etovo.
+And so Etovo, consumed by the will to create, lays his ingots in the crucible and sets it upon the fire. → O Etovo, ka lunirop ipe rak, vegoac achosu ga vembar, o ac vegoac gu vul.
+As the metal melts, he fills it with the essence of all the Gods. → Kosa vemam, ac vecoac ka nocenex.
+Kulena pours her wisdom. → Kulena sajac acruten.
+Javi pours his strength. → Javi sajac acvorex.
+Kemac pours her love. → Kemac sajac acgerenex.
+And Etovo pours his skill. → O Etovo sajac acdor.
+When all runs molten, he casts it into the rough moulds of Men, and draws them forth, and begins to shape them in his image. → Kosa nocvemam, ac sajac kan k jeholevoromu, o uc pirolac, o vixac uc levo kan ackuma.
+He hammers the fire-metal, and their shapes are rough no more. → Zekac vulsagi, o uckumu jehouc femop.
+Then he looks upon their shapes, and they please him. And he takes up the souls that Kulena has made, and lays them within his creations, like jewels in a crown. → Hiac zipo uckumu, o uc gerenfoac. O atoac rukoidromu kin Kulena, o uc vegoac ga acrakexu, ken uzonodu ga zatlox.
+And for a moment nothing moves; then they tremble, and stir, and rise. → Kosa solfo, femher gilac. Aruc zipo, o giluc, o kutuc.
+And soon they ask why they were made, and they are quick of hand and mind. → O dajecuc, uc miraktul hid, o zewouc ka atu g fideromu.
+They speak of love, and they speak of sorrow. → Ruc la gerenex, o ruc la kora.
 
-And so Etovo, consumed by the will to create, lays his ingots in the crucible and sets it upon the fire. As the metal yields, he fills it with the essence of all the Gods, and each God in turn gives of their nature. Kulena pours her wisdom. Javi pours his strength. Kemac pours her love. And Etovo pours his skill. When all runs molten, he casts it into the rough moulds of Men, and draws them forth, and begins to shape them in his image. With his hammer he strikes the glowing metal, and blow by blow he refines their forms.
-
-Then, when he is ready, and their forms are pleasing to him, he takes the souls that Kulena has set aside for him and lays them within his creations, as jewels are set in a crown. And for a moment all is still; then they tremble, and stir, and rise. And soon they ask why they have been made, and they are quick of hand and mind. They speak of love, and they speak of sorrow. And his heart goes out to them, his creation, and he swears to them a home of their own.
+And his heart goes out to them, his creation, and he swears to them a home of their own.
 
 First, to keep them warm, Etovo draws from his forge the hottest of its embers and lays it in the palm of his hand. He closes his fingers upon it and presses it with all his might, and within his grasp it burns red, then yellow, then white. And when he opens his hand, the ember holds its glow, and he is content.
 
@@ -92,12 +102,12 @@ A loose leaf found right on top of the box. Written on one side in a strange for
 ```
 
 The hammer speaks → Zek hac
-His words sound → Re kinac relinacu
-Here in the house of stone →  Ven ga eno tinod
-Words of fire → Re tivul
-Words of steel → Re timelid
+His words sound → Re kin ac relinuc
+Here in the house of stone →  Ven ga eno ti nod
+Words of fire → Re ti vul
+Words of steel → Re ti melid
 Etovo, the blacksmith → Etovo, lokrom
-In his forge → Ga lokbar kinac
+In his forge → Ga lokbar kin ac
 
 ### Riddle
 
@@ -106,9 +116,9 @@ A box with a riddle inscribed on it. Three dials with letters can be turned. On 
 ```
 
 Riddle:
-I am the home of fire → E==tag== ==eno== kin==vul==
-I am the home of steel → Etag eno kin==melid==
-I am the home of the hammer → Etag eno kin==zek==
+I am the home of fire → E==tag== ==eno== kin ==vul==
+I am the home of steel → Etag eno kin ==melid==
+I am the home of the hammer → Etag eno kin ==zek==
 Etovo lives here → ==Etovo== ==id==ac ==ven==
 
 Answer:
@@ -136,9 +146,9 @@ Stone  tablet, about 2 inches tall, 3 inches across.
 Damage rendered some letters illegible.
 ```
 
-In my house of stone → Ga eno tinod kintag
+In my house of stone → Ga eno ti nod kin tag
 I work with fire and steel → Dabtag ka vul gi melid
-My hammer rings loud → Zek kintag relinac kenvor
+My hammer rings loud → Zek kin tag relinac kenvor
 Work, worker → Dab, dabrom
 Blow, bellows → Lif, lifrom
 Forge, blacksmith → Lok, lokrom
@@ -157,7 +167,7 @@ Storyline and answers:
 ```
 
 Riddle 1:
-Etovo transforms the sun into the stars → Etovo levoac iwa kanuzu
+Etovo transforms the sun into the stars → Etovo levoac iwa kan uzu
 
 Riddle 2:
 
@@ -172,11 +182,11 @@ A loose leaf found tucked inside the book. Written on one side in a strange form
 ```
 
 The hammer speaks → Zek hac
-His words sound → Re kinac relinacu
-In the house of stone →  Ga eno tinod
-Words of wisdom → Re tiruten
-Words of war → Re timor
-Words that open doors → Re golkadir saru
+His words sound → Re kin ac relinuc
+In the house of stone →  Ga eno ti nod
+Words of wisdom → Re ti ruten
+Words of war → Re ti mor
+Words that open doors → Re gol kadir saru
 Etovo, the blacksmith → Etovo, lokrom
 Show the way → Ve joka
 Beyond life itself → Resa idex acac
@@ -200,7 +210,7 @@ Etovo, open the way → Etovo kadir joka
 With the book came a box with a riddle inscribed on it. Four dials with letters can be turned to set the password
 ```
 
-Words open the way → ==Ru== ==kadir====acu== ==joka==
+Words open the way → ==Ru== ==kadir====uc== ==joka==
 Beyond the one with the hammer → ==Resa== ==zek====rom==
 
 
@@ -226,9 +236,9 @@ Stone  tablet, about 2 inches tall, 3 inches across.
 Damage rendered some letters illegible.
 ```
 
-In my house of stone → Ga eno tinod kintag
+In my house of stone → Ga eno ti nod kin tag
 I work with fire and steel → Dabtag pop vul gi melid
-My hammer rings loud → Zek kintag relinac kenvor
+My hammer rings loud → Zek kin tag relinac kenvor
 Work, worker → Dab, dabrom
 Blow, bellows → Lif, lifrom
 Forge, blacksmith → Lok, lokrom
@@ -256,8 +266,8 @@ Note number two. Found in the second bowl, starting at the left of the entrance.
 ```
 
 I, Kinlorev, wish for work → Tag, Kinlorev, lunirtag dabex
-In the temple of Etevo → Ga lorevbar kin-Etevo
-Where his hammer sounds → Nev hura, zek kinac relinac
+In the temple of Etevo → Ga lorevbar kin Etevo
+Where his hammer sounds → Nev hura, zek kin ac relinac
 
 ### Bowl note: Felekrom [Kracnodar]
 
@@ -266,7 +276,7 @@ Note number three. Found in the third bowl, starting at the left of the entrance
 ```
 
 I, Felekrom, wish for work → Tag, Felekrom, lunirtag dabex
-In the temple of Etevo → Ga lorevbar kin-Etevo
+In the temple of Etevo → Ga lorevbar kin Etevo
 Where great fortune lies → Nev hura, mulenopbar
 
 ### Bowl note: Vulrom [Kracnodar]
@@ -276,7 +286,7 @@ Note number four. Found in the first bowl at the left of the entrance. Similar t
 ```
 
 I, Vulrom, wish for work → Tag, Felekrom, lunirtag dabex
-Etovo, I am your servant → Etovo, etag wode kinwet
+Etovo, I am your servant → Etovo, etag wode kin wet
 
 ### Tool labels [Kracnodar]
 
@@ -290,7 +300,7 @@ Tongs → Tor
 I forge in fire → ==Lok====tag== ga ==vul==
 I work with steel → ==Dab==tag ka ==melid==
 I make the sharpness to kill → ==Rak==tag ==zir==ex ipe murok
-I am a servant of Etevo → Etag ==wode== ==kin==-Etovo
+I am a servant of Etevo → Etag ==wode== ==kin== Etovo
 Who am I? → Etag ==hob== ?
 
 Answer: Blacksmith (*lok==rom==*)
