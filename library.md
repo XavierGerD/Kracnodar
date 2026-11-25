@@ -42,14 +42,14 @@ And so Etovo, consumed by the will to create, lays his ingots in the crucible an
 As the metal melts, he fills it with the essence of all the Gods. → Kosa vemam, ac vecoac ka nocenex.
 Kulena pours her wisdom. → Kulena sajac acruten.
 Javi pours his strength. → Javi sajac acvorex.
-Kemac pours her love. → Kemac sajac acgerenex.
+Kemac pours her love. → Kemac sajac acgerex.
 And Etovo pours his skill. → O Etovo sajac acdor.
 When all runs molten, he casts it into the rough moulds of Men, and draws them forth, and begins to shape them in his image. → Kosa nocvemam, ac sajac kan k jeholevoromu, o uc pirolac, o vixac uc levo kan ackuma.
 He hammers the fire-metal, and their shapes are rough no more. → Zekac vulsagi, o uckumu jehouc femop.
-Then he looks upon their shapes, and they please him. And he takes up the souls that Kulena has made, and lays them within his creations, like jewels in a crown. → Hiac zipo uckumu, o uc gerenfoac. O atoac rukoidromu kin Kulena, o uc vegoac ga acrakexu, ken uzonodu ga zatlox.
+Then he looks upon their shapes, and they please him. And he takes up the souls that Kulena has made, and lays them within his creations, like jewels in a crown. → Hiac zipo uckumu, o uc gerfoac. O atoac rukoidromu kin Kulena, o uc vegoac ga acrakexu, ken uzonodu ga zatlox.
 And for a moment nothing moves; then they tremble, and stir, and rise. → Kosa solfo, femher gilac. Aruc zipo, o giluc, o kutuc.
 And soon they ask why they were made, and they are quick of hand and mind. → O dajecuc, uc miraktul hid, o zewouc ka atu g fideromu.
-They speak of love, and they speak of sorrow. → Ruc la gerenex, o ruc la kora.
+They speak of love, and they speak of sorrow. → Ruc la gerex, o ruc la kora.
 
 And his heart goes out to them, his creation, and he swears to them a home of their own.
 

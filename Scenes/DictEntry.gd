@@ -3,7 +3,8 @@ extends PanelContainer
 # One row of the dictionary list. A click shows the forms derived from a module
 # (a verb, noun, adjective or adverb; see Dict.derived_forms). The pencil, or a
 # double-click, turns it into fields; Enter saves and Escape cancels. Each
-# derived form has its own pencil, which opens a field for its meaning.
+# derived form has its own pencil, which opens fields for its spelling (empty =
+# the one its affix gives, see Dict.set_derived) and its meaning.
 
 const TextFold = preload("res://Scripts/TextFold.gd")
 const MATCH_COLOUR = Color(0.9411765, 0.5647059, 0.30980393)  # a derived form the search found
@@ -19,7 +20,7 @@ var editing = false
 var alternate = false
 var expanded = false  # the derived forms are shown
 var query = ""  # the folded search text, to light up the derived forms it found
-var _defining = ""  # the name of the derived form whose meaning is being edited, or ""
+var _defining = ""  # the name of the derived form being edited, or ""
 
 
 func _ready():
@@ -70,20 +71,34 @@ func _fill_derived() -> void:
 		child.queue_free()
 	for form in Dict.derived_forms(key):
 		var note = form["affix"] if form["affix"] != "" else "le module, sans affixe"
+		if form["respelled"]:
+			note += "   au lieu de « %s »" % form["regular"]
 		if form["existing"] != "":
 			note += "   ⚠ déjà dans le dictionnaire : « %s »" % form["existing"]
 		_add_cell(form["name"], "HintLabel")
-		_add_cell(form["word"], "KracLabel")
-		var field = _add_meaning(form)
-		_add_cell(note, "DimLabel")
 		var tools = HBoxContainer.new()
 		tools.add_theme_constant_override("separation", 2)
-		if field != null:
-			tools.add_child(_derived_button("✓", "Enregistrer (Entrée)",
-				func(): _save_meaning(form["name"], field.text)))
+		if form["affix"] != "" and form["name"] == _defining:
+			var word = _add_field(form["word"], form["regular"], 120)
+			var meaning = _add_field(form["meaning"], "Sens, ex. : freedom", 200)
+			var save = func(): _save_derived(form["name"], meaning.text, word.text)
+			for field in [word, meaning]:
+				field.text_submitted.connect(func(_text): save.call())
+			(func():
+				if meaning.is_inside_tree():
+					meaning.grab_focus()
+					meaning.select_all()).call_deferred()
+			tools.add_child(_derived_button("✓", "Enregistrer (Entrée)", save))
 			tools.add_child(_derived_button("↩", "Annuler (Échap)", _define.bind("")))
-		elif form["affix"] != "":  # none on the module's own line: its meaning is the entry's
-			tools.add_child(_derived_button("✎", "Définir ce mot", _define.bind(form["name"])))
+		else:
+			var found = _found(form)
+			var word_label = _add_cell(form["word"], "KracLabel")
+			var meaning_label = _add_meaning(form)
+			if found:
+				(meaning_label if form["meaning"] != "" else word_label).add_theme_color_override("font_color", MATCH_COLOUR)
+			if form["affix"] != "":  # none on the module's own line: it is the entry itself
+				tools.add_child(_derived_button("✎", "Définir ce mot ou changer son orthographe", _define.bind(form["name"])))
+		_add_cell(note, "DimLabel")
 		%DerivedGrid.add_child(tools)
 
 
@@ -98,54 +113,51 @@ func _derived_button(text: String, tooltip: String, action: Callable) -> Button:
 	return button
 
 
-# The meaning of a derived form: its text, or the field that edits it (returned).
-func _add_meaning(form: Dictionary) -> LineEdit:
-	if form["affix"] != "" and form["name"] == _defining:
-		var field = LineEdit.new()
-		field.text = form["meaning"]
-		field.placeholder_text = "Sens, ex. : freedom"
-		field.custom_minimum_size = Vector2(200, 0)
-		field.theme_type_variation = "CompactLineEdit"
-		field.text_submitted.connect(func(text): _save_meaning(form["name"], text))
-		field.gui_input.connect(func(event):
-			if event.is_action_pressed("ui_cancel"):
-				field.accept_event()
-				_define(""))
-		%DerivedGrid.add_child(field)
-		(func():
-			if field.is_inside_tree():
-				field.grab_focus()
-				field.select_all()).call_deferred()
-		return field
+# The meaning of a derived form (the entry's own on the module's line).
+func _add_meaning(form: Dictionary) -> Label:
 	var meaning = form["meaning"] if form["affix"] != "" else Dict.english_of(key)
-	var label = Label.new()
-	label.text = meaning
-	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	label.theme_type_variation = "DimLabel" if form["affix"] == "" else ""
-	if form["affix"] != "" and query != "" and form["meaning"] != "" \
-			and TextFold.fold(form["word"] + "\n" + form["meaning"]).contains(query):
-		label.add_theme_color_override("font_color", MATCH_COLOUR)
-	%DerivedGrid.add_child(label)
-	return null
+	return _add_cell(meaning, "DimLabel" if form["affix"] == "" else "")
 
 
-# Opens the meaning field of a derived form ("" closes it).
+# Whether the search found this derived form, through its meaning or its own spelling.
+func _found(form: Dictionary) -> bool:
+	return form["affix"] != "" and query != "" and (form["meaning"] != "" or form["respelled"]) \
+			and TextFold.fold(form["word"] + "\n" + form["meaning"]).contains(query)
+
+
+# A field of the derived form being edited; Escape closes the form's fields.
+func _add_field(text: String, placeholder: String, width: float) -> LineEdit:
+	var field = LineEdit.new()
+	field.text = text
+	field.placeholder_text = placeholder
+	field.custom_minimum_size = Vector2(width, 0)
+	field.theme_type_variation = "CompactLineEdit"
+	field.gui_input.connect(func(event):
+		if event.is_action_pressed("ui_cancel"):
+			field.accept_event()
+			_define(""))
+	%DerivedGrid.add_child(field)
+	return field
+
+
+# Opens the fields of a derived form ("" closes them).
 func _define(form_name: String) -> void:
 	_defining = form_name
 	_fill_derived()
 
 
-func _save_meaning(form_name: String, text: String) -> void:
-	if Dict.set_derived_meaning(key, form_name, text):  # saves dict.json; on failure the field stays
+func _save_derived(form_name: String, meaning: String, krac: String) -> void:
+	if Dict.set_derived(key, form_name, meaning, krac):  # saves dict.json; on failure the fields stay
 		_define("")
 
 
-func _add_cell(text: String, variation: String) -> void:
+func _add_cell(text: String, variation: String) -> Label:
 	var label = Label.new()
 	label.text = text
 	label.theme_type_variation = variation
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	%DerivedGrid.add_child(label)
+	return label
 
 
 func start_edit() -> void:

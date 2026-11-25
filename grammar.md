@@ -104,7 +104,7 @@ The river of the ages → Hejazo
 | Bigger noun (*op*) | Great liberation | *Felekop* | A great cold | *Dolop* |
 | Place (*bar*) | A place where one is free | *Felekbar* | A place where it is (or one is) cold | *Dolbar* |
 
-- Some modules are shortened before their affixes, dropping their last letters: *geren*, to love, gives *gerex* rather than *gerenex*. Which modules are shortened, and how, is decided word by word, with no rule to predict it: each one is learned with its short form.
+- Some modules are shortened before their affixes, dropping their last letters: *geren*, to love, gives *gerex* rather than *gerenex*. Which modules are shortened, before which affixes, and how, is decided word by word, with no rule to predict it: each one is learned with its short forms. *Geren* stays whole in *gerenbar*.
 - The full module stays correct before an affix: *gerenex* is love too.
 
 To love → Geren
@@ -112,7 +112,7 @@ Love → Gerex
 Lovable → Gerpax
 To like → Gerfo
 To adore → Gerop
-A shrine (a place of adoration) → Gerbar
+A shrine (a place of adoration), not shortened → Gerenbar
 
 > A short form mustn't spell another module or affix: check the dictionary before giving a module one.
 

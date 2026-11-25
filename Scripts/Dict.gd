@@ -4,7 +4,10 @@ extends Node
 #   French word -> {"en": English translation, "kr": Kracnodar word, "class": word class}
 # "class" is one of the CLASSES ids, and is left out when the entry has none.
 # "derived", also optional, gives meanings to the module's derived forms, by
-# form name (FORMS): {"Nom": "freedom", "Action": "liberation"}.
+# form name (FORMS): {"Nom": "freedom", "Action": "liberation"}. A form spelled
+# otherwise than its affix makes it (the grammar's short forms, 2.1.1) gives
+# its own spelling too: {"Nom": {"en": "love", "kr": "gerex"}}, or {"kr": ...}
+# alone. In memory every form is kept in that longer shape (see derived_data).
 # It loads at startup and saves itself after every change (add_entries,
 # replace_entry, remove_entry).
 #
@@ -247,56 +250,83 @@ func has_derived_forms(french: String) -> bool:
 
 
 # The forms derived from a module (see FORMS), [] for other classes:
-#   [{"name": the form, "word": the Kracnodar word, "affix": how it was made
-#     ("" for the module itself), "existing": the French of another entry
-#     already spelled that way, or "", "meaning": its meaning, or "" when none
-#     was given (see set_derived_meaning)}]
+#   [{"name": the form, "word": the Kracnodar word, "regular": the word as the
+#     affix makes it, "respelled": whether the form was given a spelling of its
+#     own instead, "affix": how it was made ("" for the module itself),
+#     "existing": the French of another entry already spelled that way, or "",
+#     "meaning": its meaning, or "" when none was given (see set_derived)}]
 func derived_forms(french: String) -> Array:
 	if not has_derived_forms(french):
 		return []
-	var word_class = class_of(french)
-	var module = krac_of(french).strip_edges()
+	var given = _given(french)
 	var forms = []
 	for form in FORMS:
-		var word = module
-		var affix = ""
-		if form.get("class", "") != word_class:
-			match form["at"]:
-				"prefix":
-					var link = linking_consonant(form["affix"], module)
-					word = form["affix"] + link + module
-					affix = form["affix"] + (" + %s (liaison)" % link if link != "" else "") + " +"
-				_:
-					var link = linking_consonant(module, form["affix"])
-					word = module + link + form["affix"]
-					affix = ("+ %s (liaison) " % link if link != "" else "") + "+ " + form["affix"]
-		var existing = french_for_krac(word) if affix != "" else ""
-		var meaning = derived_meanings(french).get(form["name"], "") if affix != "" else ""
-		forms.append({"name": form["name"], "word": word, "affix": affix, "existing": existing, "meaning": meaning})
+		var made = _regular_form(french, form)
+		var word = made[0]
+		var affix = made[1]
+		var data = given.get(form["name"], {}) if affix != "" else {}
+		var spelling = str(data.get("kr", "")).strip_edges()
+		var respelled = spelling != "" and spelling.to_lower() != word.to_lower()
+		var existing = french_for_krac(spelling if respelled else word) if affix != "" else ""
+		forms.append({"name": form["name"], "word": spelling if respelled else word, "regular": word,
+			"respelled": respelled, "affix": affix, "existing": existing, "meaning": str(data.get("en", ""))})
 	return forms
 
 
-# The meanings given to an entry's derived forms, by form name (see "derived").
-func derived_meanings(french: String) -> Dictionary:
+# A form of a module as its affix makes it: [the word, how it was made], where
+# how is "" for the module itself (the form of its own class).
+func _regular_form(french: String, form: Dictionary) -> Array:
+	var module = krac_of(french).strip_edges()
+	if form.get("class", "") == class_of(french):
+		return [module, ""]
+	if form["at"] == "prefix":
+		var link = linking_consonant(form["affix"], module)
+		return [form["affix"] + link + module,
+			form["affix"] + (" + %s (liaison)" % link if link != "" else "") + " +"]
+	var link = linking_consonant(module, form["affix"])
+	return [module + link + form["affix"],
+		("+ %s (liaison) " % link if link != "" else "") + "+ " + form["affix"]]
+
+
+# What was given to an entry's derived forms, by form name (see "derived"):
+#   {"Nom": {"en": "love", "kr": "gerex"}, "Diminutif": {"en": "to like"}}
+# A form with neither a meaning nor a spelling of its own isn't listed.
+func derived_data(french: String) -> Dictionary:
+	return _given(french).duplicate(true)
+
+
+# derived_data without the copy, for reading only.
+func _given(french: String) -> Dictionary:
 	var entry = dict.get(french)
-	var meanings = entry.get("derived", {}) if entry is Dictionary else {}
-	return meanings if meanings is Dictionary else {}
+	var given = entry.get("derived", {}) if entry is Dictionary else {}
+	return given if given is Dictionary else {}
 
 
-# Gives a derived form a meaning, or takes it away with "". Saves at once.
-func set_derived_meaning(french: String, form_name: String, meaning: String) -> bool:
+# Gives a derived form a meaning and a spelling of its own, or takes either
+# away with "". A spelling the affix already gives is no spelling of its own.
+# Saves at once.
+func set_derived(french: String, form_name: String, meaning: String, krac := "") -> bool:
 	if not dict.has(french):
 		return false
 	var before = dict.duplicate(true)
-	var meanings = derived_meanings(french).duplicate()
-	if meaning.strip_edges() == "":
-		meanings.erase(form_name)
+	var given = derived_data(french)
+	var data = {}
+	if meaning.strip_edges() != "":
+		data["en"] = meaning.strip_edges()
+	var spelling = krac.strip_edges()
+	for form in FORMS:
+		if form["name"] == form_name and spelling.to_lower() == _regular_form(french, form)[0].to_lower():
+			spelling = ""
+	if spelling != "":
+		data["kr"] = spelling
+	if data.is_empty():
+		given.erase(form_name)
 	else:
-		meanings[form_name] = meaning.strip_edges()
-	if meanings.is_empty():
+		given[form_name] = data
+	if given.is_empty():
 		dict[french].erase("derived")
 	else:
-		dict[french]["derived"] = meanings
+		dict[french]["derived"] = given
 	return _commit(before)
 
 
@@ -323,8 +353,9 @@ func linking_consonant(first: String, second: String) -> String:
 	return LINKING_CONSONANTS[vowel] if is_spelled(first + second.substr(1)) else ""
 
 
-# Whether a word is already spelled this way: an entry of the dictionary, or
-# a module with one of its affixes joined on (FORMS).
+# Whether a word is already spelled this way: an entry of the dictionary, a
+# module with one of its affixes joined on (FORMS), or a derived form's own
+# spelling (see set_derived).
 func is_spelled(word: String) -> bool:
 	var target = word.to_lower()
 	for french in dict:
@@ -334,6 +365,10 @@ func is_spelled(word: String) -> bool:
 		if class_of(french) in MODULE_CLASSES and krac != "":
 			for form in FORMS:
 				if (form["at"] == "suffix" and krac + form["affix"] == target) or (form["at"] == "prefix" and form["affix"] + krac == target):
+					return true
+			var given = _given(french)
+			for form_name in given:
+				if str(given[form_name].get("kr", "")).strip_edges().to_lower() == target:
 					return true
 	return false
 
@@ -366,7 +401,7 @@ func replace_entry(old_french: String, french: String, krac: String, english: St
 		var rebuilt = {}
 		for key in dict:
 			if key == old_french:
-				rebuilt[french] = _entry(krac, english, word_class, derived_meanings(old_french))
+				rebuilt[french] = _entry(krac, english, word_class, _given(old_french))
 			else:
 				rebuilt[key] = dict[key]
 		dict = rebuilt
@@ -386,9 +421,9 @@ func _commit(before: Dictionary) -> bool:
 	return false
 
 
-# Keeps the meanings already given to the entry's derived forms.
+# Keeps what was already given to the entry's derived forms.
 func _set_entry(french: String, krac: String, english: String, word_class := "") -> void:
-	dict[french] = _entry(krac, english, word_class, derived_meanings(french))
+	dict[french] = _entry(krac, english, word_class, _given(french))
 
 
 func _entry(krac: String, english: String, word_class: String, derived := {}) -> Dictionary:
@@ -396,7 +431,7 @@ func _entry(krac: String, english: String, word_class: String, derived := {}) ->
 	if word_class != "":
 		entry["class"] = word_class
 	if not derived.is_empty():
-		entry["derived"] = derived.duplicate()
+		entry["derived"] = derived.duplicate(true)
 	return entry
 
 
@@ -466,11 +501,9 @@ func merge(data) -> int:
 			var word_class = value.get("class") if value.get("class") is String else ""
 			var derived = {}
 			if value.get("derived") is Dictionary:
-				for form_name in value["derived"]:
-					if value["derived"][form_name] is String and value["derived"][form_name] != "":
-						derived[str(form_name)] = value["derived"][form_name]
+				derived = _derived_from_json(value["derived"])
 			else:
-				derived = derived_meanings(str(key))  # a file without meanings keeps the ones given here
+				derived = _given(str(key))  # a file without meanings keeps the ones given here
 			dict[str(key)] = _entry(value["kr"], str(value.get("en", "")), word_class, derived)
 			merged += 1
 		elif value is String:
@@ -486,9 +519,38 @@ func to_json() -> String:
 		var fields = '"en": %s, "kr": %s' % [JSON.stringify(english_of(french)), JSON.stringify(krac_of(french))]
 		if class_of(french) != "":
 			fields += ', "class": %s' % JSON.stringify(class_of(french))
-		if not derived_meanings(french).is_empty():
-			fields += ', "derived": %s' % JSON.stringify(derived_meanings(french), "", false)
+		if not _given(french).is_empty():
+			fields += ', "derived": %s' % JSON.stringify(_derived_to_json(_given(french)), "", false)
 		lines.append('  %s: {%s}' % [JSON.stringify(french), fields])
 	if lines.is_empty():
 		return "{}\n"
 	return "{\n" + ",\n".join(lines) + "\n}\n"
+
+
+# A "derived" object read from a file, in the shape kept in memory (see
+# derived_data): a form given as a string is its meaning.
+static func _derived_from_json(value: Dictionary) -> Dictionary:
+	var derived = {}
+	for form_name in value:
+		var item = value[form_name]
+		var data = {}
+		if item is String:
+			if item != "":
+				data["en"] = item
+		elif item is Dictionary:
+			for field in ["en", "kr"]:
+				if item.get(field) is String and item[field].strip_edges() != "":
+					data[field] = item[field]
+		if not data.is_empty():
+			derived[str(form_name)] = data
+	return derived
+
+
+# The shape saved to dict.json: a form with only a meaning is written as that
+# meaning, as before spellings could be given, so those lines don't change.
+static func _derived_to_json(derived: Dictionary) -> Dictionary:
+	var saved = {}
+	for form_name in derived:
+		var data = derived[form_name]
+		saved[form_name] = data["en"] if data.size() == 1 and data.has("en") else data
+	return saved

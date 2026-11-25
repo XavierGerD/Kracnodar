@@ -86,7 +86,7 @@ func _search_text() -> String:
 
 
 # Whether the entry's three words, or its class, contain the (folded) search
-# text, or one of its derived forms that was given a meaning does.
+# text, or one of its derived forms that was given a meaning or a spelling does.
 func _matches(french: String, query: String) -> bool:
 	if query == "":
 		return true
@@ -94,12 +94,13 @@ func _matches(french: String, query: String) -> bool:
 	return _fold("\n".join(texts)).contains(query) or _matches_derived(french, query)
 
 
-# Whether a derived form with a meaning, its word or that meaning, contains the search text.
+# Whether a derived form with a meaning or a spelling of its own, its word or
+# that meaning, contains the search text.
 func _matches_derived(french: String, query: String) -> bool:
-	if query == "" or Dict.derived_meanings(french).is_empty():
+	if query == "" or Dict.derived_data(french).is_empty():
 		return false
 	for form in Dict.derived_forms(french):
-		if form["meaning"] != "" and _fold(form["word"] + "\n" + form["meaning"]).contains(query):
+		if (form["meaning"] != "" or form["respelled"]) and _fold(form["word"] + "\n" + form["meaning"]).contains(query):
 			return true
 	return false
 

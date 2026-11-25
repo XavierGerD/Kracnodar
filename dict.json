@@ -26,7 +26,7 @@
   "sembler": {"en": "to seem", "kr": "pad", "class": "verbe"},
   "farce": {"en": "prank", "kr": "zabin", "class": "nom"},
   "sagesse": {"en": "wisdom", "kr": "ruten", "class": "nom"},
-  "aimer": {"en": "to love", "kr": "geren", "class": "verbe", "derived": {"Diminutif":"to like, to be fond of","Nom":"amour, love","Adjectif":"aimable, loveable","Augmentatif":"adorer","Lieu":"shrine"}},
+  "aimer": {"en": "to love", "kr": "geren", "class": "verbe", "derived": {"Diminutif":{"en":"to like, to be fond of","kr":"gerfo"},"Nom":{"en":"amour, love","kr":"gerex"},"Adjectif":{"en":"aimable, loveable","kr":"gerpax"},"Augmentatif":{"en":"adorer","kr":"gerop"},"Lieu":"shrine","Action":{"kr":"geram"},"Agent, instrument":{"kr":"gerom"}}},
   "pterodactyle": {"en": "pterodactyl", "kr": "itiri", "class": "nom"},
   "oppression": {"en": "oppression", "kr": "garapir", "class": "nom"},
   "fendre": {"en": "to split", "kr": "ber", "class": "verbe"},
