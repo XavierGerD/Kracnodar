@@ -221,5 +221,18 @@
   "rouge": {"en": "red", "kr": "vire", "class": "nom"},
   "ensuite": {"en": "then", "kr": "ke", "class": "preposition"},
   "content, satisfait": {"en": "happy, satisfied", "kr": "rafe", "class": "adjectif"},
-  "briller": {"en": "to glow", "kr": "wone", "class": "verbe"}
+  "briller": {"en": "to glow", "kr": "wone", "class": "verbe"},
+  "lumiere": {"en": "light", "kr": "kem", "class": "nom"},
+  "activer, travailler": {"en": "to activate, to work", "kr": "vah", "class": "verbe"},
+  "voler": {"en": "to fly", "kr": "koc", "class": "verbe"},
+  "etincelle": {"en": "spark", "kr": "kocvul", "class": "nom"},
+  "precieux, fin": {"en": "precious, fine", "kr": "josume", "class": "adjectif"},
+  "soie": {"en": "silk", "kr": "cer", "class": "nom"},
+  "reserver, garder": {"en": "to reserve, to keep", "kr": "dac", "class": "verbe", "derived": {"Action":"reservation","Adjectif":"reserve, reserved","Lieu":"reserve, stash, hoard"}},
+  "jusqu'a ce que": {"en": "until", "kr": "hiva", "class": "conjonction"},
+  "frapper": {"en": "to hit", "kr": "kar", "class": "verbe"},
+  "moitie": {"en": "half", "kr": "jaz", "class": "nom"},
+  "sphere": {"en": "sphere", "kr": "cali", "class": "nom"},
+  "entre": {"en": "between", "kr": "wo", "class": "preposition"},
+  "rouler": {"en": "to roll", "kr": "dut", "class": "verbe"}
 }

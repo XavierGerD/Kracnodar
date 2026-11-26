@@ -53,17 +53,20 @@ They speak of love, and they speak of sorrow. → Ruc la gerex, o ruc la kora.
 And his heart goes out to them, his creation, and he swears to them a home of their own. → O demac kora ipe uc, acrakex, o ilizorac nak uc eno kin uc.
 To keep them warm, Etovo draws from his forge the hottest of its embers and lays it in the palm of his hand. → Ipe uc turtan, Etovo atoac nik aclokbar turopvulfo, o no vegoac ga fih.
 He closes his fingers upon it and presses it with all his might, and within his grasp it burns red, then yellow, then white. → Leac nesu gu no, o no torac ka vorop, o ga acfih vireno, ke vimano, ke vileno.
-And when he opens his hand, the ember holds its glow, and he is content. → O kosa kadiram ti acato, vulfo torno nowonex, o rafeac.
-
-And to light their way, Etovo works the bellows, and plucks the sparks that leap from his forge, and lays them upon his finest silk.
-
-Then he takes from his hoard a cold ingot and turns it in his hands, and in it he sees the world that he will shape for Man. So he lays it upon his anvil, and with his hammer he strikes it with great blows, until it breaks in two. One half he presses between his palms and rolls into a sphere. And when it is round, he dips it into his quenching trough, so that the waters gather in its lowest places. And the other half he crushes roughly in his palm. And he sets the ember and both halves upon the silk among the sparks, and folds the silk closed around them.
-
-Thus does Etovo make the world. And he turns to the Gods and proclaims: "Behold, my brothers and sisters, the work of my hands!" And all who see it are struck with awe.
-
+And when he opens his hand, the ember holds its glow, and he is content. → O kosa kadiram ti acato, vulfo dacno nowonex, o rafeac.
+And to light their way, Etovo works the bellows, and plucks the sparks that leap from his forge, and lays them upon his finest silk. → O ipe kemtan ucjoka, Etovo vahac lifrom, o atoac kocvulu gol dexu nik aclokbar, o nu vegoac gu acjosumeopcer.
+Then he takes from his hoard a cold ingot and turns it in his hands, and in it he sees the world that he will shape for Man. → Atoac zipo nik acdacbar dolhos, o no gilac ga atu, o hiac atazu ga no, o no dalevoac ipe ruko.
+So he lays it upon his anvil, and with his hammer he strikes it with great blows, until it breaks in two halves. → O no vegoac gu acmab, o no karopac ka aczek, hiva berno kan go jazu.
+One half he presses between his palms and rolls into a sphere. → Torac tut jaz wo fihu, o no dutac kan cali.
+And when it is round, he dips it into his quenching trough, so that the waters gather in its lowest places.
+And the other half he crushes roughly in his palm.
+And he sets the ember and both halves upon the silk among the sparks, and folds the silk closed around them.
+Thus does Etovo make the world. 
+And he turns to the Gods and proclaims: "Behold, my brothers and sisters, the work of my hands!"
+And all who see it are struck with awe.
 Then Javi steps forth and takes hold of the silk, and with a mighty sweep of his arm he sets in motion the sun and the stars, the world and the moon, so that day gives way to night, and night to day.
-
-Thus it is written by Kulena, mother of scribes and keeper of all that is recorded. Her words endure, and we recite them still, lest we forget who we are.
+Thus it is written by Kulena, mother of scribes and keeper of all that is recorded.
+Her words endure, and we recite them still, lest we forget who we are.
 
 ### Before Time
 
