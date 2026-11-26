@@ -129,7 +129,7 @@ A shrine (a place of adoration), not shortened → Gerenbar
 | Manner (thus, in this way) | *Ken* | He dances while jumping → *Avac kendexu* |
 | Cause (what makes) | *Nek* | The film makes them cry → *Kija nek uc nuto* |
 | Relation (of) | *Ti* | The presence of things → *Urivo ti oju* |
-| Relative, possessive (whose, of which) | *Osa* | The dwarf whose hammer rings → *Wanon osa zek relinac* |
+| Relative, possessive (whose, of which) | *Osa* | The dwarf whose hammer rings → *Wanon osa zek relinno* |
 | Relative (who, which) | *Gol* | A person who stinks → *Onupo gol awu* |
 | Time (at the time of, at) | *Kosa* | We dance at the time of the liberation → *Avatug kosa felekam* |
 | Relation (as for) | *Vof* | As for me → *Vof tag* |
@@ -151,7 +151,7 @@ The age of the sun and the moon → Hej ti iwa g umi
 - A final vowel is replaced by *u*: *atari* → *ataru*; *eno* → *enu*; *kija* → *kiju*.
 - A final *u* is replaced by *e*: *ru* → *re*; *zanu* → *zane*.
 - Apart from the short forms of some modules (see 2.1.1), this is the only affix that changes the spelling of what it attaches to, an affix included: *felekfo* → *felekfu*, small liberations.
-- A noun takes the plural wherever it is plural, even when the verb already says so: words open the way → *re kadiruc joka*.
+- A noun takes the plural wherever it is plural, even when the verb already says so: words open the way → *re kadirnu joka*.
 - Pronouns have plurals of their own (see 2.2), and adjectives don't agree with the noun.
 - In the script, the plural is the diacritic on the last letter: added after a consonant (*nodu*), changed where it replaces a vowel (*ataru*).
 
@@ -172,26 +172,30 @@ Small liberations → Felekfu
 
 - Pronouns don't take affixes, but they join onto other modules in some conjugations.
 - The subject pronoun attaches to the end of the verb: *Exotag*, I go; *Gewigac*, he eats.
-- *Noc* (all) attaches to the verb like the others. After a noun subject, it takes the place of *uc* and says that all of them do it: *lorevu evohenoc*, the Gods all agree. In front of a noun it would mean possession, so “all the Gods” is never *noclorevu*.
+- *Noc* (all) attaches to the verb like the others. After a noun subject, it takes the place of *uc* or *nu* and says that all of them do it: *lorevu evohenoc*, the Gods all agree. In front of a noun it would mean possession, so “all the Gods” is never *noclorevu*.
 
 | English | Kracnodar |
 |---|---|
 | I | *Tag* |
 | You (singular) | *Wet* |
-| He / She | *Ac* |
+| He / She (a person) | *Ac* |
+| It (a thing) | *No* |
 | We | *Tug* |
 | You (plural) | *Wut* |
-| They | *Uc* |
+| They (people) | *Uc* |
+| They (things) | *Nu* |
 | One | *Tul* |
 | All | *Noc* |
 
-- A plural pronoun is the singular with its vowel replaced by *u*, the vowel of the plural (see 2.1.3): *tag* → *tug*, *wet* → *wut*, *ac* → *uc*. Like the singular, it is one syllable wherever it stands: *gewiguc*, they eat; *ucatari*, their apple.
+- A plural pronoun is the singular with its vowel replaced by *u*, the vowel of the plural (see 2.1.3): *tag* → *tug*, *wet* → *wut*, *ac* → *uc*, *no* → *nu*. Like the singular, it is one syllable wherever it stands: *gewiguc*, they eat; *ucatari*, their apple.
+- *Ac* and *uc* are said of persons, *no* and *nu* of things, so a person and the thing they handle never share a pronoun: he takes it → *no atoac*; it rings → *relinno*.
 - There is no polite form: *wet* is anyone spoken to, a friend or a god, and *wut* any number of them.
-- A pronoun that is the direct object is a word of its own, right before the verb, as French puts “le” before the verb; it is sung onto the verb without a break: he puts it → *ac vegoac*; they free us → *tug felekuc*. The subject stays at the end of the verb, so where the pronoun stands tells them apart: *ac vegoac*, he puts it; *vegoacac*, he puts himself (see 2.3).
-- The object also comes before a tense prefix, which stays on the verb: he is about to put it → *ac davegoac*. A pronoun that receives keeps *nak*: *ilitag nak wet zanu*.
+- A pronoun that is the direct object is a word of its own, right before the verb, as French puts “le” before the verb; it is sung onto the verb without a break: he puts it → *no vegoac*; they free us → *tug felekuc*. The subject stays at the end of the verb, so where the pronoun stands tells them apart: *ac felekuc*, they free him; *uc felekac*, he frees them. A verb whose object is its own subject takes *tu* instead (see 2.3): *tu vegoac*, he puts himself.
+- The object also comes before a tense prefix, which stays on the verb: he is about to put it → *no davegoac*. A pronoun that receives keeps *nak*: *ilitag nak wet zanu*.
 - Possession is expressed with the pronoun in front of the noun, joined to it, wherever the noun stands in the sentence: *tugatari*, our apple; *tageti*, my mother.
 - So a pronoun joined to the front of a word is always a possessor, and a pronoun standing alone before a verb is always its object: *uclevoam*, their shaping; *uc levo*, to shape them.
 - For emphasis, the pronoun goes after the noun with *kin* instead, like “of mine”: *eti kin tag*, mother of mine. A possessor that isn't a pronoun always takes *kin*: *atari kin Dim*.
+- A body part that belongs to the subject takes no possessor, as in French “il ferme les yeux”: he closes his fingers → *leac nesu*; he puts it in his palm → *no vegoac ga fih*. A body part that belongs to someone else keeps it: in his palm, it reddens → *ga acfih vireno*. Only body parts drop it: he puts his ingots in the crucible → *vegoac achosu ga vembar*.
 
 We eat an apple → Gewigtug atari
 We eat our apple → Gewigtug tugatari
@@ -200,13 +204,15 @@ We feed our prisoners → Fedamotug tugadovisu
 My mother, the fire → Tageti, vul
 Mother of mine → Eti kin tag
 The Gods all agree → Lorevu evohenoc
-Etovo puts it on the fire → Etovo ac vegoac gu vul
+Etovo puts it on the fire → Etovo no vegoac gu vul
 He puts his ingots in the crucible → Vegoac achosu ga vembar
 
-- A doubled pronoun after a noun stresses it, as “itself” does, and agrees with the noun. On a verb, a doubled pronoun is reflexive instead (see 2.3).
+- After a noun, a pronoun joined to *tu* (“one”) stresses it, as “itself” does, and agrees with the noun: *tagtu*, *wettu*, *actu*, *notu*, *tugtu*, *wuttu*, *uctu*, *nutu*. Before a verb, *tu* alone is reflexive instead (see 2.3).
+- *Tu* never takes the plural, which would make it *te*, the distant past (see 2.3): the pronoun in front of it gives the number.
 
-Life itself → Idex acac
-The words themselves → Re ucuc
+Life itself → Idex notu
+The words themselves → Re nutu
+Kulena herself → Kulena actu
 
 ### 2.3  Verbs
 
@@ -218,13 +224,12 @@ The words themselves → Re ucuc
 
 - The present marker (*sele*) is usually left out, except to stress that something is happening right now.
 - The conditional is marked by *s*: we could → *siredotug*.
-- A reflexive verb doubles the pronoun: I isolate myself → *ojisitagtag*.
-- A reciprocal verb takes *tul* as its object, a word of its own placed like an object pronoun (see 2.2): they anger one another → *tul nasovetanuc*; we love one another → *tul gerentug*. Before a verb, *tul* always means “one another”: as the subject, “one”, it ends the verb like any other subject.
-- In the Latin spelling, a hyphen can split a long reflexive verb before its pronouns, to show where they start: *xotan-ucuc*. It is still one word, sung without a break.
+- A reflexive verb takes *tu* (“one”) as its object, a word of its own placed like an object pronoun (see 2.2): I isolate myself → *tu ojisitag*; he puts himself → *tu vegoac*. *Tu* is the same for every person, since the subject ending already says who. Before a verb, *tu* always means “self”; before a noun, it is the number one (see 2.9).
+- A reciprocal verb takes *tul* as its object, placed the same way: they anger one another → *tul nasovetanuc*; we love one another → *tul gerentug*, beside *tu gerentug*, we love ourselves. Before a verb, *tul* always means “one another”: as the subject, “one”, it ends the verb like any other subject.
 - The imperative is the same as the infinitive, with no pronoun: eat an apple → *gewig atari*.
-- A noun or an adjective takes *tan* to become a verb (see 2.1.1), but once it ends with its subject, the ending alone makes it a verb and *tan* can be left out: he speaks → *ruac* (or *rutanac*); they speak → *ruc* (*ru* + *uc*, see 1.3); we war → *mortug*. The verb means what it would with *tan*: *ru*, word, gives “to speak”.
-- Wherever the verb has no subject ending, *tan* stays: in the infinitive and the imperative (to speak, speak → *rutan*; behold → *hitan*), after *ipe* (to hold → *ipe tortan*), and after *gol*.
-- On an adjective, the ending alone means “to be”: I am cold → *doltag*; they are rough → *jehouc*. *Pax* is only needed on a module that isn't an adjective: I am free → *felekpaxtag*. With *tan*, an adjective means “to make” or “to become”: I cool it → *ac doltantag*; they anger one another → *tul nasovetanuc*.
+- A noun or an adjective takes *tan* to become a verb (see 2.1.1), but *tan* is only required in the infinitive and the imperative. A conjugated verb ends with its subject, and that ending alone makes it a verb, so *tan* can be dropped: he speaks → *ruac* (or *rutanac*); they speak → *ruc* (*ru* + *uc*, see 1.3); we war → *mortug*; he closes his fingers → *leac nesu* (or *letanac nesu*, see 2.2). The verb means what it would with *tan*: *ru*, word, gives “to speak”.
+- The infinitive and the imperative have no subject ending, so they keep *tan*: to speak, speak → *rutan*; behold → *hitan*. So does a verb after *ipe*, which takes the infinitive (to hold → *ipe tortan*), and after *gol*.
+- On an adjective, *tan* means “to make” or “to become”: I cool it → *no doltantag*; they anger one another → *tul nasovetanuc*. With *tan* dropped, the ending alone can mean the same, and it can also mean “to be”: I am cold → *doltag*; they are rough → *jehouc*. An object shows that it means “to make”: I cool it → *no doltag*. Where “to become” must be told from “to be”, keep *tan*. *Pax* is only needed on a module that isn't an adjective: I am free → *felekpaxtag*.
 
 > Keeping *tan* is never wrong: it gives a syllable back where the melody needs one.
 
@@ -263,7 +268,7 @@ The words themselves → Re ucuc
 - A question word takes the place in the sentence that the answer would take.
 - Since subject and direct object are told apart only by their position, *hob* and *her* can't be moved without creating ambiguity.
 - *Hura*, *hen*, *reh* and *hid*, whose function is clear from the word itself, can go anywhere, including at the start of the sentence.
-- Outside a question, “where” is *nev hura*: where his hammer sounds → *nev hura, aczek relinac*.
+- Outside a question, “where” is *nev hura*: where his hammer sounds → *nev hura, aczek relinno*.
 
 Who eats an apple? → Hob gewigac atari ?
 What does Dim eat? → Dim gewigac her ?

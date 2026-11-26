@@ -28,32 +28,33 @@ Hear now the words of Kulena, she who keeps the river of time aflow. She speaks 
 She writes of the Gods and of their quarrels, there in their house of stone and gold. → Falac ti lorevu g ucmorfu, nev ga uceno ti nod g lox.
 She writes of the beginning, before the age of Man, before the age of the sun and the moon. → Falac la vixa, ezop rukohej, ezop hej ti iwa g umi.
 In those days the Gods are weary of one another, and swift to anger. → Kosa k hej, lorevu tul mogeuc, tul nasovetanuc kenzewo.
-Many a day they war over things both great and small, and their wounds they leave to fester. → Mortuc hex la ojaopu g ojafu, o ucmavu xotan-ucuc.
-But Kulena, wisest of the Gods, sees that this cannot endure, and she devises a means of salvation. → Tirel Kulena, rutenop ti lorevu, fideac k oja iredoac fem e ral, o rakac sozrom.
+Many a day they war over things both great and small, and their wounds they leave to fester. → Mortuc hex la ojaopu g ojafu, o ucmavu tu xonu.
+But Kulena, wisest of the Gods, sees that this cannot endure, and she devises a means of salvation. → Tirel Kulena, rutenop ti lorevu, fideac k oja iredono fem e ral, o rakac sozrom.
 "Let us turn our eyes from one another," she says to them, "and make a new world, and a people to dwell within it, whose lives we may guide and shape according to our will." → Menac nak uc, mortug femop, o raktug dalatazu, g ruko gol id nev, osa idexu iredotug kato g levo ken tuglunirex.
-And all the Gods give their assent, and the great work begins. → O lorevu evohenoc, o dabop vixac.
+And all the Gods give their assent, and the great work begins. → O lorevu evohenoc, o dabop vixano.
 Etovo, smith of the Gods, forges moulds to hold the bodies of Men. → Etovo, lokrom ti lorevu, lokac levoromu ipe tortan rukoidbaru.
-Then Kulena the all-wise plucks from her head a single strand of hair. → Kulena rutenop atoac zipo tuop koje nik aczat.
-It shimmers as she draws it forth, and she breaks it into seven parts. → Koje uzoac kosa pirolam, o berac sa tufu.
-And as she lays them down, the pieces turn into little stars, and she lightly breathes to them a will and a knowing. → O kosa vegoam, tufu levouc kan uzofu, o lifac kencawi nak uc lunirex g fiderom.
+Then Kulena the all-wise plucks from her head a single strand of hair. → Kulena rutenop atoac zipo tuop koje nik zat.
+It shimmers as she draws it forth, and she breaks it into seven parts. → Koje uzono kosa pirolam, o berac sa tufu.
+And as she lays them down, the pieces turn into little stars, and she lightly breathes to them a will and a knowing. → O kosa vegoam, tufu levonu kan uzofu, o lifac kencawi nak uc lunirex g fiderom.
 She turns to Etovo and proclaims: "Behold my making: the souls of Men. To thee I leave the shaping of their vessels." → Exoac kan Etovo, o menopac, Hitan zipo tagrakex, rukoidromu. Ilitag nak wet levoam ti ucidbaru.
-And at her words, a flame awakens in Etovo's lungs. → O kosa acre, vulfo kasac ga lifrom kin Etovo.
-And so Etovo, consumed by the will to create, lays his ingots in the crucible and sets it upon the fire. → O Etovo, ka lunirop ipe rak, vegoac achosu ga vembar, o ac vegoac gu vul.
-As the metal melts, he fills it with the essence of all the Gods. → Kosa vemam, ac vecoac ka nocenex.
+And at her words, a flame awakens in Etovo's lungs. → O kosa acre, vulfo kasno ga lifrom kin Etovo.
+And so Etovo, consumed by the will to create, lays his ingots in the crucible and sets it upon the fire. → O Etovo, ka lunirop ipe rak, vegoac achosu ga vembar, o no vegoac gu vul.
+As the metal melts, he fills it with the essence of all the Gods. → Kosa vemam, no vecoac ka nocenex.
 Kulena pours her wisdom. → Kulena sajac acruten.
 Javi pours his strength. → Javi sajac acvorex.
 Kemac pours her love. → Kemac sajac acgerex.
 And Etovo pours his skill. → O Etovo sajac acdor.
-When all runs molten, he casts it into the rough moulds of Men, and draws them forth, and begins to shape them in his image. → Kosa nocvemam, ac sajac kan k jeholevoromu, o uc pirolac, o vixac uc levo kan ackuma.
-He hammers the fire-metal, and their shapes are rough no more. → Zekac vulsagi, o uckumu jehouc femop.
-Then he looks upon their shapes, and they please him. And he takes up the souls that Kulena has made, and lays them within his creations, like jewels in a crown. → Hiac zipo uckumu, o uc gerfoac. O atoac rukoidromu kin Kulena, o uc vegoac ga acrakexu, ken uzonodu ga zatlox.
-And for a moment nothing moves; then they tremble, and stir, and rise. → Kosa solfo, femher gilac. Aruc zipo, o giluc, o kutuc.
+When all runs molten, he casts it into the rough moulds of Men, and draws them forth, and begins to shape them in his image. → Kosa nocvemam, no sajac kan k jeholevoromu, o nu pirolac, o vixac nu levo kan ackuma.
+He hammers the fire-metal, and their shapes are rough no more. → Zekac vulsagi, o nukumu jehonu femop.
+Then he looks upon their shapes, and they please him. And he takes up the souls that Kulena has made, and lays them within his creations, like jewels in a crown. → Hiac zipo nukumu, o nu gerfoac. O atoac rukoidromu kin Kulena, o uc vegoac ga acrakexu, ken uzonodu ga zatlox.
+And for a moment nothing moves; then they tremble, and stir, and rise. → Kosa solfo, femher gilno. Aruc zipo, o giluc, o kutuc.
 And soon they ask why they were made, and they are quick of hand and mind. → O dajecuc, uc miraktul hid, o zewouc ka atu g fideromu.
 They speak of love, and they speak of sorrow. → Ruc la gerex, o ruc la kora.
 And his heart goes out to them, his creation, and he swears to them a home of their own. → O demac kora ipe uc, acrakex, o ilizorac nak uc eno kin uc.
-To keep them warm, Etovo draws from his forge the hottest of its embers and lays it in the palm of his hand. → ... Etovo atoac nik aclokrom turop 
+To keep them warm, Etovo draws from his forge the hottest of its embers and lays it in the palm of his hand. → Ipe uc turtan, Etovo atoac nik aclokbar turopvulfo, o no vegoac ga fih.
+He closes his fingers upon it and presses it with all his might, and within his grasp it burns red, then yellow, then white. → Leac nesu gu no, o no torac ka vorop, o ga acfih vireno, ke vimano, ke vileno.
 
-He closes his fingers upon it and presses it with all his might, and within his grasp it burns red, then yellow, then white. And when he opens his hand, the ember holds its glow, and he is content.
+ And when he opens his hand, the ember holds its glow, and he is content.
 
 And to light their way, Etovo works the bellows, and plucks the sparks that leap from his forge, and lays them upon his finest silk.
 
@@ -112,7 +113,7 @@ A loose leaf found right on top of the box. Written on one side in a strange for
 ```
 
 The hammer speaks → Zek hac
-His words sound → Re kin ac relinuc
+His words sound → Re kin ac relinnu
 Here in the house of stone →  Ven ga eno ti nod
 Words of fire → Re ti vul
 Words of steel → Re ti melid
@@ -158,7 +159,7 @@ Damage rendered some letters illegible.
 
 In my house of stone → Ga eno ti nod kin tag
 I work with fire and steel → Dabtag ka vul gi melid
-My hammer rings loud → Zek kin tag relinac kenvor
+My hammer rings loud → Zek kin tag relinno kenvor
 Work, worker → Dab, dabrom
 Blow, bellows → Lif, lifrom
 Forge, blacksmith → Lok, lokrom
@@ -192,14 +193,14 @@ A loose leaf found tucked inside the book. Written on one side in a strange form
 ```
 
 The hammer speaks → Zek hac
-His words sound → Re kin ac relinuc
+His words sound → Re kin ac relinnu
 In the house of stone →  Ga eno ti nod
 Words of wisdom → Re ti ruten
 Words of war → Re ti mor
 Words that open doors → Re gol kadir saru
 Etovo, the blacksmith → Etovo, lokrom
 Show the way → Ve joka
-Beyond life itself → Resa idex acac
+Beyond life itself → Resa idex notu
 
 ### Loose leaf 2
 
@@ -220,7 +221,7 @@ Etovo, open the way → Etovo kadir joka
 With the book came a box with a riddle inscribed on it. Four dials with letters can be turned to set the password
 ```
 
-Words open the way → ==Ru== ==kadir====uc== ==joka==
+Words open the way → ==Ru== ==kadir====nu== ==joka==
 Beyond the one with the hammer → ==Resa== ==zek====rom==
 
 
@@ -248,7 +249,7 @@ Damage rendered some letters illegible.
 
 In my house of stone → Ga eno ti nod kin tag
 I work with fire and steel → Dabtag pop vul gi melid
-My hammer rings loud → Zek kin tag relinac kenvor
+My hammer rings loud → Zek kin tag relinno kenvor
 Work, worker → Dab, dabrom
 Blow, bellows → Lif, lifrom
 Forge, blacksmith → Lok, lokrom
@@ -277,7 +278,7 @@ Note number two. Found in the second bowl, starting at the left of the entrance.
 
 I, Kinlorev, wish for work → Tag, Kinlorev, lunirtag dabex
 In the temple of Etevo → Ga lorevbar kin Etevo
-Where his hammer sounds → Nev hura, zek kin ac relinac
+Where his hammer sounds → Nev hura, zek kin ac relinno
 
 ### Bowl note: Felekrom [Kracnodar]
 
