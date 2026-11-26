@@ -28,7 +28,7 @@ Hear now the words of Kulena, she who keeps the river of time aflow. She speaks 
 She writes of the Gods and of their quarrels, there in their house of stone and gold. → Falac ti lorevu g ucmorfu, nev ga uceno ti nod g lox.
 She writes of the beginning, before the age of Man, before the age of the sun and the moon. → Falac la vixa, ezop rukohej, ezop hej ti iwa g umi.
 In those days the Gods are weary of one another, and swift to anger. → Kosa k hej, lorevu tul mogeuc, tul nasovetanuc kenzewo.
-Many a day they war over things both great and small, and their wounds they leave to fester. → Mortuc hex la ojaopu g ojafu, o ucmavu tu xonu.
+Many a day they war over things both great and small, and their wounds they leave to fester. → Mortuc hex la ojaopu g ojafu, o ucmavu ne xonu.
 But Kulena, wisest of the Gods, sees that this cannot endure, and she devises a means of salvation. → Tirel Kulena, rutenop ti lorevu, fideac k oja iredono fem e ral, o rakac sozrom.
 "Let us turn our eyes from one another," she says to them, "and make a new world, and a people to dwell within it, whose lives we may guide and shape according to our will." → Menac nak uc, mortug femop, o raktug dalatazu, g ruko gol id nev, osa idexu iredotug kato g levo ken tuglunirex.
 And all the Gods give their assent, and the great work begins. → O lorevu evohenoc, o dabop vixano.
@@ -53,8 +53,7 @@ They speak of love, and they speak of sorrow. → Ruc la gerex, o ruc la kora.
 And his heart goes out to them, his creation, and he swears to them a home of their own. → O demac kora ipe uc, acrakex, o ilizorac nak uc eno kin uc.
 To keep them warm, Etovo draws from his forge the hottest of its embers and lays it in the palm of his hand. → Ipe uc turtan, Etovo atoac nik aclokbar turopvulfo, o no vegoac ga fih.
 He closes his fingers upon it and presses it with all his might, and within his grasp it burns red, then yellow, then white. → Leac nesu gu no, o no torac ka vorop, o ga acfih vireno, ke vimano, ke vileno.
-
- And when he opens his hand, the ember holds its glow, and he is content.
+And when he opens his hand, the ember holds its glow, and he is content. → O kosa kadiram ti acato, vulfo torno nowonex, o rafeac.
 
 And to light their way, Etovo works the bellows, and plucks the sparks that leap from his forge, and lays them upon his finest silk.
 
@@ -200,7 +199,7 @@ Words of war → Re ti mor
 Words that open doors → Re gol kadir saru
 Etovo, the blacksmith → Etovo, lokrom
 Show the way → Ve joka
-Beyond life itself → Resa idex notu
+Beyond life itself → Resa idex none
 
 ### Loose leaf 2
 

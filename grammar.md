@@ -190,7 +190,7 @@ Small liberations → Felekfu
 - A plural pronoun is the singular with its vowel replaced by *u*, the vowel of the plural (see 2.1.3): *tag* → *tug*, *wet* → *wut*, *ac* → *uc*, *no* → *nu*. Like the singular, it is one syllable wherever it stands: *gewiguc*, they eat; *ucatari*, their apple.
 - *Ac* and *uc* are said of persons, *no* and *nu* of things, so a person and the thing they handle never share a pronoun: he takes it → *no atoac*; it rings → *relinno*.
 - There is no polite form: *wet* is anyone spoken to, a friend or a god, and *wut* any number of them.
-- A pronoun that is the direct object is a word of its own, right before the verb, as French puts “le” before the verb; it is sung onto the verb without a break: he puts it → *no vegoac*; they free us → *tug felekuc*. The subject stays at the end of the verb, so where the pronoun stands tells them apart: *ac felekuc*, they free him; *uc felekac*, he frees them. A verb whose object is its own subject takes *tu* instead (see 2.3): *tu vegoac*, he puts himself.
+- A pronoun that is the direct object is a word of its own, right before the verb, as French puts “le” before the verb; it is sung onto the verb without a break: he puts it → *no vegoac*; they free us → *tug felekuc*. The subject stays at the end of the verb, so where the pronoun stands tells them apart: *ac felekuc*, they free him; *uc felekac*, he frees them. A verb whose object is its own subject takes *ne* instead (see 2.3): *ne vegoac*, he puts himself.
 - The object also comes before a tense prefix, which stays on the verb: he is about to put it → *no davegoac*. A pronoun that receives keeps *nak*: *ilitag nak wet zanu*.
 - Possession is expressed with the pronoun in front of the noun, joined to it, wherever the noun stands in the sentence: *tugatari*, our apple; *tageti*, my mother.
 - So a pronoun joined to the front of a word is always a possessor, and a pronoun standing alone before a verb is always its object: *uclevoam*, their shaping; *uc levo*, to shape them.
@@ -207,12 +207,12 @@ The Gods all agree → Lorevu evohenoc
 Etovo puts it on the fire → Etovo no vegoac gu vul
 He puts his ingots in the crucible → Vegoac achosu ga vembar
 
-- After a noun, a pronoun joined to *tu* (“one”) stresses it, as “itself” does, and agrees with the noun: *tagtu*, *wettu*, *actu*, *notu*, *tugtu*, *wuttu*, *uctu*, *nutu*. Before a verb, *tu* alone is reflexive instead (see 2.3).
-- *Tu* never takes the plural, which would make it *te*, the distant past (see 2.3): the pronoun in front of it gives the number.
+- After a noun, a pronoun joined to *ne* (“self”) stresses it, as “itself” does, and agrees with the noun: *tagne*, *wetne*, *acne*, *none*, *tugne*, *wutne*, *ucne*, *nune*. Before a verb, *ne* alone is reflexive instead (see 2.3).
+- *Ne* never takes the plural, which would make it *nu*, “they (things)”: the pronoun in front of it gives the number.
 
-Life itself → Idex notu
-The words themselves → Re nutu
-Kulena herself → Kulena actu
+Life itself → Idex none
+The words themselves → Re nune
+Kulena herself → Kulena acne
 
 ### 2.3  Verbs
 
@@ -224,8 +224,8 @@ Kulena herself → Kulena actu
 
 - The present marker (*sele*) is usually left out, except to stress that something is happening right now.
 - The conditional is marked by *s*: we could → *siredotug*.
-- A reflexive verb takes *tu* (“one”) as its object, a word of its own placed like an object pronoun (see 2.2): I isolate myself → *tu ojisitag*; he puts himself → *tu vegoac*. *Tu* is the same for every person, since the subject ending already says who. Before a verb, *tu* always means “self”; before a noun, it is the number one (see 2.9).
-- A reciprocal verb takes *tul* as its object, placed the same way: they anger one another → *tul nasovetanuc*; we love one another → *tul gerentug*, beside *tu gerentug*, we love ourselves. Before a verb, *tul* always means “one another”: as the subject, “one”, it ends the verb like any other subject.
+- A reflexive verb takes *ne* (“self”) as its object, a word of its own placed like an object pronoun (see 2.2): I isolate myself → *ne ojisitag*; he puts himself → *ne vegoac*. *Ne* is the same for every person, since the subject ending already says who.
+- A reciprocal verb takes *tul* as its object, placed the same way: they anger one another → *tul nasovetanuc*; we love one another → *tul gerentug*, beside *ne gerentug*, we love ourselves. Before a verb, *tul* always means “one another”: as the subject, “one”, it ends the verb like any other subject.
 - The imperative is the same as the infinitive, with no pronoun: eat an apple → *gewig atari*.
 - A noun or an adjective takes *tan* to become a verb (see 2.1.1), but *tan* is only required in the infinitive and the imperative. A conjugated verb ends with its subject, and that ending alone makes it a verb, so *tan* can be dropped: he speaks → *ruac* (or *rutanac*); they speak → *ruc* (*ru* + *uc*, see 1.3); we war → *mortug*; he closes his fingers → *leac nesu* (or *letanac nesu*, see 2.2). The verb means what it would with *tan*: *ru*, word, gives “to speak”.
 - The infinitive and the imperative have no subject ending, so they keep *tan*: to speak, speak → *rutan*; behold → *hitan*. So does a verb after *ipe*, which takes the infinitive (to hold → *ipe tortan*), and after *gol*.

@@ -66,7 +66,7 @@
   "ils/elles": {"en": "they (people)", "kr": "uc", "class": "pronom"},
   "ils/elles (choses)": {"en": "they (things)", "kr": "nu", "class": "pronom"},
   "on": {"en": "one", "kr": "tul", "class": "pronom"},
-  "se, soi-meme": {"en": "oneself (reflexive); with a pronoun, itself, myself...", "kr": "tu", "class": "pronom"},
+  "se, soi-meme": {"en": "oneself (reflexive); with a pronoun, itself, myself...", "kr": "ne", "class": "pronom"},
   "de, par": {"en": "of, by", "kr": "kin", "class": "relation"},
   "de ou, par ou": {"en": "from where, through where", "kr": "nik", "class": "relation"},
   "a, vers": {"en": "to, toward", "kr": "kan", "class": "relation"},
@@ -219,5 +219,7 @@
   "blanc": {"en": "white", "kr": "vile", "class": "nom"},
   "ferme": {"en": "closed", "kr": "le", "class": "adjectif"},
   "rouge": {"en": "red", "kr": "vire", "class": "nom"},
-  "ensuite": {"en": "then", "kr": "ke", "class": "preposition"}
+  "ensuite": {"en": "then", "kr": "ke", "class": "preposition"},
+  "content, satisfait": {"en": "happy, satisfied", "kr": "rafe", "class": "adjectif"},
+  "briller": {"en": "to glow", "kr": "wone", "class": "verbe"}
 }
