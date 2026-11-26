@@ -24,7 +24,7 @@ The Grammaire uses the same markup.
 
 ### The Creation
 
-Hear now the words of Kulena, she who keeps the river of time aflow. She speaks the breath of the world onto the scrolls. → Jas zipo re kin Kulena. Katoac solazo. Ruac lifex ti atazu gu cizu.
+Hear now the words of Kulena, she who keeps the river of time aflow. She speaks the breath of the world onto the scrolls. → Jas zipo re kin-Kulena. Katoac solazo. Ruac lifex ti atazu gu cizu.
 She writes of the Gods and of their quarrels, there in their house of stone and gold. → Falac ti lorevu g ucmorfu, nev ga uceno ti nod g lox.
 She writes of the beginning, before the age of Man, before the age of the sun and the moon. → Falac la vixa, ezop rukohej, ezop hej ti iwa g umi.
 In those days the Gods are weary of one another, and swift to anger. → Kosa k hej, lorevu tul mogeuc, tul nasovetanuc kenzewo.
@@ -50,10 +50,10 @@ Then he looks upon their shapes, and they please him. And he takes up the souls 
 And for a moment nothing moves; then they tremble, and stir, and rise. → Kosa solfo, femher gilac. Aruc zipo, o giluc, o kutuc.
 And soon they ask why they were made, and they are quick of hand and mind. → O dajecuc, uc miraktul hid, o zewouc ka atu g fideromu.
 They speak of love, and they speak of sorrow. → Ruc la gerex, o ruc la kora.
+And his heart goes out to them, his creation, and he swears to them a home of their own. → O demac kora ipe uc, acrakex, o ilizorac nak uc eno kin uc.
+To keep them warm, Etovo draws from his forge the hottest of its embers and lays it in the palm of his hand. → ... Etovo atoac nik aclokrom turop 
 
-And his heart goes out to them, his creation, and he swears to them a home of their own.
-
-First, to keep them warm, Etovo draws from his forge the hottest of its embers and lays it in the palm of his hand. He closes his fingers upon it and presses it with all his might, and within his grasp it burns red, then yellow, then white. And when he opens his hand, the ember holds its glow, and he is content.
+He closes his fingers upon it and presses it with all his might, and within his grasp it burns red, then yellow, then white. And when he opens his hand, the ember holds its glow, and he is content.
 
 And to light their way, Etovo works the bellows, and plucks the sparks that leap from his forge, and lays them upon his finest silk.
 
@@ -67,7 +67,17 @@ Thus it is written by Kulena, mother of scribes and keeper of all that is record
 
 ### Before Time
 
-So it begins, the days of the sun and the stars, the earth and the moon. In their realms, Men live without fear or hunger or sleep. Their days are spent in song and carvings, singing and writing about the wonders of the nature that surrounds them. And at first, the Gods are filled with joy, and they forget their quarrels. But that is not enough, and now they quarrel over the
+Thus it begins: the age of sun and stars, of earth and moon. In those realms dwell Men, who know neither fear nor hunger nor sleep. They raise no houses and walk no roads, and no word passes between them, for they have no need of words. The essence of the Gods runs strong in them, and their days are given to music, to the carving of stone, and to love. They feast only for delight. At first the Gods rejoice, and in their gladness they forget their quarrels. They keep watch over the realm of Men and take pleasure in their works. Yet time moves on, and Men do not change. Content with their lot, they spend each day as they spent the last.
+
+But in time the Gods grow weary of Men. The ebb and flow of the endless days grows dull to them. They turn their eyes once more upon one another, and the old quarrels wake again. Then Kulena's sorrow swells ever greater, and the weight of failure lies heavy on her shoulders. Javi the almighty sees his beloved in her grief. He perceives the flaw in her design, and he devises a design of his own. While the eyes of his brethren are turned elsewhere, he bends his gaze upon the realm of Men. He raises a finger of his right hand, and with one swift stroke of his dagger he draws forth a single drop of his godly blood. Into it he whispers of struggle and of pain, of hunger and of death. Then he lets the drop fall into the ocean, and quickly it spreads through the seas, the rivers and the lakes. And when the rains come, they pour down upon the realm of Men. The blood-tainted water washes over their bodies and seeps in through their skin, and the taint takes hold of them.
+
+Soon a change comes upon them. Their minds grow heavy with weariness, their bellies ache if they do not eat, and their throats parch if they do not drink. In confusion and torment they cry out to the Gods, but no answer comes. Then Men know that they are cursed. To quench their thirst, they drink from the rivers. To still their hunger, they sow the fields. To shield themselves from heat and cold, they raise houses. But still it is not enough. Their flesh withers with the years, and they pass from the world. Great sorrow falls upon them, and they sink into despair. Yet something within them bids them go on, for the essence of the Gods runs deep in their veins. And so they endure.
+
+Now the Gods look on in wonder. The struggles of Men become their theatre. They pity these small creatures and meddle in their affairs, giving and taking away. Here they make the crops bear richly; there they dry up a spring. They raise high mountains and fair plains that stir the minds of Men, yet they also loose cruel beasts to roam the earth and hunt the children of Men. Into the hearts of some they breathe love; into the ears of others they whisper jealousy.
+
+To live, Men must hunt the beasts and till the land. And as their numbers swell, the land can no longer sustain them. Some leave with broken hearts to seek new plains far away. Others turn to strife and theft.
+
+### The Song of Stone
 
 ## Prologue
 

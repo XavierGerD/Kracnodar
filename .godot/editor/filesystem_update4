@@ -1,9 +1,1 @@
 res://default_env.tres
-res://Scripts/Dict.gd
-res://Scripts/Alphabet.gd
-res://Scripts/Dictionnaire.gd
-res://Scripts/Grammaire.gd
-res://Scripts/Library.gd
-res://Scenes/Main.gd
-res://Scripts/Writing.gd
-res://Scenes/DictEntry.gd

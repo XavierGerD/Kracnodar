@@ -214,7 +214,7 @@ The words themselves → Re ucuc
 
 | Distant past | Recent past | Present | Near future | Distant future |
 |---|---|---|---|---|
-| *tego* | *mi* | *sele* | *da* | *fojo* |
+| *te* | *mi* | *sele* | *da* | *fo* |
 
 - The present marker (*sele*) is usually left out, except to stress that something is happening right now.
 - The conditional is marked by *s*: we could → *siredotug*.

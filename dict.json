@@ -205,5 +205,9 @@
   "lever": {"en": "to rise", "kr": "kut", "class": "verbe"},
   "tremblement": {"en": "tremor", "kr": "aru", "class": "nom"},
   "demander": {"en": "to ask", "kr": "jec", "class": "verbe"},
-  "tristesse": {"en": "sorrow", "kr": "kora", "class": "nom"}
+  "tristesse": {"en": "sorrow", "kr": "kora", "class": "nom"},
+  "coeur": {"en": "heart", "kr": "zor", "class": "nom"},
+  "ressentir": {"en": "feel", "kr": "dem", "class": "verbe"},
+  "promettre": {"en": "to promise", "kr": "ilizor", "class": "verbe"},
+  "chaud": {"en": "hot", "kr": "tur", "class": "adjectif", "derived": {"Verbe":"to heat, chauffer","Nom":"heat, chaleur","Action":"rechauffement","Adverbe":"chaudement","Agent, instrument":"rechaud","Diminutif":"tiede","Augmentatif":"brulant"}}
 }
