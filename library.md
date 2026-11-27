@@ -24,20 +24,20 @@ The Grammaire uses the same markup.
 
 ### The Creation
 
-Hear now the words of Kulena, she who keeps the river of time aflow. She speaks the breath of the world onto the scrolls. → Jas zipo re kin Kulena. Katoac solazo. Ruac lifex ti atazu gu cizu.
-She writes of the Gods and of their quarrels, there in their house of stone and gold. → Falac la lorevu g ucmorfu, nev ga uceno ti nod g lox.
-She writes of the beginning, before the age of Man, before the age of the sun and the moon. → Falac la vixa, ezop rukohej, ezop hej ti iwa g umi.
+1. Hear now the words of Kulena, she who keeps the river of time aflow. She speaks the breath of the world onto the scrolls. → 1. Jas hok re kin Kulena. Katoac solazo. Ruac lifex ti atazu gu cizu.
+She writes of the Gods and of their quarrels, there in their house of stone and gold. → Falac la lorevu a ucmorfu, nev ga uceno ti nod a lox.
+She writes of the beginning, before the age of Man, before the age of the sun and the moon. → Falac la vixa, ezop rukohej, ezop hej ti iwa a umi.
 In those days the Gods are weary of one another, and swift to anger. → Kosa k hej, lorevu tul mogeuc, o tul nasovetanuc kenzewo.
-Many a day they war over things both great and small, and their wounds they leave to fester. → Moruc hex la ojaopu g ojafu, o ucmavu ne xonu.
+Many a day they war over things both great and small, and their wounds they leave to fester. → Moruc hex la ojaopu a ojafu, o ucmavu ne xonu.
 But Kulena, wisest of the Gods, sees that this cannot endure, and she devises a means of salvation. → Tirel Kulena, rutenop ti lorevu, fideac k oja iredono fem e ral, o rakac sozrom.
-"Let us turn our eyes from one another," she says to them, "and make a new world, and a people to dwell within it, whose lives we may guide and shape according to our will." → Menac nak uc, "mortug femop, o raktug dalatazu, g ruko gol id nev, osa idexu iredotug kato g levo ken tuglunirex."
+"Let us turn our eyes from one another," she says to them, "and make a new world, and a people to dwell within it, whose lives we may guide and shape according to our will." → Menac nak uc, "mortug femop, o raktug dalatazu, a ruko gol id nev, osa idexu iredotug kato a levo ken tuglunirex."
 And all the Gods give their assent, and the great work begins. → O lorevu evohenoc, o dabop vixano.
-Etovo, smith of the Gods, forges moulds to hold the bodies of Men. → Etovo, lokrom ti lorevu, lokac levoromu ipe tortan rukoidbaru.
+2. Etovo, smith of the Gods, forges moulds to hold the bodies of Men. → 2. Etovo, lokrom ti lorevu, lokac levoromu ipe tortan rukoidbaru.
 Then Kulena the all-wise plucks from her head a single strand of hair. → Ke Kulena rutenop atoac tuop koje nik zat.
 It shimmers as she draws it forth, and she breaks it into seven parts. → Koje uzono kosa pirolam, o no berac kan sa tufu.
-And as she lays them down, the pieces turn into little stars, and she lightly breathes to them a will and a knowing. → O kosa vegoam, tufu levonu kan uzofu, o lifac kencawi nak uc lunirex g fiderom.
-She turns to Etovo and proclaims: "Behold my making: the souls of Men. To thee I leave the shaping of their vessels." → Exoac kan Etovo, o menopac, Hitan zipo tagrakex, rukoidromu. Ilitag nak wet levoam ti ucidbaru.
-And at her words, a flame awakens in Etovo's lungs. → O kosa acre, vulfo kasno ga lifrom kin Etovo.
+And as she lays them down, the pieces turn into little stars, and she lightly breathes to them a will and a knowing. → O kosa vegoam, tufu levonu kan uzofu, o lifac kencawi nak uc lunirex a fiderom.
+She turns to Etovo and proclaims: "Behold my making: the souls of Men. To thee I leave the shaping of their vessels." → Exoac kan Etovo, o menopac, Hitan hok tagrakex, rukoidromu. Ilitag nak wet levoam ti ucidbaru.
+3. And at her words, a flame awakens in Etovo's lungs. → 3. O kosa acre, vulfo kasno ga lifrom kin Etovo.
 And so Etovo, consumed by the will to create, lays his ingots in the crucible and sets it upon the fire. → O Etovo, ka lunirop ipe rak, vegoac achosu ga vembar, o no vegoac gu vul.
 As the metal melts, he fills it with the essence of each God. → Kosa vemam, no vecoac ka enex kin ni lorev.
 Kulena pours her wisdom. → Kulena sajac acruten.
@@ -47,11 +47,11 @@ And Etovo pours his skill. → O Etovo sajac acdor.
 When all runs molten, he casts it into the rough moulds of Men, and draws them forth, and begins to shape them in his image. → Kosa nocvemam, no sajac kan k jeholevoromu, o nu pirolac, o vixac nu levo kan ackuma.
 He hammers the fire-metal, and their shapes are rough no more. → Zekac vulsagi, o nukumu jehonu femop.
 Then he looks upon their shapes, and they please him. And he takes up the souls that Kulena has made, and lays them within his creations, like jewels in a crown. → Ke hiac nukumu, o nu gerfoac. O atoac rukoidromu kin Kulena, o uc vegoac ga acrakexu, ken uzonodu ga zatlox.
-And for a moment nothing moves; then they tremble, and stir, and rise. → Kosa solfo, femher gilno. Ke aruc, o giluc, o kutuc.
-And soon they ask why they were made, and they are quick of hand and mind. → O dajecuc, uc miraktul hid, o zewouc ka atu g fideromu.
+4. And for a moment nothing moves; then they tremble, and stir, and rise. → 4. Kosa solfo, femher gilno. Ke aruc, o giluc, o kutuc.
+And soon they ask why they were made, and they are quick of hand and mind. → O dajecuc, uc miraktul hid, o zewouc ka atu a fideromu.
 They speak of love, and they speak of sorrow. → Ruc la gerex, o ruc la kora.
 And his heart goes out to them, his creation, and he swears to them a home of their own. → O demac kora ipe uc, acrakex, o ilizorac nak uc eno kin uc.
-To keep them warm, Etovo draws from his forge the hottest of its embers and lays it in the palm of his hand. → Ipe uc turtan, Etovo atoac nik aclokbar turopvulfo, o no vegoac ga fih.
+5. To keep them warm, Etovo draws from his forge the hottest of its embers and lays it in the palm of his hand. → 5. Ipe uc turtan, Etovo atoac nik aclokbar turopvulfo, o no vegoac ga fih.
 He closes his fingers upon it and presses it with all his might, and within his grasp it burns red, then yellow, then white. → Leac nesu gu no, o no secac ka vorop, o ga acfih vireno, ke vimano, ke vileno.
 And when he opens his hand, the ember holds its glow, and he is content. → O kosa kadiram ti acato, vulfo dacno nowonex, o rafeac.
 And to light their way, Etovo works the bellows, and plucks the sparks that leap from his forge, and lays them upon his finest silk. → O ipe kemtan ucjoka, Etovo vahac lifrom, o atoac kocvulu gol dexu nik aclokbar, o nu vegoac gu acjosumeopcer.
@@ -60,20 +60,20 @@ So he lays it upon his anvil, and with his hammer he strikes it with great blows
 One half he presses between his palms and rolls into a sphere. → Secac tut jaz wo fihu, o no dutac kan cali.
 And when it is round, he dips it into his quenching trough, so that the waters gather in its lowest places. → O kosa calitanam, no zesac ga acdolbar, ipe mudi fenu ga notopbaru.
 And the other half he crushes roughly in his palm. → O secopac kenjeho got jaz ga fih.
-And he sets the ember and both halves upon the silk among the sparks, and folds the silk closed around them. → O vegoac vulfo g go jazu gu cer wo kocvulu, o leac cer gu nu.
+6. And he sets the ember and both halves upon the silk among the sparks, and folds the silk closed around them. → 6. O vegoac vulfo a go jazu gu cer wo kocvulu, o leac cer gu nu.
 Thus, through this great work, Etovo makes the world. → Ken k dabop, Etovo rakac atazu.
-And he turns to the Gods and proclaims: "Behold, my brothers and sisters, the work of my hands!" → O exoac kan lorevu, o menopac, Hitan zipo, taggamiru, dabex kin tagatu !
+And he turns to the Gods and proclaims: "Behold, my brothers and sisters, the work of my hands!" → O exoac kan lorevu, o menopac, Hitan hok, taggamiru, dabex kin tagatu !
 And all who see it are struck with awe. → O onupu gol no hitan demopnoc kikodo.
-Then Javi steps forth and takes hold of the silk, and with a mighty sweep of his arm he sets in motion the sun and the stars, the world and the moon, so that day gives way to night, and night to day. → Ke Javi exoac, o atoac cer, o gilac iwa g uzu, atazu g umi, ka gilamop ti musa, o voni levono kan selec, o selec levono kan voni.
+Then Javi steps forth and takes hold of the silk, and with a mighty sweep of his arm he sets in motion the sun and the stars, the world and the moon, so that day gives way to night, and night to day. → Ke Javi exoac, o atoac cer, o gilac iwa a uzu, atazu a umi, ka gilamop ti musa, o voni levono kan selec, o selec levono kan voni.
 Thus it is written by Kulena, mother of scribes and keeper of all that is recorded. → Ken, Kulena, eti ti falromu, dacrom ti falexu, no falac.
 Her words endure, and we recite them still, lest we forget who we are. → Acre idnu ral, o nu menoptug zo, ipe mov etug hob.
 
 ### Before Time
 
-Thus it begins: the age of sun and stars, of earth and moon. → Ken vixano: hej ti iwa g uzu, ti atazu g umi.
-In those realms dwell Men, who know neither fear nor hunger nor sleep. → Ga k jeru, ruko iduc, gol fide fem kir g lene g lehi.
+Thus it begins: the age of sun and stars, of earth and moon. → Ken vixano: hej ti iwa a uzu, ti atazu a umi.
+In those realms dwell Men, who know neither fear nor hunger nor sleep. → Ga k jeru, ruko iduc, gol fide fem kir a lene a lehi.
 They build no houses and walk no roads, and not a single word passes between them, for they have no need of words. → Taluc fem enu, o exouc fem gu joku, o tuop ru fem exono wo uc, iduri ukauc fem cenoex ti re.
-The essence of the Gods is strong in them, and they give their days to music, to the carving of stone, and to love. → Enex kin lorevu vorno ga uc, o iliuc ucvonu kan melo g nodladiam g gerex.
+The essence of the Gods is strong in them, and they give their days to music, to the carving of stone, and to love. → Enex kin lorevu vorno ga uc, o iliuc ucvonu kan melo a nodladiam a gerex.
 They feast only for delight. → Gewigopuc kentuop ipe meb.
 At first the Gods rejoice, and in their gladness they forget their quarrels. → Kosa vixa, lorevu mebuc, o ga ucmeb, ufeuc ucmorfu.
 They keep watch over the realm of Men and take pleasure in their works. → Hidacuc rukojero, o mebuc ga ucdabexu.
@@ -81,7 +81,7 @@ Yet time moves on, and Men do not change. → Tirel sol pahno, o ruko raguc fem.
 Content with their lot, they live each day like the day before. → Rafe ka ucmulen, iduc ni voni ken ezopvoni.
 
 But in time the Gods feel weary of Men. → Tirel ka sol, lorevu demuc moge ipe ruko.
-The rise and fall of the endless days wearies them. → Kutam g rasam ti rocfemvonu uc mogenu.
+The rise and fall of the endless days wearies them. → Kutam a rasam ti rocfemvonu uc mogenu.
 They look upon one another anew, and the old quarrels wake again. → Tul hiuc kendal, o ezopmorfu kasnu kendal.
 
 Then Kulena's sorrow swells ever greater, and the weight of failure lies heavy on her shoulders. Javi the almighty sees his beloved in her grief. He perceives the flaw in her design, and he devises a design of his own. While the eyes of his brethren are turned elsewhere, he bends his gaze upon the realm of Men. He raises a finger of his right hand, and with one swift stroke of his dagger he draws forth a single drop of his godly blood. Into it he whispers of struggle and of pain, of hunger and of death. Then he lets the drop fall into the ocean, and quickly it spreads through the seas, the rivers and the lakes. And when the rains come, they pour down upon the realm of Men. The blood-tainted water washes over their bodies and seeps in through their skin, and the taint takes hold of them.

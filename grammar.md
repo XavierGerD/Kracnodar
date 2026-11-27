@@ -140,10 +140,10 @@ A shrine (a place of adoration), not shortened → Gerenbar
 - A marker is a word of its own, placed before its noun like a preposition (see 2.5): *ti nod*, *kin Dim*.
 - *Ken* on a bare module is the adverb affix instead, joined to it (see 2.1.1): *kendexu*, while jumping. Before a noun, it is a marker like the others: like jewels → *ken uzonodu*.
 - *Kan* also marks what something becomes, “into”: the pieces turn into little stars → *tufu levonu kan uzofu*; he rolls it into a sphere → *no dutac kan cali*. Without it, the noun after the verb would be its object: *berac sa tufu* is “she breaks seven pieces”.
-- A marker also covers the nouns joined to its noun by *g*, which joins the noun right before it: the marker isn't repeated.
+- A marker also covers the nouns joined to its noun by *a*, which joins the noun right before it: the marker isn't repeated.
 
-The houses of stone and gold → Enu ti nod g lox
-The age of the sun and the moon → Hej ti iwa g umi
+The houses of stone and gold → Enu ti nod a lox
+The age of the sun and the moon → Hej ti iwa a umi
 
 ### 2.1.3  Plural
 
@@ -235,7 +235,7 @@ Kulena herself → Kulena acne
 > Keeping *tan* is never wrong: it gives a syllable back where the melody needs one.
 
 - Word order is subject, verb, object. A noun subject goes before the verb, and the verb keeps its pronoun: Dim eats an apple → *Dim gewigac atari*.
-- An adverb goes right after the verb: hear now → *jas zipo*.
+- An adverb goes right after the verb: hear now → *jas hok*.
 
 ### 2.4  Intensity markers
 
@@ -253,7 +253,7 @@ Kulena herself → Kulena acne
 | For | *ipe* |
 
 - *Ipe* followed by an infinitive expresses a purpose: I'm going home to eat → *exotag kan eno ipe gewig*.
-- “And” is *g* between words, and *o* between two clauses: I go home and I eat → *exotag kan eno, o gewigtag*.
+- “And” is *a* between words, and *o* between two clauses: I go home and I eat → *exotag kan eno, o gewigtag*.
 
 ### 2.6  Determiners
 
