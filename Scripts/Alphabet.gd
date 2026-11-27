@@ -1,8 +1,9 @@
 extends HBoxContainer
 
-# The Alphabet tab: where the letters and diacritics of the Kracnodar script
-# are drawn, with dots, lines and tapered lines traced by a quill (see
-# Quill.gd). The list of letters and diacritics on the left, the one being
+# The Alphabet tab: where the letters, diacritics, punctuation and numbers of
+# the Kracnodar script are drawn, with dots, lines and tapered lines traced by
+# a quill (see Quill.gd). The list of them on the left, a section per kind
+# (each one folds away), the one being
 # drawn in the middle, and on the right its name, a preview of a letter with a
 # diacritic, the selected stroke's settings, and the quill's.
 #
@@ -15,9 +16,13 @@ extends HBoxContainer
 # Saved in glyphs.json, where Dict keeps its files, shortly after every change:
 #   {"settings": {the quill's settings, see Quill.DEFAULTS},
 #    "letters": [{"name": "...", "sound": "...", "strokes": [stroke, ...]}],
-#    "diacritics": [{"name": "...", "symbol": "...", "strokes": [stroke, ...]}]}
+#    "diacritics": [{"name": "...", "symbol": "...", "strokes": [stroke, ...]}],
+#    "punctuation": [the same as a diacritic], "numbers": [the same]}
 # with strokes as Quill.gd describes them, their points as [x, y]. A letter's
-# sound is what it writes; a diacritic's symbol, the mark it stands for.
+# sound is what it writes; a diacritic's symbol, the mark it stands for; a
+# punctuation mark's or a number's, the sign it writes (".", "?", "1"...).
+# Punctuation and numbers are drawn and written like letters, full size, and
+# take no diacritic.
 
 const Quill = preload("res://Scripts/Quill.gd")
 const GlyphThumb = preload("res://Scripts/GlyphThumb.gd")
@@ -34,10 +39,17 @@ const MERGE_MSEC = 1500
 
 const STROKE_NAMES = {"dot": "Dot", "line": "Line", "taper": "Tapered line"}
 
-const KINDS = ["letter", "diacritic"]
-const KIND_TITLES = {"letter": "Letter", "diacritic": "Diacritic"}
-const SECTION_TITLES = {"letter": "Letters", "diacritic": "Diacritics"}
-const FILE_SECTIONS = {"letter": "letters", "diacritic": "diacritics"}
+const KINDS = ["letter", "diacritic", "punctuation", "number"]
+const KIND_TITLES = {"letter": "Letter", "diacritic": "Diacritic", "punctuation": "Punctuation mark", "number": "Number"}
+const SECTION_TITLES = {"letter": "Letters", "diacritic": "Diacritics", "punctuation": "Punctuation", "number": "Numbers"}
+const FILE_SECTIONS = {"letter": "letters", "diacritic": "diacritics", "punctuation": "punctuation", "number": "numbers"}
+const NAME_HINTS = {"letter": "The letter's name, like Spyr", "diacritic": "The diacritic's name",
+	"punctuation": "The mark's name, like Full stop", "number": "The number's name, like One"}
+const MARK_HINTS = {"letter": "What it writes, like a or i/y", "diacritic": "The mark it stands for, like ´ or ¨",
+	"punctuation": "What it writes, like . or ?", "number": "What it writes, like 1"}
+const NONE_YET = {"letter": "None yet.", "diacritic": "None yet: a diacritic is drawn where it sits on a letter.",
+	"punctuation": "None yet: a mark not drawn is left out of the writing.", "number": "None yet: a digit not drawn is left out of the writing."}
+const FOLDS_FILE = "alphabet_folds.cfg"  # the sections folded in the list, on this machine
 
 var settings = Quill.DEFAULTS.duplicate()
 # Letters and diacritics: [{"kind", "name", "sound" or "symbol", "strokes": [...]}],
@@ -54,9 +66,10 @@ var _last_tag = ""
 var _last_msec = 0
 var _load_problem = ""
 var _save_timer: Timer
-var _buttons = []  # list Button per letter
-var _thumbs = []  # GlyphThumb per letter
-var _titles = []  # [name Label, sound Label] per letter
+var _buttons = []  # list Button per letter, null for one folded away
+var _thumbs = []  # GlyphThumb per letter, null for one folded away
+var _titles = []  # [name Label, sound Label] per letter, null for one folded away
+var _collapsed = {}  # kind -> true, for the sections folded in the list
 var _letter_heading: Label
 var _name_edit: LineEdit
 var _sound_label: Label
@@ -90,11 +103,14 @@ func _ready():
 	%RedoButton.pressed.connect(redo)
 	%AddLetterButton.pressed.connect(add_letter.bind("letter"))
 	%AddDiacriticButton.pressed.connect(add_letter.bind("diacritic"))
+	%AddPunctuationButton.pressed.connect(add_letter.bind("punctuation"))
+	%AddNumberButton.pressed.connect(add_letter.bind("number"))
 	%Canvas.edit_started.connect(_begin_change)
 	%Canvas.edited.connect(_on_canvas_edited)
 	%Canvas.selection_changed.connect(_build_stroke_section)
 	%Canvas.state_changed.connect(_sync_tool)
 	_build_inspector()
+	_load_folds()
 	load_letters()
 	if letters.is_empty():
 		letters.append(_new_letter("letter"))
@@ -109,9 +125,9 @@ func _new_letter(kind: String) -> Dictionary:
 	return letter
 
 
-# The field that says what a letter writes ("sound") or what a diacritic marks ("symbol").
+# The field that says what a letter writes ("sound"), or what the others mark or write ("symbol").
 func _mark_key(letter: Dictionary) -> String:
-	return "symbol" if letter["kind"] == "diacritic" else "sound"
+	return "sound" if letter["kind"] == "letter" else "symbol"
 
 
 # The quill a letter is drawn with, at the size it's shown in its own square.
@@ -128,14 +144,19 @@ func _is(index: int, kind: String) -> bool:
 # --- Letters --------------------------------------------------------------
 
 func select_letter(index: int) -> void:
+	var before = current
 	current = clampi(index, -1, letters.size() - 1)
+	# A folded section shows only the glyph selected in it.
+	if (current >= 0 and current < _buttons.size() and _buttons[current] == null) \
+			or (before != current and before >= 0 and before < letters.size() and _collapsed.has(letters[before]["kind"])):
+		_render_list()
 	var letter = letters[current] if current >= 0 else null
 	%Canvas.set_letter(letter["strokes"] if letter else null, _pen(current))
 	var kind = letter["kind"] if letter else "letter"
 	_letter_heading.text = KIND_TITLES[kind]
-	_sound_label.text = "Symbol" if kind == "diacritic" else "Sound"
-	_name_edit.placeholder_text = "The diacritic's name" if kind == "diacritic" else "The letter's name, like Spyr"
-	_sound_edit.placeholder_text = "The mark it stands for, like ´ or ¨" if kind == "diacritic" else "What it writes, like a or i/y"
+	_sound_label.text = "Sound" if kind == "letter" else "Symbol"
+	_name_edit.placeholder_text = NAME_HINTS[kind]
+	_sound_edit.placeholder_text = MARK_HINTS[kind]
 	_delete_letter_button.text = "Delete " + KIND_TITLES[kind].to_lower()
 	_name_edit.text = letter["name"] if letter else ""
 	_sound_edit.text = letter[_mark_key(letter)] if letter else ""
@@ -143,7 +164,8 @@ func select_letter(index: int) -> void:
 	_sound_edit.editable = letter != null
 	_delete_letter_button.disabled = letter == null
 	for i in _buttons.size():
-		_buttons[i].set_pressed_no_signal(i == current)
+		if _buttons[i] != null:
+			_buttons[i].set_pressed_no_signal(i == current)
 	# The preview follows: a letter chosen is the one previewed; a diacritic chosen goes on it.
 	if _is(current, "letter"):
 		preview_letter = current
@@ -155,6 +177,8 @@ func select_letter(index: int) -> void:
 func add_letter(kind: String) -> void:
 	_begin_change("")
 	letters.append(_new_letter(kind))
+	if _collapsed.erase(kind):  # the section opens to show it
+		_save_folds()
 	_render_list()
 	select_letter(letters.size() - 1)
 	_name_edit.grab_focus()
@@ -189,24 +213,75 @@ func _render_list() -> void:
 	_titles.resize(letters.size())
 	var group = ButtonGroup.new()
 	for kind in KINDS:
+		var members = range(letters.size()).filter(func(i): return letters[i]["kind"] == kind)
+		var folded = _collapsed.has(kind)
+		var head = HBoxContainer.new()
+		head.add_theme_constant_override("separation", 6)
+		# The whole heading folds the section, not only its arrow.
+		head.mouse_filter = Control.MOUSE_FILTER_STOP
+		head.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		head.gui_input.connect(func(event):
+			if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+				_toggle_section(kind))
+		if kind != KINDS[0]:
+			head.custom_minimum_size = Vector2(0, 40)
 		var heading = Label.new()
 		heading.text = SECTION_TITLES[kind]
 		heading.theme_type_variation = "HeadingLabel"
-		if kind != KINDS[0]:
-			heading.custom_minimum_size = Vector2(0, 40)
-			heading.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
-		%LetterList.add_child(heading)
-		var count = 0
-		for i in letters.size():
-			if letters[i]["kind"] == kind:
+		heading.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
+		head.add_child(heading)
+		if folded and not members.is_empty():
+			var count = Label.new()
+			count.text = str(members.size())
+			count.theme_type_variation = "HintLabel"
+			count.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
+			head.add_child(count)
+		var spacer = Control.new()
+		spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		head.add_child(spacer)
+		var fold = Button.new()
+		fold.text = "▶" if folded else "▼"
+		fold.tooltip_text = ("Show the " if folded else "Hide the ") + SECTION_TITLES[kind].to_lower()
+		fold.focus_mode = Control.FOCUS_NONE
+		fold.custom_minimum_size = Vector2(28, 0)
+		fold.theme_type_variation = "RowButton"
+		fold.add_theme_font_size_override("font_size", 10)
+		fold.size_flags_vertical = Control.SIZE_SHRINK_END
+		fold.pressed.connect(_toggle_section.bind(kind))
+		head.add_child(fold)
+		%LetterList.add_child(head)
+		for i in members:
+			if not folded or i == current:
 				_add_row(i, group)
-				count += 1
-		if count == 0:
+		if members.is_empty() and not folded:
 			var none = Label.new()
-			none.text = "None yet." if kind == "letter" else "None yet: a diacritic is drawn where it sits on a letter."
+			none.text = NONE_YET[kind]
 			none.theme_type_variation = "HintLabel"
 			none.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 			%LetterList.add_child(none)
+
+
+func _toggle_section(kind: String) -> void:
+	if not _collapsed.erase(kind):
+		_collapsed[kind] = true
+	_save_folds()
+	_render_list()
+
+
+# The folded sections are kept on this machine (FOLDS_FILE), not in glyphs.json.
+func _load_folds() -> void:
+	var folds = ConfigFile.new()
+	if folds.load(Dict.scratch_path(FOLDS_FILE)) == OK:
+		for kind in folds.get_value("list", "collapsed", []):
+			if str(kind) in KINDS:
+				_collapsed[str(kind)] = true
+
+
+func _save_folds() -> void:
+	var folds = ConfigFile.new()
+	folds.set_value("list", "collapsed", _collapsed.keys())
+	folds.save(Dict.scratch_path(FOLDS_FILE))
 
 
 func _add_row(i: int, group: ButtonGroup) -> void:
@@ -247,6 +322,8 @@ func _add_row(i: int, group: ButtonGroup) -> void:
 
 
 func _update_titles(i: int) -> void:
+	if _titles[i] == null:
+		return
 	var name = letters[i]["name"]
 	_titles[i][0].text = name if name != "" else "Untitled"
 	_titles[i][0].theme_type_variation = "" if name != "" else "HintLabel"
@@ -557,9 +634,10 @@ func _changed(every_letter := false) -> void:
 		# The quill changed: diacritics' magnified pens with it.
 		%Canvas.settings = _pen(current)
 		for i in _thumbs.size():
-			_thumbs[i].settings = _pen(i)
-			_thumbs[i].queue_redraw()
-	elif current >= 0 and current < _thumbs.size():
+			if _thumbs[i] != null:
+				_thumbs[i].settings = _pen(i)
+				_thumbs[i].queue_redraw()
+	elif current >= 0 and current < _thumbs.size() and _thumbs[current] != null:
 		_thumbs[current].queue_redraw()
 	_save_timer.start()
 
@@ -658,7 +736,7 @@ func load_letters() -> void:
 	var text = FileAccess.get_file_as_string(path)
 	Dict.remember(FILE, text)
 	var data = JSON.parse_string(text)
-	if not data is Dictionary or not data.get("letters", []) is Array or not data.get("diacritics", []) is Array:
+	if not data is Dictionary or FILE_SECTIONS.values().any(func(section): return not data.get(section, []) is Array):
 		_load_problem = "« %s » couldn't be read, so the alphabet won't be saved until it is fixed." % ProjectSettings.globalize_path(path)
 		var problem = _load_problem
 		(func(): Dict.save_failed.emit(problem)).call_deferred()

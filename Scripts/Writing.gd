@@ -1,7 +1,7 @@
 extends RefCounted
 
-# Kracnodar written in its own script, the letters and diacritics drawn in the
-# Alphabet tab (glyphs.json). Its state is static: every script that preloads
+# Kracnodar written in its own script, the letters, diacritics, punctuation
+# and numbers drawn in the Alphabet tab (glyphs.json). Its state is static: every script that preloads
 # this shares one alphabet, and the Alphabet tab calls reload() after it saves.
 #
 # How a word is spelled:
@@ -9,9 +9,11 @@ extends RefCounted
 # - a vowel after a consonant is that vowel's diacritic, on top of the
 #   consonant's letter: "ga" is the letter for g with the diacritic for a;
 # - any other vowel (one that starts a word, or follows a vowel, or a sign like
-#   the dash) is that vowel's own letter.
+#   the dash) is that vowel's own letter;
+# - a punctuation mark or a number drawn is written like a letter, and a vowel
+#   after it is a letter too.
 # What isn't drawn yet shows as an empty square: a letter, or a diacritic
-# shrunk on top of its letter. A sign that isn't in the alphabet (punctuation)
+# shrunk on top of its letter. A sign that isn't drawn (punctuation, digits)
 # is left out.
 #
 # Words are drawn into textures, registered under a path of their own so that
@@ -35,7 +37,7 @@ const SUPERSAMPLE = 4  # drawn this many times larger, then shrunk: smooth edges
 
 static var _loaded = false
 static var _settings = {}
-static var _letters = {}  # sound -> strokes ("i/y" gives both sounds the letter)
+static var _letters = {}  # sound -> strokes ("i/y" gives both sounds the letter); punctuation and numbers too
 static var _marks = {}  # vowel -> its diacritic's strokes
 static var _textures = {}  # image path -> ImageTexture, kept alive for BBCode
 static var _sizes = {}  # image path -> [word, height in pixels, scale]
@@ -66,6 +68,8 @@ static func reload() -> void:
 					_settings[key] = float(saved[key])
 		_read_glyphs(data.get("letters", []), "sound", _letters)
 		_read_glyphs(data.get("diacritics", []), "symbol", _marks)
+		_read_glyphs(data.get("punctuation", []), "symbol", _letters)
+		_read_glyphs(data.get("numbers", []), "symbol", _letters)
 	for image_path in _textures:
 		var size = _sizes[image_path]
 		_textures[image_path].set_image(_draw_word(size[0], size[1], size[2]))
@@ -84,7 +88,9 @@ static func _read_glyphs(entries, key: String, into: Dictionary) -> void:
 				strokes.append(stroke)
 		if strokes.is_empty():
 			continue  # not drawn yet
-		for sound in str(entry.get(key, "")).to_lower().split("/", false):
+		var written = str(entry.get(key, "")).to_lower()
+		# "/" between sounds gives each the glyph ("i/y"), but a slash alone is the slash.
+		for sound in [written] if written.strip_edges() == "/" else written.split("/", false):
 			sound = sound.strip_edges()
 			if sound != "" and not into.has(sound):
 				into[sound] = strokes
