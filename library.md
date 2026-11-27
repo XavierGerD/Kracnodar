@@ -39,7 +39,7 @@ And as she lays them down, the pieces turn into little stars, and she lightly br
 She turns to Etovo and proclaims: "Behold my making: the souls of Men. To thee I leave the shaping of their vessels." → Exoac kan Etovo, o menopac, Hitan zipo tagrakex, rukoidromu. Ilitag nak wet levoam ti ucidbaru.
 And at her words, a flame awakens in Etovo's lungs. → O kosa acre, vulfo kasno ga lifrom kin Etovo.
 And so Etovo, consumed by the will to create, lays his ingots in the crucible and sets it upon the fire. → O Etovo, ka lunirop ipe rak, vegoac achosu ga vembar, o no vegoac gu vul.
-As the metal melts, he fills it with the essence of all the Gods. → Kosa vemam, no vecoac ka nocenex.
+As the metal melts, he fills it with the essence of each God. → Kosa vemam, no vecoac ka enex kin ni lorev.
 Kulena pours her wisdom. → Kulena sajac acruten.
 Javi pours his strength. → Javi sajac acvorex.
 Kemac pours her love. → Kemac sajac acgerex.
@@ -70,7 +70,12 @@ Her words endure, and we recite them still, lest we forget who we are. → Acre 
 
 ### Before Time
 
-Thus it begins: the age of sun and stars, of earth and moon. In those realms dwell Men, who know neither fear nor hunger nor sleep. They raise no houses and walk no roads, and no word passes between them, for they have no need of words. The essence of the Gods runs strong in them, and their days are given to music, to the carving of stone, and to love. They feast only for delight. At first the Gods rejoice, and in their gladness they forget their quarrels. They keep watch over the realm of Men and take pleasure in their works. Yet time moves on, and Men do not change. Content with their lot, they spend each day as they spent the last.
+Thus it begins: the age of sun and stars, of earth and moon. → Ken vixano: hej ti iwa g uzu, ti atazu g umi.
+In those realms dwell Men, who know neither fear nor hunger nor sleep. → Ga k jeru, ruko iduc, gol fide fem kir g lene g lehi.
+They build no houses and walk no roads, and not a single word passes between them, for they have no need of words. → Taluc fem enu, o exouc fem gu joku, o tuop ru fem exono wo uc, iduri ukauc fem cenoex ti re.
+The essence of the Gods is strong in them, and they give their days to music, to the carving of stone, and to love. → Enex kin lorevu vorno ga uc, o iliuc ucvonu kan melo g nodladiam g gerex.
+
+They feast only for delight. At first the Gods rejoice, and in their gladness they forget their quarrels. They keep watch over the realm of Men and take pleasure in their works. Yet time moves on, and Men do not change. Content with their lot, they spend each day as they spent the last.
 
 But in time the Gods grow weary of Men. The ebb and flow of the endless days grows dull to them. They turn their eyes once more upon one another, and the old quarrels wake again. Then Kulena's sorrow swells ever greater, and the weight of failure lies heavy on her shoulders. Javi the almighty sees his beloved in her grief. He perceives the flaw in her design, and he devises a design of his own. While the eyes of his brethren are turned elsewhere, he bends his gaze upon the realm of Men. He raises a finger of his right hand, and with one swift stroke of his dagger he draws forth a single drop of his godly blood. Into it he whispers of struggle and of pain, of hunger and of death. Then he lets the drop fall into the ocean, and quickly it spreads through the seas, the rivers and the lakes. And when the rains come, they pour down upon the realm of Men. The blood-tainted water washes over their bodies and seeps in through their skin, and the taint takes hold of them.
 

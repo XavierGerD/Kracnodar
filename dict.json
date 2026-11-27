@@ -50,7 +50,7 @@
   "prisonnier": {"en": "prisoner", "kr": "adovis", "class": "nom", "derived": {"Lieu":"prison","Verbe":"to throw in prison","Action":"imprisonment"}},
   "nourrir": {"en": "to feed", "kr": "fedamo", "class": "verbe"},
   "pomme": {"en": "apple", "kr": "atari", "class": "nom"},
-  "musique": {"en": "music", "kr": "hotuyavin", "class": "nom"},
+  "musique": {"en": "music", "kr": "melo", "class": "nom"},
   "personne": {"en": "person", "kr": "onupo", "class": "nom"},
   "puer": {"en": "to stink", "kr": "awu", "class": "verbe"},
   "presence": {"en": "presence", "kr": "urivo", "class": "nom"},
@@ -244,5 +244,12 @@
   "frere/soeur": {"en": "sibling", "kr": "gamir", "class": "nom"},
   "admiration": {"en": "admiration, awe", "kr": "kikodo", "class": "nom"},
   "nuit": {"en": "night", "kr": "selec", "class": "nom"},
-  "se souvenir": {"en": "to remember", "kr": "mov", "class": "verbe"}
+  "se souvenir": {"en": "to remember", "kr": "mov", "class": "verbe"},
+  "royaume, territoire": {"en": "realm, territory", "kr": "jero", "class": "nom"},
+  "peur": {"en": "fear", "kr": "kir", "class": "nom"},
+  "faim": {"en": "hunger", "kr": "lene", "class": "nom"},
+  "sommeil": {"en": "sleep", "kr": "lehi", "class": "nom"},
+  "construire": {"en": "to build", "kr": "tal", "class": "verbe"},
+  "chaque": {"en": "each", "kr": "ni"},
+  "sculpter": {"en": "to carve", "kr": "ladi", "class": "verbe"}
 }

@@ -123,7 +123,7 @@ A shrine (a place of adoration), not shortened → Gerenbar
 | Use | Marker | Example |
 |-------|---|---------|
 | Origin (coming from, of, by)¹ | *Kin* | Dim's apple → *Atari kin Dim* |
-| Direction of origin (from where, through where) | *Nik* | Music from the world → *Hotuyavin nik atazu* |
+| Direction of origin (from where, through where) | *Nik* | Music from the world → *Melo nik atazu* |
 | Direction of destination (to, toward) | *Kan* | I'm going home → *Exotag kan eno* |
 | Recipient (to whom, toward whom) | *Nak* | I give you a cat → *Ilitag nak wet zanu* |
 | Manner (thus, in this way) | *Ken* | He dances while jumping → *Avac kendexu* |
@@ -260,9 +260,11 @@ Kulena herself → Kulena acne
 | English | Kracnodar |
 |---|---|
 | This / That | *k* |
+| Each | *ni* |
 
 - *K* is a separate word, placed before the noun: that stone → *k nod*.
-- A relation marker comes before *k*: in that age → *kosa k hej*.
+- *Ni* is placed the same way, before a singular noun: each God → *ni lorev*.
+- A relation marker comes before the determiner: in that age → *kosa k hej*; the essence of each God → *enex kin ni lorev*.
 
 ### 2.7  Question words
 
