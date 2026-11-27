@@ -340,15 +340,25 @@ func set_derived(french: String, form_name: String, meaning: String, krac := "")
 	return _commit(before)
 
 
-# How many words the modules give through their affixes (see derived_forms):
-# each spelling counted once, and none that is already an entry of its own.
-func derived_count() -> int:
-	var words = {}
+# How many words the modules give through their affixes (see derived_forms),
+# each spelling counted once and none that is already an entry of its own:
+# {"defined": those given a meaning (see set_derived), "derived": the others}.
+# A spelling one form defines is counted as defined, even where another form
+# gives it without a meaning.
+func derived_counts() -> Dictionary:
+	var defined = {}
+	var derived = {}
 	for french in dict:
 		for form in derived_forms(french):
 			if form["affix"] != "" and form["existing"] == "":
-				words[form["word"].to_lower()] = true
-	return words.size()
+				var word = form["word"].to_lower()
+				if form["meaning"] != "":
+					defined[word] = true
+				else:
+					derived[word] = true
+	for word in defined:
+		derived.erase(word)
+	return {"defined": defined.size(), "derived": derived.size()}
 
 
 # The consonant that goes between two lexemes joined into one word, or "" when

@@ -24,7 +24,8 @@ The Grammaire uses the same markup.
 
 ### The Creation
 
-1. Hear now the words of Kulena, she who keeps the river of time aflow. She speaks the breath of the world onto the scrolls. → 1. Jas hok re kin Kulena. Katoac solazo. Ruac lifex ti atazu gu cizu.
+1.1 → 1.1
+Hear now the words of Kulena, she who keeps the river of time aflow. She speaks the breath of the world onto the scrolls. → 1. Jas hok re kin Kulena. Katoac solazo. Ruac lifex ti atazu gu cizu.
 She writes of the Gods and of their quarrels, there in their house of stone and gold. → Falac la lorevu a ucmorfu, nev ga uceno ti nod a lox.
 She writes of the beginning, before the age of Man, before the age of the sun and the moon. → Falac la vixa, ezop rukohej, ezop hej ti iwa a umi.
 In those days the Gods are weary of one another, and swift to anger. → Kosa k hej, lorevu tul mogeuc, o tul nasovetanuc kenzewo.
@@ -32,7 +33,8 @@ Many a day they war over things both great and small, and their wounds they leav
 But Kulena, wisest of the Gods, sees that this cannot endure, and she devises a means of salvation. → Tirel Kulena, rutenop ti lorevu, fideac k oja iredono fem e ral, o rakac sozrom.
 "Let us turn our eyes from one another," she says to them, "and make a new world, and a people to dwell within it, whose lives we may guide and shape according to our will." → Menac nak uc, "mortug femop, o raktug dalatazu, a ruko gol id nev, osa idexu iredotug kato a levo ken tuglunirex."
 And all the Gods give their assent, and the great work begins. → O lorevu evohenoc, o dabop vixano.
-2. Etovo, smith of the Gods, forges moulds to hold the bodies of Men. → 2. Etovo, lokrom ti lorevu, lokac levoromu ipe tortan rukoidbaru.
+2.2 → 2.2
+Etovo, smith of the Gods, forges moulds to hold the bodies of Men. → 2. Etovo, lokrom ti lorevu, lokac levoromu ipe tortan rukoidbaru.
 Then Kulena the all-wise plucks from her head a single strand of hair. → Ke Kulena rutenop atoac tuop koje nik zat.
 It shimmers as she draws it forth, and she breaks it into seven parts. → Koje uzono kosa pirolam, o no berac kan sa tufu.
 And as she lays them down, the pieces turn into little stars, and she lightly breathes to them a will and a knowing. → O kosa vegoam, tufu levonu kan uzofu, o lifac kencawi nak uc lunirex a fiderom.
@@ -84,7 +86,12 @@ But in time the Gods feel weary of Men. → Tirel ka sol, lorevu demuc moge ipe 
 The rise and fall of the endless days wearies them. → Kutam a rasam ti rocfemvonu uc mogenu.
 They look upon one another anew, and the old quarrels wake again. → Tul hiuc kendal, o ezopmorfu kasnu kendal.
 
-Then Kulena's sorrow swells ever greater, and the weight of failure lies heavy on her shoulders. Javi the almighty sees his beloved in her grief. He perceives the flaw in her design, and he devises a design of his own. While the eyes of his brethren are turned elsewhere, he bends his gaze upon the realm of Men. He raises a finger of his right hand, and with one swift stroke of his dagger he draws forth a single drop of his godly blood. Into it he whispers of struggle and of pain, of hunger and of death. Then he lets the drop fall into the ocean, and quickly it spreads through the seas, the rivers and the lakes. And when the rains come, they pour down upon the realm of Men. The blood-tainted water washes over their bodies and seeps in through their skin, and the taint takes hold of them.
+Then Kulena's sorrow grows ever stronger, and the weight of failure lies heavy on her heart. → Ke kora kin Kulena vorno ral, o ter ti neme sivuno gu aczor.
+Javi the mighty sees his love in her sorrow. → Javi vorop hiac acgerex ga ackora.
+He understands the flaw in her design, and he devises a design of his own. → Sohatac kal ga acfira, o temac fira kin ac.
+While his brethren quarrel, he turns his eyes toward the realm of Men. → Kosa morfu kin acgamiru, gilac hu kan rukojero.
+
+He raises a finger of his right hand, and with one swift stroke of his dagger he draws forth a single drop of his godly blood. Into it he whispers of struggle and of pain, of hunger and of death. Then he lets the drop fall into the ocean, and quickly it spreads through the seas, the rivers and the lakes. And when the rains come, they pour down upon the realm of Men. The blood-tainted water washes over their bodies and seeps in through their skin, and the taint takes hold of them.
 
 Soon a change comes upon them. Their minds grow heavy with weariness, their bellies ache if they do not eat, and their throats parch if they do not drink. In confusion and torment they cry out to the Gods, but no answer comes. Then Men know that they are cursed. To quench their thirst, they drink from the rivers. To still their hunger, they sow the fields. To shield themselves from heat and cold, they raise houses. But still it is not enough. Their flesh withers with the years, and they pass from the world. Great sorrow falls upon them, and they sink into despair. Yet something within them bids them go on, for the essence of the Gods runs deep in their veins. And so they endure.
 

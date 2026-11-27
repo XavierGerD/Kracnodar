@@ -10,7 +10,7 @@ const TextFold = preload("res://Scripts/TextFold.gd")
 var sort_column = Column.KRAC
 var sort_ascending = true
 var shown_count = 0
-var _derived = [0, -1]  # [Dict.derived_count(), the hash of the dictionary it counted]
+var _derived = [{"defined": 0, "derived": 0}, -1]  # [Dict.derived_counts(), the hash of the dictionary it counted]
 var _groups = []  # the letter index: [{"letter", "count", "first": French key of its first row}]
 var _row_groups = []  # for each row, its letter's index in _groups (-1 for none)
 var _expanded = {}  # French keys of the rows showing their derived forms, kept across rebuilds
@@ -294,20 +294,22 @@ func _on_row_deleted() -> void:
 
 
 func _update_count() -> void:
-	var total = Dict.dict.size()
+	# Counted again only when the dictionary changed, not as the search is typed.
+	if _derived[1] != Dict.dict.hash():
+		_derived = [Dict.derived_counts(), Dict.dict.hash()]
+	var entries = Dict.dict.size()
+	var defined = _derived[0]["defined"]
+	var total = entries + defined  # the entries and the derived forms given a meaning
 	var plural = "s" if total > 1 else ""
 	if _search_text() == "":
 		%CountLabel.text = "%d terme%s" % [total, plural]
 	else:
 		%CountLabel.text = "%d sur %d terme%s" % [shown_count, total, plural]
-	# Counted again only when the dictionary changed, not as the search is typed.
-	if _derived[1] != Dict.dict.hash():
-		_derived = [Dict.derived_count(), Dict.dict.hash()]
-	var derived = _derived[0]
+	var derived = _derived[0]["derived"]
 	if derived > 0:
 		%CountLabel.text += " · %d mot%s dérivé%s" % [derived, "s" if derived > 1 else "", "s" if derived > 1 else ""]
 	%CountLabel.mouse_filter = Control.MOUSE_FILTER_PASS  # for the tooltip
-	%CountLabel.tooltip_text = "Mots dérivés : les formes que les modules (verbes, noms, adjectifs, adverbes) donnent avec leurs affixes, chacune comptée une fois, sans celles qui sont déjà des termes du dictionnaire."
+	%CountLabel.tooltip_text = "Termes : les %d entrées du dictionnaire et les %d formes dérivées auxquelles un sens a été donné.\nMots dérivés : les autres formes que les modules (verbes, noms, adjectifs, adverbes) donnent avec leurs affixes, chacune comptée une fois, sans celles qui sont déjà des termes du dictionnaire." % [entries, defined]
 	%EmptyLabel.visible = shown_count == 0
 	if total == 0:
 		%EmptyLabel.text = "Le dictionnaire est vide."

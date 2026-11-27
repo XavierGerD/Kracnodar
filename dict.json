@@ -264,5 +264,12 @@
   "tomber": {"en": "to fall", "kr": "ras", "class": "verbe"},
   "fin": {"en": "end", "kr": "roc", "class": "nom"},
   "sans fin, infini": {"en": "endless", "kr": "rocfem", "class": "adjectif"},
-  "vieux": {"en": "old", "kr": "hod", "class": "adjectif"}
+  "vieux": {"en": "old", "kr": "hod", "class": "adjectif"},
+  "lourd": {"en": "heavy", "kr": "sivu", "class": "adjectif"},
+  "echec": {"en": "failure", "kr": "neme", "class": "nom"},
+  "poids": {"en": "weight", "kr": "ter", "class": "nom"},
+  "comprendre": {"en": "understand", "kr": "sohat", "class": "verbe"},
+  "concevoir": {"en": "to devise", "kr": "tema", "class": "verbe"},
+  "conception": {"en": "design", "kr": "fira", "class": "nom"},
+  "defaut": {"en": "flaw", "kr": "kal", "class": "nom"}
 }
