@@ -137,7 +137,7 @@
 			{"type":"dot","at":[0.375,0.25],"size":1.0},
 			{"type":"line","from":[0.5,0.25],"to":[0.5,0.375],"weight":1.0}
 		]},
-		{"name": "Period", "symbol": "", "strokes": [
+		{"name": "Period", "symbol": ".", "strokes": [
 			{"type":"dot","at":[0.4375,0.75],"size":1.0},
 			{"type":"dot","at":[0.5625,0.75],"size":1.0}
 		]}

@@ -248,7 +248,8 @@ static func trimmed_quote(items: Array) -> Array:
 static func script_image(word: String, owner: Control, font_size: int, color: String, hint := true) -> String:
 	var height = int(round(font_size * SCRIPT_SCALE))
 	var scale = maxf(1.0, ceilf(owner.get_viewport().get_final_transform().get_scale().y * 2.0) / 2.0)
-	var tooltip = " tooltip=\"%s\"" % word if hint else ""
+	# A quotation mark would end the tooltip's value: it shows as a curly one.
+	var tooltip = " tooltip=\"%s\"" % word.replace("\"", "”") if hint else ""
 	return "[img height=%d color=#%s%s]%s[/img]" % [height, color, tooltip, Writing.image_path(word, height, scale)]
 
 

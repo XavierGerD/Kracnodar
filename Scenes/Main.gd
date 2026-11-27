@@ -26,7 +26,11 @@ func _ready():
 		_show_save_problem.call_deferred(
 			"Le dictionnaire n'a pas pu être lu, et rien ne sera enregistré tant qu'il ne l'est pas : %s" % Dict.load_problem)
 	_add_refresh_button()
-
+	
+func _notification(what: int) -> void:
+	match what:
+		NOTIFICATION_APPLICATION_FOCUS_IN:
+			refresh()
 
 # --- Refresh ----------------------------------------------------------------
 

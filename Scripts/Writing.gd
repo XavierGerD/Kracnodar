@@ -11,7 +11,8 @@ extends RefCounted
 # - any other vowel (one that starts a word, or follows a vowel, or a sign like
 #   the dash) is that vowel's own letter;
 # - a punctuation mark or a number drawn is written like a letter, and a vowel
-#   after it is a letter too.
+#   after it is a letter too; typographic quotes and dashes are written as the
+#   plain " and - (see LOOK_ALIKES).
 # What isn't drawn yet shows as an empty square: a letter, or a diacritic
 # shrunk on top of its letter. A sign that isn't drawn (punctuation, digits)
 # is left out.
@@ -31,6 +32,9 @@ const MISSING = [
 	{"type": "line", "from": Vector2(0.75, 0.8), "to": Vector2(0.25, 0.8), "weight": 0.5},
 	{"type": "line", "from": Vector2(0.25, 0.8), "to": Vector2(0.25, 0.2), "weight": 0.5},
 ]
+# Signs typed by habit for one the alphabet draws, written as that one unless
+# they have a glyph of their own.
+const LOOK_ALIKES = {"“": "\"", "”": "\"", "„": "\"", "«": "\"", "»": "\"", "–": "-", "—": "-", "‐": "-", "‑": "-"}
 const LETTER_GAP = 0.14  # em between two letters of a word
 const SIDE = 0.06  # em of space at each end of a word
 const SUPERSAMPLE = 4  # drawn this many times larger, then shrunk: smooth edges
@@ -107,6 +111,9 @@ static func _ensure_loaded() -> void:
 static func spell(word: String, missing = null) -> Array:
 	_ensure_loaded()
 	var text = word.to_lower()
+	for sign in LOOK_ALIKES:
+		if not _letters.has(sign):
+			text = text.replace(sign, LOOK_ALIKES[sign])
 	var longest = 1
 	for sound in _letters.keys() + _marks.keys():
 		longest = maxi(longest, sound.length())
@@ -148,6 +155,17 @@ static func spell(word: String, missing = null) -> Array:
 static func _note(missing, sound: String, kind: String) -> void:
 	if missing is Dictionary:
 		missing[sound] = kind
+
+
+# Whether a character is written in the script: a Latin letter, or a sign (a
+# punctuation mark, a digit) drawn in the Alphabet tab, or a look-alike of one.
+# What isn't (a space, a comma not drawn) stays as text beside the script.
+static func writes(ch: String) -> bool:
+	_ensure_loaded()
+	var lower = ch.to_lower()
+	if lower >= "a" and lower <= "z":
+		return true
+	return _letters.has(lower) or _letters.has(LOOK_ALIKES.get(lower, ""))
 
 
 # The top of the space a word is drawn in, in em: high enough for a diacritic
@@ -294,7 +312,8 @@ static func text_layout(text: String, word_gap: float, line_spacing: float, alig
 static func image_path(word: String, height: int, scale := 1.0) -> String:
 	_ensure_loaded()
 	word = word.to_lower()
-	var path = "res://writing/%s/%d/%d.tex" % [word.uri_encode(), height, int(round(scale * 100))]
+	# A period too is encoded: a word "." or ".." would make the path a folder step.
+	var path = "res://writing/%s/%d/%d.tex" % [word.uri_encode().replace(".", "%2E"), height, int(round(scale * 100))]
 	if not _textures.has(path):
 		var texture = ImageTexture.create_from_image(_draw_word(word, height, scale))
 		texture.take_over_path(path)

@@ -23,6 +23,7 @@ extends Control
 const MarkdownToolbar = preload("res://Scripts/MarkdownToolbar.gd")
 const Markup = preload("res://Scripts/Markup.gd")
 const MarksHighlighter = preload("res://Scripts/MarksHighlighter.gd")
+const Writing = preload("res://Scripts/Writing.gd")
 
 const LIBRARY_FILE = "library.md"
 const FOLDS_FILE = "library_folds.cfg"  # the chapters folded in the sidebar, on this machine
@@ -79,7 +80,6 @@ var _word = RegEx.create_from_string("[\\p{L}\\p{N}'’\\-]+")
 var _heading = RegEx.create_from_string("^#{1,3} ")
 var _language_tag = RegEx.create_from_string("(?i)^(.*?)\\s*\\[(english|kracnodar|krac|both)\\]$")
 var _edge_punctuation = RegEx.create_from_string("^[^\\p{L}\\p{N}]+|[^\\p{L}\\p{N}]+$")
-var _letter = RegEx.create_from_string("[A-Za-z]")
 var _stale = false  # the alphabet changed while the page was hidden
 var _collapsed = {}  # the names of the chapters whose documents the sidebar hides
 
@@ -1118,8 +1118,9 @@ func dictionary_changed() -> void:
 # sign after it: a comma can't start a line)}.
 # That is its *Kracnodar words*, the parts apart, as in the Grammaire; or, with
 # `whole` and no * in it, all of it (the Kracnodar side of a line). Each word is
-# an image; what isn't a letter stays as it is. Masked words show dim, or in
-# preview vanish, keeping their room, as in _side_bbcode.
+# an image, with the signs the alphabet draws (see Writing.writes); what isn't
+# written stays as it is. Masked words show dim, or in preview vanish, keeping
+# their room, as in _side_bbcode.
 func _script_of(text: String, from: int, to: int, whole: bool) -> Dictionary:
 	var marks = Markup.parse_marks(text)
 	var shown: String = marks["plain"]
@@ -1143,11 +1144,11 @@ func _script_of(text: String, from: int, to: int, whole: bool) -> Dictionary:
 		while i < span[1]:
 			var masked = flags[i] & MASKED != 0
 			var j = i + 1
-			var is_letter = _letter.search(shown[i]) != null
-			while j < span[1] and (_letter.search(shown[j]) != null) == is_letter and (flags[j] & MASKED != 0) == masked:
+			var written = Writing.writes(shown[i])
+			while j < span[1] and Writing.writes(shown[j]) == written and (flags[j] & MASKED != 0) == masked:
 				j += 1
 			var piece = shown.substr(i, j - i)
-			if is_letter:
+			if written:
 				var vanish = masked and hiding  # nor shown on hover
 				out += Markup.script_image(piece, self, size, "00000000" if vanish else (dim if masked else krac), not vanish)
 				width += Markup.script_image_width(piece, size)
@@ -1156,7 +1157,7 @@ func _script_of(text: String, from: int, to: int, whole: bool) -> Dictionary:
 			else:
 				# Between two words, more room (see Markup.script_gap), before the
 				# space, so that a line broken at the space doesn't start with it.
-				if i > span[0] and j < span[1] and piece.strip_edges() == "" and _letter.search(shown[i - 1]) != null and _letter.search(shown[j]) != null:
+				if i > span[0] and j < span[1] and piece.strip_edges() == "" and Writing.writes(shown[i - 1]) and Writing.writes(shown[j]):
 					out += Markup.script_gap(size)
 					width += Markup.script_gap_width(size)
 				var escaped = piece.replace("[", "[lb]")

@@ -9,6 +9,7 @@ extends Control
 const TextFold = preload("res://Scripts/TextFold.gd")
 const MarkdownToolbar = preload("res://Scripts/MarkdownToolbar.gd")
 const Markup = preload("res://Scripts/Markup.gd")
+const Writing = preload("res://Scripts/Writing.gd")
 
 const GRAMMAR_FILE = "grammar.md"
 const CHAPTER = 1
@@ -52,7 +53,6 @@ var _krac_word = RegEx.create_from_string("\\*([^*]+)\\*")
 var _masked = RegEx.create_from_string("~~(.+?)~~")
 var _image = RegEx.create_from_string("!\\[([^\\]]*)\\]\\(([^)\\s]+)\\)")
 var _comment = RegEx.create_from_string("(?s)<!--.*?-->")
-var _letter_run = RegEx.create_from_string("[A-Za-z]+")
 var _stale = false  # the alphabet changed while the page was hidden
 
 
@@ -542,21 +542,32 @@ func alphabet_changed() -> void:
 
 
 # A Kracnodar text in the script, as image markup (see _image_bbcode), a word
-# to an image; what isn't a letter (spaces, punctuation) stays as it is.
-# Empty when there are no letters.
+# to an image, with the signs the alphabet draws (see Writing.writes); what
+# isn't written (spaces, other punctuation) stays as it is. Empty when nothing
+# is written.
 func _spell(text: String) -> String:
 	var out = ""
-	var from = 0
-	for found in _letter_run.search_all(text):
-		var between = text.substr(from, found.get_start() - from)
-		# More room between two words (see Markup.script_gap), before the space,
-		# so that a line broken at the space doesn't start with it.
-		if from > 0 and between != "" and between.strip_edges() == "":
-			out += "![](gap:)"
-		out += between
-		out += "![%s](writing:%s)" % [found.get_string(), found.get_string().to_lower()]
-		from = found.get_end()
-	return (out + text.substr(from)).strip_edges() if from > 0 else ""
+	var word = ""
+	var between = ""
+	var drawn = false
+	for i in text.length() + 1:
+		var ch = text[i] if i < text.length() else ""
+		if ch != "" and Writing.writes(ch):
+			if word == "":
+				# More room between two words (see Markup.script_gap), before the
+				# space, so that a line broken at the space doesn't start with it.
+				if drawn and between != "" and between.strip_edges() == "":
+					out += "![](gap:)"
+				out += between
+				between = ""
+			word += ch
+			continue
+		if word != "":
+			out += "![%s](writing:%s)" % [word, word.to_lower()]
+			drawn = true
+			word = ""
+		between += ch
+	return (out + between).strip_edges() if drawn else ""
 
 
 # A script label, which wraps between its words, at least `width` wide: the

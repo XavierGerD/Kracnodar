@@ -1,7 +1,8 @@
 res://default_env.tres
-res://Scripts/Alphabet.gd
+res://Scripts/Grammaire.gd
+res://Scripts/Library.gd
+res://Scripts/Markup.gd
 res://Scripts/Writing.gd
-res://Scripts/Dict.gd
-res://Scripts/Dictionnaire.gd
-res://Scenes/DictEntry.gd
-res://Scripts/GlyphCanvas.gd
+res://Scenes/Main.tscn
+res://Theme/kracnodar_theme.tres
+res://Scenes/Main.gd
