@@ -139,6 +139,7 @@ A shrine (a place of adoration), not shortened → Gerenbar
 
 - A marker is a word of its own, placed before its noun like a preposition (see 2.5): *ti nod*, *kin Dim*.
 - *Ken* on a bare module is the adverb affix instead, joined to it (see 2.1.1): *kendexu*, while jumping. Before a noun, it is a marker like the others: like jewels → *ken uzonodu*.
+- *Kan* also marks what something becomes, “into”: the pieces turn into little stars → *tufu levonu kan uzofu*; he rolls it into a sphere → *no dutac kan cali*. Without it, the noun after the verb would be its object: *berac sa tufu* is “she breaks seven pieces”.
 - A marker also covers the nouns joined to its noun by *g*, which joins the noun right before it: the marker isn't repeated.
 
 The houses of stone and gold → Enu ti nod g lox
@@ -331,7 +332,7 @@ I can not free (I'm able not to) → Iredotag felek fem
 - In a number, *o* always adds: *deogo* is ten and two, *dego* is two tens.
 - A *t* at the end of a number makes it an ordinal, placed like the number: first → *tut*; ninth → *sut*; thirty-fifth → *heodevat*.
 - *Tuop* (*tu* + *op*, see 2.4) is “a single one”, placed like a number, before a singular noun: a single stone → *tuop nod*.
-- *Tufo* (*tu* + *fo*, “less than one”) is a piece, a part of a whole. It is a noun, plural *tufu*: she breaks it into seven pieces → *berac sa tufu*.
+- *Tufo* (*tu* + *fo*, “less than one”) is a piece, a part of a whole. It is a noun, plural *tufu*: she breaks it into seven pieces → *no berac kan sa tufu*.
 
 Eleven → Deotu
 Twelve → Deogo
