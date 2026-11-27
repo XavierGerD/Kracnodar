@@ -106,9 +106,6 @@
 			{"type":"taper","from":[0.25,0.4375],"to":[0.75,0.625],"thickness":1.35,"curve":0.3},
 			{"type":"dot","at":[0.5,0.6875],"size":1.0},
 			{"type":"dot","at":[0.375,0.6875],"size":1.0}
-		]},
-		{"name": "Dash", "sound": "-", "strokes": [
-			{"type":"dot","at":[0.5,0.5],"size":1.0}
 		]}
 	],
 	"diacritics": [
@@ -133,8 +130,57 @@
 		]}
 	],
 	"punctuation": [
+		{"name": "Dash", "symbol": "-", "strokes": [
+			{"type":"dot","at":[0.5,0.5],"size":1.0}
+		]},
+		{"name": "Quotation Mark", "symbol": "\"", "strokes": []}
 	],
 	"numbers": [
-		{"name": "", "symbol": "", "strokes": []}
+		{"name": "Tu", "symbol": "1", "strokes": [
+			{"type":"line","from":[0.5,0.25],"to":[0.5,0.75],"weight":1.0}
+		]},
+		{"name": "Go", "symbol": "2", "strokes": [
+			{"type":"line","from":[0.5,0.25],"to":[0.5,0.75],"weight":1.0},
+			{"type":"taper","from":[0.75,0.5],"to":[0.5,0.25],"thickness":1.4,"curve":0.3}
+		]},
+		{"name": "Va", "symbol": "3", "strokes": [
+			{"type":"line","from":[0.5,0.25],"to":[0.5,0.75],"weight":1.0},
+			{"type":"taper","from":[0.6875,0.75],"to":[0.5,0.5],"thickness":1.4,"curve":-0.3},
+			{"type":"taper","from":[0.6875,0.5],"to":[0.5,0.25],"thickness":1.4,"curve":-0.3}
+		]},
+		{"name": "Ju", "symbol": "4", "strokes": [
+			{"type":"line","from":[0.5,0.25],"to":[0.5,0.5],"weight":1.0},
+			{"type":"dot","at":[0.5,0.75],"size":1.0},
+			{"type":"taper","from":[0.25,0.25],"to":[0.5,0.5],"thickness":1.4,"curve":-0.3}
+		]},
+		{"name": "He", "symbol": "5", "strokes": [
+			{"type":"line","from":[0.5,0.25],"to":[0.5,0.75],"weight":1.0},
+			{"type":"taper","from":[0.75,0.5],"to":[0.5,0.75],"thickness":1.4,"curve":0.3},
+			{"type":"dot","at":[0.75,0.25],"size":1.0}
+		]},
+		{"name": "Do", "symbol": "6", "strokes": [
+			{"type":"line","from":[0.5,0.25],"to":[0.5,0.75],"weight":1.0},
+			{"type":"dot","at":[0.375,0.75],"size":1.0},
+			{"type":"taper","from":[0.75,0.5],"to":[0.5,0.25],"thickness":1.4,"curve":-0.3}
+		]},
+		{"name": "Sa", "symbol": "7", "strokes": [
+			{"type":"line","from":[0.5,0.75],"to":[0.5,0.5],"weight":1.0},
+			{"type":"dot","at":[0.5,0.25],"size":1.0},
+			{"type":"taper","from":[0.75,0.25],"to":[0.5,0.75],"thickness":1.4,"curve":0.3}
+		]},
+		{"name": "Ko", "symbol": "8", "strokes": [
+			{"type":"taper","from":[0.75,0.25],"to":[0.5,0.75],"thickness":1.4,"curve":0.3},
+			{"type":"line","from":[0.5,0.25],"to":[0.75,0.25],"weight":1.0}
+		]},
+		{"name": "Su", "symbol": "9", "strokes": [
+			{"type":"line","from":[0.5,0.25],"to":[0.5,0.75],"weight":1.0},
+			{"type":"dot","at":[0.625,0.375],"size":1.0},
+			{"type":"dot","at":[0.625,0.625],"size":1.0}
+		]},
+		{"name": "Ra", "symbol": "0", "strokes": [
+			{"type":"line","from":[0.375,0.5625],"to":[0.625,0.5625],"weight":1.0},
+			{"type":"taper","from":[0.5,0.25],"to":[0.375,0.5625],"thickness":1.4,"curve":0.2798},
+			{"type":"dot","at":[0.5,0.75],"size":1.0}
+		]}
 	]
 }

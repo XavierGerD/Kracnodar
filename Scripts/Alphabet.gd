@@ -647,15 +647,16 @@ func _sync_tool() -> void:
 	for pair in [[%SelectTool, "select"], [%DotTool, "dot"], [%LineTool, "line"], [%TaperTool, "taper"]]:
 		pair[0].set_pressed_no_signal(pair[1] == tool)
 	var keys = "Shift: steps of 15° · Alt: no snapping · Esc or right-click: cancel"
+	var back = "  Esc: Select tool"
 	match tool:
 		"select":
 			%Hint.text = "Click a stroke to select it, drag it or its handles to move it. Arrows nudge it, Delete removes it."
 		"dot":
-			%Hint.text = "Click to place a dot."
+			%Hint.text = "Click to place a dot." + back
 		"line":
-			%Hint.text = ("Click where the line ends.  " + keys) if %Canvas.is_placing() else "Click where the line starts."
+			%Hint.text = ("Click where the line ends.  " + keys) if %Canvas.is_placing() else "Click where the line starts." + back
 		"taper":
-			%Hint.text = ("Click the thick end.  " + keys) if %Canvas.is_placing() else "Click the thin end of the tapered line."
+			%Hint.text = ("Click the thick end.  " + keys) if %Canvas.is_placing() else "Click the thin end of the tapered line." + back
 
 
 # --- Undo -----------------------------------------------------------------

@@ -21,6 +21,8 @@ var alternate = false
 var expanded = false  # the derived forms are shown
 var query = ""  # the folded search text, to light up the derived forms it found
 var _defining = ""  # the name of the derived form being edited, or ""
+var _filled = []  # what the derived forms shown were made from (see _derived_made_from)
+var _cells = []  # the derived forms' lines when none is edited, to fill again (see _add_form_cells)
 
 
 func _ready():
@@ -62,23 +64,38 @@ func _set_expanded(on: bool) -> void:
 	%Chevron.text = ("▾" if expanded else "▸") if derivable else ""
 	%Derived.visible = expanded
 	if expanded:
-		_fill_derived()
+		# Made again only if they would come out otherwise: a row the list
+		# fills again as the search is typed often shows the same forms.
+		var forms = Dict.derived_forms(key)
+		if _defining != "" or _derived_made_from(forms) != _filled:
+			_fill_derived(forms)
 
 
-func _fill_derived() -> void:
+# What decides how the derived forms look: the entry and the dictionary as
+# they are, and which forms the search lights up. Not used while one is edited.
+func _derived_made_from(forms: Array) -> Array:
+	return [key, Dict.revision, forms.map(_found)]
+
+
+func _fill_derived(forms = null) -> void:
+	if forms == null:
+		forms = Dict.derived_forms(key)
+	_filled = _derived_made_from(forms) if _defining == "" else []
+	# Every module has the same forms: the cells already made, with none of them
+	# being edited, only take the new words.
+	if _defining == "" and _cells.size() == forms.size():
+		for i in forms.size():
+			_show_form(_cells[i], forms[i])
+		return
 	for child in %DerivedGrid.get_children():
 		%DerivedGrid.remove_child(child)
 		child.queue_free()
-	for form in Dict.derived_forms(key):
-		var note = form["affix"] if form["affix"] != "" else "le module, sans affixe"
-		if form["respelled"]:
-			note += "   au lieu de « %s »" % form["regular"]
-		if form["existing"] != "":
-			note += "   ⚠ déjà dans le dictionnaire : « %s »" % form["existing"]
-		_add_cell(form["name"], "HintLabel")
-		var tools = HBoxContainer.new()
-		tools.add_theme_constant_override("separation", 2)
+	_cells = []
+	for form in forms:
 		if form["affix"] != "" and form["name"] == _defining:
+			_add_cell(form["name"], "HintLabel")
+			var tools = HBoxContainer.new()
+			tools.add_theme_constant_override("separation", 2)
 			var word = _add_field(form["word"], form["regular"], 120)
 			var meaning = _add_field(form["meaning"], "Sens, ex. : freedom", 200)
 			var save = func(): _save_derived(form["name"], meaning.text, word.text)
@@ -90,16 +107,53 @@ func _fill_derived() -> void:
 					meaning.select_all()).call_deferred()
 			tools.add_child(_derived_button("✓", "Enregistrer (Entrée)", save))
 			tools.add_child(_derived_button("↩", "Annuler (Échap)", _define.bind("")))
+			_add_cell(_note(form), "DimLabel")
+			%DerivedGrid.add_child(tools)
 		else:
-			var found = _found(form)
-			var word_label = _add_cell(form["word"], "KracLabel")
-			var meaning_label = _add_meaning(form)
-			if found:
-				(meaning_label if form["meaning"] != "" else word_label).add_theme_color_override("font_color", MATCH_COLOUR)
-			if form["affix"] != "":  # none on the module's own line: it is the entry itself
-				tools.add_child(_derived_button("✎", "Définir ce mot ou changer son orthographe", _define.bind(form["name"])))
-		_add_cell(note, "DimLabel")
-		%DerivedGrid.add_child(tools)
+			var cells = _add_form_cells()
+			_show_form(cells, form)
+			_cells.append(cells)
+	if _defining != "":
+		_cells = []  # some of the lines are fields
+
+
+# A derived form's line, shown (not edited): {"name", "word", "meaning",
+# "note": labels, "edit": its pencil}. See _show_form.
+func _add_form_cells() -> Dictionary:
+	var cells = {"name": _add_cell("", "HintLabel"), "word": _add_cell("", "KracLabel"), "meaning": _add_cell("", "")}
+	cells["note"] = _add_cell("", "DimLabel")
+	var tools = HBoxContainer.new()
+	tools.add_theme_constant_override("separation", 2)
+	var edit = _derived_button("✎", "Définir ce mot ou changer son orthographe", func(): _define(tools.get_meta("form")))
+	tools.add_child(edit)
+	%DerivedGrid.add_child(tools)
+	cells["tools"] = tools
+	cells["edit"] = edit
+	return cells
+
+
+func _show_form(cells: Dictionary, form: Dictionary) -> void:
+	cells["name"].text = form["name"]
+	cells["word"].text = form["word"]
+	var meaning_label = cells["meaning"]
+	meaning_label.text = form["meaning"] if form["affix"] != "" else Dict.english_of(key)  # the entry's own on the module's line
+	meaning_label.theme_type_variation = "DimLabel" if form["affix"] == "" else ""
+	for label in [cells["word"], meaning_label]:
+		label.remove_theme_color_override("font_color")
+	if _found(form):
+		(meaning_label if form["meaning"] != "" else cells["word"]).add_theme_color_override("font_color", MATCH_COLOUR)
+	cells["note"].text = _note(form)
+	cells["tools"].set_meta("form", form["name"])
+	cells["edit"].visible = form["affix"] != ""  # none on the module's own line: it is the entry itself
+
+
+func _note(form: Dictionary) -> String:
+	var note = form["affix"] if form["affix"] != "" else "le module, sans affixe"
+	if form["respelled"]:
+		note += "   au lieu de « %s »" % form["regular"]
+	if form["existing"] != "":
+		note += "   ⚠ déjà dans le dictionnaire : « %s »" % form["existing"]
+	return note
 
 
 func _derived_button(text: String, tooltip: String, action: Callable) -> Button:
@@ -111,12 +165,6 @@ func _derived_button(text: String, tooltip: String, action: Callable) -> Button:
 	button.theme_type_variation = "RowButton"
 	button.pressed.connect(action)
 	return button
-
-
-# The meaning of a derived form (the entry's own on the module's line).
-func _add_meaning(form: Dictionary) -> Label:
-	var meaning = form["meaning"] if form["affix"] != "" else Dict.english_of(key)
-	return _add_cell(meaning, "DimLabel" if form["affix"] == "" else "")
 
 
 # Whether the search found this derived form, through its meaning or its own spelling.
@@ -166,6 +214,7 @@ func start_edit() -> void:
 	%KracEdit.text = Dict.krac_of(key)
 	%FrenchEdit.text = key
 	%EnglishEdit.text = Dict.english_of(key)
+	Dict.fill_class_picker(%ClassEdit)  # afresh: the row may have shown another entry, with a class of its own added
 	Dict.pick_class(%ClassEdit, Dict.class_of(key))
 	_show_fields(true)
 	edit_started.emit()

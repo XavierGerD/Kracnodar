@@ -30,7 +30,7 @@ She writes of the beginning, before the age of Man, before the age of the sun an
 In those days the Gods are weary of one another, and swift to anger. → Kosa k hej, lorevu tul mogeuc, o tul nasovetanuc kenzewo.
 Many a day they war over things both great and small, and their wounds they leave to fester. → Moruc hex la ojaopu g ojafu, o ucmavu ne xonu.
 But Kulena, wisest of the Gods, sees that this cannot endure, and she devises a means of salvation. → Tirel Kulena, rutenop ti lorevu, fideac k oja iredono fem e ral, o rakac sozrom.
-"Let us turn our eyes from one another," she says to them, "and make a new world, and a people to dwell within it, whose lives we may guide and shape according to our will." → Menac nak uc, mortug femop, o raktug dalatazu, g ruko gol id nev, osa idexu iredotug kato g levo ken tuglunirex.
+"Let us turn our eyes from one another," she says to them, "and make a new world, and a people to dwell within it, whose lives we may guide and shape according to our will." → Menac nak uc, "mortug femop, o raktug dalatazu, g ruko gol id nev, osa idexu iredotug kato g levo ken tuglunirex."
 And all the Gods give their assent, and the great work begins. → O lorevu evohenoc, o dabop vixano.
 Etovo, smith of the Gods, forges moulds to hold the bodies of Men. → Etovo, lokrom ti lorevu, lokac levoromu ipe tortan rukoidbaru.
 Then Kulena the all-wise plucks from her head a single strand of hair. → Ke Kulena rutenop atoac tuop koje nik zat.

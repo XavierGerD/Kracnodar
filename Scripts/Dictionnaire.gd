@@ -15,6 +15,16 @@ var _groups = []  # the letter index: [{"letter", "count", "first": French key o
 var _row_groups = []  # for each row, its letter's index in _groups (-1 for none)
 var _expanded = {}  # French keys of the rows showing their derived forms, kept across rebuilds
 
+# What the search works out for each entry, kept until the dictionary changes
+# (Dict.revision), so typing doesn't fold every entry again on each key:
+#   French key -> {"text": its three words and class, folded, "krac": its
+#   Kracnodar word, folded, "derived": the folded word and meaning of each
+#   derived form with a meaning or a spelling of its own}
+var _index = {}
+var _sort_keys = {}  # French key -> its folded _sort_text in _sort_keys_column
+var _sort_keys_column = -1
+var _index_revision = -1
+
 
 func _ready():
 	for column in HEADER_TITLES:
@@ -65,13 +75,13 @@ func _sort_text(french: String) -> String:
 
 # Compared without accents, so "étincelle" files under e, with its letter.
 func _comes_before(a: String, b: String) -> bool:
-	var left = _fold(_sort_text(a))
-	var right = _fold(_sort_text(b))
+	var left = _sort_key(a)
+	var right = _sort_key(b)
 	if (left == "") != (right == ""):
 		return right == ""  # entries missing this word go last, in either direction
 	var order = left.naturalnocasecmp_to(right)
 	if order == 0 and sort_column == Column.CLASS:
-		order = _fold(Dict.krac_of(a)).naturalnocasecmp_to(_fold(Dict.krac_of(b)))  # within a class, by Kracnodar
+		order = _indexed(a)["krac"].naturalnocasecmp_to(_indexed(b)["krac"])  # within a class, by Kracnodar
 	if order == 0:
 		order = a.naturalnocasecmp_to(b)  # same word: fall back to the French
 	return order < 0 if sort_ascending else order > 0
@@ -79,6 +89,39 @@ func _comes_before(a: String, b: String) -> bool:
 
 func _fold(text: String) -> String:
 	return TextFold.fold(text)
+
+
+# Forgets what was worked out from the dictionary once it has changed.
+func _check_index() -> void:
+	if _index_revision != Dict.revision:
+		_index = {}
+		_sort_keys = {}
+		_index_revision = Dict.revision
+
+
+# The entry's folded texts (see _index), worked out the first time they are asked for.
+func _indexed(french: String) -> Dictionary:
+	_check_index()
+	if not _index.has(french):
+		var texts = [Dict.krac_of(french), french, Dict.english_of(french), Dict.class_label(Dict.class_of(french))]
+		var derived = []
+		if not Dict.derived_data(french).is_empty():
+			for form in Dict.derived_forms(french):
+				if form["meaning"] != "" or form["respelled"]:
+					derived.append(_fold(form["word"] + "\n" + form["meaning"]))
+		_index[french] = {"text": _fold("\n".join(texts)), "krac": _fold(Dict.krac_of(french)), "derived": derived}
+	return _index[french]
+
+
+# The folded text the entry sorts on in the current column.
+func _sort_key(french: String) -> String:
+	_check_index()
+	if _sort_keys_column != sort_column:
+		_sort_keys = {}
+		_sort_keys_column = sort_column
+	if not _sort_keys.has(french):
+		_sort_keys[french] = _fold(_sort_text(french))
+	return _sort_keys[french]
 
 
 func _search_text() -> String:
@@ -90,27 +133,32 @@ func _search_text() -> String:
 func _matches(french: String, query: String) -> bool:
 	if query == "":
 		return true
-	var texts = [Dict.krac_of(french), french, Dict.english_of(french), Dict.class_label(Dict.class_of(french))]
-	return _fold("\n".join(texts)).contains(query) or _matches_derived(french, query)
+	return _indexed(french)["text"].contains(query) or _matches_derived(french, query)
 
 
 # Whether a derived form with a meaning or a spelling of its own, its word or
 # that meaning, contains the search text.
 func _matches_derived(french: String, query: String) -> bool:
-	if query == "" or Dict.derived_data(french).is_empty():
+	if query == "":
 		return false
-	for form in Dict.derived_forms(french):
-		if (form["meaning"] != "" or form["respelled"]) and _fold(form["word"] + "\n" + form["meaning"]).contains(query):
+	for text in _indexed(french)["derived"]:
+		if text.contains(query):
 			return true
 	return false
 
 
 # Rebuilds the list; `reveal` names an entry to scroll to and highlight. It is
 # shown even if it no longer matches the search, so an edit never makes it vanish.
+# The rows already made are filled again rather than made anew, since adding a
+# row to the tree is what costs the most; those left over are hidden, after the
+# shown ones, until a longer list needs them.
 func refresh(reveal := "") -> void:
+	var rows = []
 	for child in %Rows.get_children():
-		%Rows.remove_child(child)
-		child.queue_free()
+		if child.is_queued_for_deletion():
+			%Rows.remove_child(child)  # a deleted row, freed at the end of the frame
+		else:
+			rows.append(child)
 
 	var query = _fold(_search_text())
 	var keys = Dict.dict.keys().filter(func(key): return key == reveal or _matches(key, query))
@@ -118,19 +166,32 @@ func refresh(reveal := "") -> void:
 	_update_headers()
 	shown_count = keys.size()
 
+	# An entry gets back the row that showed it, if any, whose derived forms
+	# may then stay as they are (see DictEntry._set_expanded).
+	var shown = {}
+	for key in keys:
+		shown[key] = true
+	var by_key = {}
+	var spare = []
+	for row in rows:
+		if shown.has(row.key) and not by_key.has(row.key):
+			by_key[row.key] = row
+		else:
+			spare.append(row)
 	for i in keys.size():
-		var row = DictEntryScene.instantiate()
-		%Rows.add_child(row)
+		var row = by_key.get(keys[i])
+		if row == null:
+			row = spare.pop_back() if not spare.is_empty() else _new_row()
+		if row.get_index() != i:
+			%Rows.move_child(row, i)
+		row.visible = true
 		# A row the search found through a derived form opens on it.
 		row.set_entry(keys[i], i % 2 == 1, _expanded.has(keys[i]) or _matches_derived(keys[i], query), query)
-		row.expanded_changed.connect(_on_row_expanded_changed)
-		row.deleted.connect(_on_row_deleted)
-		row.edit_started.connect(_on_row_edit_started.bind(row))
-		# Deferred: the row that saved is freed by the rebuild, mid-signal otherwise.
-		row.edited.connect(func(french): refresh.call_deferred(french))
-		row.edit_failed.connect(_error)
 		if keys[i] == reveal:
 			_reveal(row)
+	for row in spare:
+		row.cancel_edit()
+		row.visible = false
 	_build_letter_index(keys)
 	_update_count()
 
@@ -138,11 +199,28 @@ func refresh(reveal := "") -> void:
 # The letter an entry files under in the current column: A–Z, or # for anything
 # else; "" when it has no word there (an entry without English).
 func _initial(french: String) -> String:
-	var text = _fold(_sort_text(french)).strip_edges()
+	var text = _sort_key(french).strip_edges()
 	if text == "":
 		return ""
 	var letter = text[0].to_upper()
 	return letter if letter >= "A" and letter <= "Z" else "#"
+
+
+func _new_row():
+	var row = DictEntryScene.instantiate()
+	%Rows.add_child(row)
+	row.expanded_changed.connect(_on_row_expanded_changed)
+	row.deleted.connect(_on_row_deleted)
+	row.edit_started.connect(_on_row_edit_started.bind(row))
+	# Deferred: the row that saved is filled again by the rebuild, mid-signal otherwise.
+	row.edited.connect(func(french): refresh.call_deferred(french))
+	row.edit_failed.connect(_error)
+	return row
+
+
+# The rows on show, in order (the hidden ones wait after them, see refresh).
+func _shown_rows() -> Array:
+	return %Rows.get_children().filter(func(row): return row.visible and not row.is_queued_for_deletion())
 
 
 func _build_letter_index(keys: Array) -> void:
@@ -162,8 +240,8 @@ func _build_letter_index(keys: Array) -> void:
 
 
 func _on_letter_selected(index: int) -> void:
-	for row in %Rows.get_children():
-		if not row.is_queued_for_deletion() and row.key == _groups[index]["first"]:
+	for row in _shown_rows():
+		if row.key == _groups[index]["first"]:
 			%Scroll.scroll_vertical = int(row.position.y)
 			row.flash()
 			return
@@ -190,8 +268,8 @@ func _on_row_expanded_changed(french: String, on: bool) -> void:
 # Whether a row is open for editing, or one of its derived forms' meanings:
 # a change not saved yet.
 func has_open_edit() -> bool:
-	for row in %Rows.get_children():
-		if not row.is_queued_for_deletion() and (row.editing or row._defining != ""):
+	for row in _shown_rows():
+		if row.editing or row._defining != "":
 			return true
 	return false
 

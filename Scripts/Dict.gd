@@ -76,6 +76,14 @@ var _repo = ""
 # Refresh can tell which ones were changed outside the app (see changed_on_disk).
 var _disk = {}
 
+# Bumped whenever the dictionary changes (see _changed), so callers can keep
+# what they work out from it until then. Every change goes through this file.
+var revision = 0
+
+# Spellings looked up across the whole dictionary (see _lookups_of), worked out
+# once per change instead of on every call: {} until needed.
+var _lookups = {}
+
 
 func _ready():
 	print("Kracnodar data: ", ProjectSettings.globalize_path(data_dir()))
@@ -85,6 +93,7 @@ func _ready():
 		if problem != "":
 			dict = {}
 			load_problem = problem
+	_changed()
 
 
 func data_dir() -> String:
@@ -162,6 +171,7 @@ func reload() -> String:
 	load_problem = load_file(path)
 	if load_problem != "":
 		dict = before
+	_changed()
 	return load_problem
 
 
@@ -357,28 +367,45 @@ func linking_consonant(first: String, second: String) -> String:
 # module with one of its affixes joined on (FORMS), or a derived form's own
 # spelling (see set_derived).
 func is_spelled(word: String) -> bool:
-	var target = word.to_lower()
-	for french in dict:
-		var krac = krac_of(french).strip_edges().to_lower()
-		if krac == target:
-			return true
-		if class_of(french) in MODULE_CLASSES and krac != "":
-			for form in FORMS:
-				if (form["at"] == "suffix" and krac + form["affix"] == target) or (form["at"] == "prefix" and form["affix"] + krac == target):
-					return true
-			var given = _given(french)
-			for form_name in given:
-				if str(given[form_name].get("kr", "")).strip_edges().to_lower() == target:
-					return true
-	return false
+	return _lookups_of()["spelled"].has(word.to_lower())
 
 
 # The French word that already uses this Kracnodar word, or "" if none does.
 func french_for_krac(krac: String) -> String:
+	return _lookups_of()["french_of"].get(krac, "")
+
+
+# What is_spelled and french_for_krac look up, built from the whole dictionary
+# once after each change: {"spelled": {every spelling, lowercase: true},
+# "french_of": {Kracnodar word: the first French word, in file order, using it}}.
+func _lookups_of() -> Dictionary:
+	if not _lookups.is_empty():
+		return _lookups
+	var spelled = {}
+	var french_of = {}
 	for french in dict:
-		if krac_of(french) == krac:
-			return french
-	return ""
+		var word = krac_of(french)
+		if not french_of.has(word):
+			french_of[word] = french
+		var krac = word.strip_edges().to_lower()
+		spelled[krac] = true
+		if class_of(french) in MODULE_CLASSES and krac != "":
+			for form in FORMS:
+				if form["at"] == "suffix":
+					spelled[krac + form["affix"]] = true
+				elif form["at"] == "prefix":
+					spelled[form["affix"] + krac] = true
+			var given = _given(french)
+			for form_name in given:
+				spelled[str(given[form_name].get("kr", "")).strip_edges().to_lower()] = true
+	_lookups = {"spelled": spelled, "french_of": french_of}
+	return _lookups
+
+
+# After any change to dict: what was worked out from it is out of date.
+func _changed() -> void:
+	revision += 1
+	_lookups = {}
 
 
 # Each change below saves at once; if saving fails it is undone, so what the
@@ -415,9 +442,11 @@ func remove_entry(french: String) -> bool:
 
 
 func _commit(before: Dictionary) -> bool:
+	_changed()
 	if save():
 		return true
 	dict = before
+	_changed()
 	return false
 
 
@@ -509,6 +538,7 @@ func merge(data) -> int:
 		elif value is String:
 			_set_entry(value, str(key), "")
 			merged += 1
+	_changed()
 	return merged
 
 

@@ -1,3 +1,7 @@
 res://default_env.tres
 res://Scripts/Alphabet.gd
 res://Scripts/Writing.gd
+res://Scripts/Dict.gd
+res://Scripts/Dictionnaire.gd
+res://Scenes/DictEntry.gd
+res://Scripts/GlyphCanvas.gd

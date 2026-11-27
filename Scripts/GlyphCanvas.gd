@@ -101,7 +101,8 @@ func delete_selected() -> void:
 	queue_redraw()
 
 
-# Esc: drops the line being placed, or else the selection.
+# Right-click (and Esc in the Select tool, or mid-line): drops the line being
+# placed, or else the selection.
 func cancel() -> void:
 	if _start != null:
 		_start = null
@@ -320,7 +321,12 @@ func _on_key(event: InputEventKey) -> void:
 		KEY_T:
 			set_tool("taper")
 		KEY_ESCAPE:
-			cancel()
+			# Nothing half drawn: back to the Select tool, keeping the selection
+			# so the stroke just drawn can be adjusted.
+			if _start == null and tool != "select":
+				set_tool("select")
+			else:
+				cancel()
 		KEY_DELETE, KEY_BACKSPACE:
 			delete_selected()
 		KEY_LEFT:
